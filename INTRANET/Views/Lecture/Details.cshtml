@@ -1,0 +1,105 @@
+﻿@model INTRANET.ViewModels.LectureDetailsVM
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>LectureDetailsVM</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AcadYearText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AcadYearText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModuleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModuleName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Creator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Creator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifier)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastModifier)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateLastModified)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateLastModified)
+        </dd>
+
+        @if (Model.LectureAttachments.Count > 0)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.LectureAttachments)
+            </dt>
+            <dd>
+                <ul>
+                    @foreach (var item in Model.LectureAttachments)
+                    {
+                        <li id="attachment_@item.ID">
+                            <a href="@item.Url"><i class="glyphicon glyphicon-file"></i>@item.Name</a>
+                        </li>
+                    }
+                </ul>
+            </dd>
+        }
+    </dl>
+</div>
+@using (Html.BeginForm("Delete", "Lecture", new { id = Model.ID }, FormMethod.Post, new { id = "DeleteForm" })){}
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index") |
+    <button type="button" id="deleteBtn" class="btn btn-danger">Delete</button>
+</p>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#deleteBtn").click(function () {
+                //alert(confirm("Are you sure want to delete?"));
+                if (confirm("Are you sure want to delete?"))
+                    $("form#DeleteForm").submit();
+            });
+        });
+    </script>
+}

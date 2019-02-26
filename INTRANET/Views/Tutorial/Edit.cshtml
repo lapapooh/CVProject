@@ -1,0 +1,77 @@
+﻿@model INTRANET.ViewModels.TutorialVM
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm("Edit", "Lecture", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>TutorialVM</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AcadYearID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.AcadYearID, ViewBag.acadYears as List<SelectListItem>, "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AcadYearID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ModuleID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ModuleID, ViewBag.modules as List<SelectListItem>, "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ModuleID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Attachments</label>
+            <div class="col-md-10">
+                @if (Model.TutorialAttachments.Count > 0)
+                {
+                    <ul>
+                        @foreach (var item in Model.TutorialAttachments)
+                        {
+                            <li id="attachment_@item.ID">
+                                <a href="@item.Url"><i class="glyphicon glyphicon-file"></i>@item.Name</a>
+                                <button type="button" class="btn btn-sm btn-danger deleteAttachmentBtn" data-attachid="@item.ID"><i class="glyphicon glyphicon-remove"></i></button>
+                            </li>
+                        }
+                    </ul>
+                }
+                <input type="file" name="Attachments" class="form-control" multiple />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
