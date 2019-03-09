@@ -69,38 +69,36 @@
     <Compile Include="Migrations\201802060636065_Initial.Designer.cs">
       <DependentUpon>201802060636065_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201802090526529_1.cs" />
-    <Compile Include="Migrations\201802090526529_1.Designer.cs">
-      <DependentUpon>201802090526529_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802090530044_11.cs" />
-    <Compile Include="Migrations\201802090530044_11.Designer.cs">
-      <DependentUpon>201802090530044_11.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802090550000_newTable_LectureAttachments.cs" />
-    <Compile Include="Migrations\201802090550000_newTable_LectureAttachments.Designer.cs">
-      <DependentUpon>201802090550000_newTable_LectureAttachments.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802091024192_LectureAttachmentNewFields.cs" />
-    <Compile Include="Migrations\201802091024192_LectureAttachmentNewFields.Designer.cs">
-      <DependentUpon>201802091024192_LectureAttachmentNewFields.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802091040235_someFieldsMadeRequired.cs" />
-    <Compile Include="Migrations\201802091040235_someFieldsMadeRequired.Designer.cs">
-      <DependentUpon>201802091040235_someFieldsMadeRequired.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802130740098_PluralizingTableNameConventionRemove.cs" />
-    <Compile Include="Migrations\201802130740098_PluralizingTableNameConventionRemove.Designer.cs">
-      <DependentUpon>201802130740098_PluralizingTableNameConventionRemove.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802130742585_TutorialsWithAttachmentsCreated.cs" />
-    <Compile Include="Migrations\201802130742585_TutorialsWithAttachmentsCreated.Designer.cs">
-      <DependentUpon>201802130742585_TutorialsWithAttachmentsCreated.cs</DependentUpon>
+    <Compile Include="Migrations\201903090655424_HrCvTables.cs" />
+    <Compile Include="Migrations\201903090655424_HrCvTables.Designer.cs">
+      <DependentUpon>201903090655424_HrCvTables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AcademicYearRepository.cs" />
+    <Compile Include="Repository\HR\HrPositionRepository.cs" />
+    <Compile Include="Repository\HR\HrCvAwardRepository.cs" />
+    <Compile Include="Repository\HR\HrCvDetailRepository.cs" />
+    <Compile Include="Repository\HR\HrCvEductionRepository.cs" />
+    <Compile Include="Repository\HR\HrCvHintTextRepository.cs" />
+    <Compile Include="Repository\HR\HrCvLaborRepository.cs" />
+    <Compile Include="Repository\HR\HrCvMembershipRepository.cs" />
+    <Compile Include="Repository\HR\HrCvRelativeRepository.cs" />
+    <Compile Include="Repository\HR\HrDepartmentRepository.cs" />
+    <Compile Include="Repository\HR\HrEmployeeDocumentRepository.cs" />
+    <Compile Include="Repository\HR\HrEmployeeRepository.cs" />
     <Compile Include="Repository\Interfaces\IAcademicYearRepository.cs" />
+    <Compile Include="Repository\Interfaces\HR\IHrCvAwardRepository.cs" />
+    <Compile Include="Repository\Interfaces\HR\IHrCvDetailRepository.cs" />
+    <Compile Include="Repository\Interfaces\HR\IHrCvEductionRepository.cs" />
+    <Compile Include="Repository\Interfaces\HR\IHrCvHintTextRepository.cs" />
+    <Compile Include="Repository\Interfaces\HR\IHrCvLaborRepository.cs" />
+    <Compile Include="Repository\Interfaces\HR\IHrCvMembershipRepository.cs" />
+    <Compile Include="Repository\Interfaces\HR\IHrCvRelativeRepository.cs" />
+    <Compile Include="Repository\Interfaces\HR\IHrDepartmentRepository.cs" />
+    <Compile Include="Repository\Interfaces\HR\IHrEmployeeDocumentRepository.cs" />
+    <Compile Include="Repository\Interfaces\HR\IHrEmployeeRepository.cs" />
+    <Compile Include="Repository\Interfaces\HR\IHrPositionRepository.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -117,28 +115,11 @@
     <EmbeddedResource Include="Migrations\201802060636065_Initial.resx">
       <DependentUpon>201802060636065_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802090526529_1.resx">
-      <DependentUpon>201802090526529_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802090530044_11.resx">
-      <DependentUpon>201802090530044_11.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802090550000_newTable_LectureAttachments.resx">
-      <DependentUpon>201802090550000_newTable_LectureAttachments.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802091024192_LectureAttachmentNewFields.resx">
-      <DependentUpon>201802091024192_LectureAttachmentNewFields.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802091040235_someFieldsMadeRequired.resx">
-      <DependentUpon>201802091040235_someFieldsMadeRequired.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802130740098_PluralizingTableNameConventionRemove.resx">
-      <DependentUpon>201802130740098_PluralizingTableNameConventionRemove.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802130742585_TutorialsWithAttachmentsCreated.resx">
-      <DependentUpon>201802130742585_TutorialsWithAttachmentsCreated.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201903090655424_HrCvTables.resx">
+      <DependentUpon>201903090655424_HrCvTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

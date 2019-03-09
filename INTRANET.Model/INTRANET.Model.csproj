@@ -61,6 +61,17 @@
   <ItemGroup>
     <Compile Include="AcademicYear.cs" />
     <Compile Include="ApplicationUser.cs" />
+    <Compile Include="HR\HrCvAward.cs" />
+    <Compile Include="HR\HrCvDetail.cs" />
+    <Compile Include="HR\HrCvEduction.cs" />
+    <Compile Include="HR\HrCvHintText.cs" />
+    <Compile Include="HR\HrCvLabor.cs" />
+    <Compile Include="HR\HrCvMembership.cs" />
+    <Compile Include="HR\HrCvRelative.cs" />
+    <Compile Include="HR\HrDepartment.cs" />
+    <Compile Include="HR\HrEmployeeDocument.cs" />
+    <Compile Include="HR\HrPosition.cs" />
+    <Compile Include="HR\HrEmployee.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +81,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

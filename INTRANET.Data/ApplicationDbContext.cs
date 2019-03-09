@@ -23,6 +23,18 @@ namespace INTRANET.Data
         }
 
         public DbSet<AcademicYear> AcademicYears { get; set; }
+
+        public DbSet<HrCvAward> HrCvAwards { get; set; }
+        public DbSet<HrCvDetail> HrCvDetails { get; set; }
+        public DbSet<HrCvEduction> HrCvEducations { get; set; }
+        public DbSet<HrCvHintText> HrCvHintTexts { get; set; }
+        public DbSet<HrCvLabor> HrCvLabors { get; set; }
+        public DbSet<HrCvMembership> HrCvMemberships { get; set; }
+        public DbSet<HrCvRelative> HrCvRelatives { get; set; }
+        public DbSet<HrDepartment> HrDepartments { get; set; }
+        public DbSet<HrEmployee> HrEmployees { get; set; }
+        public DbSet<HrPosition> HrPositions { get; set; }
+        public DbSet<HrEmployeeDocument> HrEmployeeDocuments { get; set; }
         public virtual void Commit()
         {
             base.SaveChanges();

@@ -49,9 +49,31 @@
     <Compile Include="AcademicYearService.cs" />
     <Compile Include="ActiveDirectoryService.cs" />
     <Compile Include="BaseService.cs" />
+    <Compile Include="HR\HrCvRelativeService.cs" />
+    <Compile Include="HR\HrCvMembershipService.cs" />
+    <Compile Include="HR\HrCvLaborService.cs" />
+    <Compile Include="HR\HrCvEductionService.cs" />
+    <Compile Include="HR\HrCvAwardService.cs" />
+    <Compile Include="HR\HrCvDetailService.cs" />
+    <Compile Include="HR\HrCvHintTextService.cs" />
+    <Compile Include="HR\HrEmployeeDocumentService.cs" />
+    <Compile Include="HR\HrPositionService.cs" />
+    <Compile Include="HR\HrDepartmentService.cs" />
+    <Compile Include="HR\HrEmployeeService.cs" />
+    <Compile Include="Interfaces\HR\IHrCvRelativeService.cs" />
+    <Compile Include="Interfaces\HR\IHrCvMembershipService.cs" />
+    <Compile Include="Interfaces\HR\IHrCvLaborService.cs" />
+    <Compile Include="Interfaces\HR\IHrCvEductionService.cs" />
+    <Compile Include="Interfaces\HR\IHrCvAwardService.cs" />
+    <Compile Include="Interfaces\HR\IHrCvDetailService.cs" />
+    <Compile Include="Interfaces\HR\IHrCvHintTextService.cs" />
+    <Compile Include="Interfaces\HR\IHrEmployeeDocumentService.cs" />
+    <Compile Include="Interfaces\HR\IHrPositionService.cs" />
     <Compile Include="Interfaces\IAcademicYearService.cs" />
     <Compile Include="Interfaces\IActiveDirectoryService.cs" />
     <Compile Include="Interfaces\IBaseService.cs" />
+    <Compile Include="Interfaces\HR\IHrDepartmentService.cs" />
+    <Compile Include="Interfaces\HR\IHrEmployeeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +90,7 @@
       <Name>INTRANET.Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
