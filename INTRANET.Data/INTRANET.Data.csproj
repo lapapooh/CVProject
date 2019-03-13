@@ -73,6 +73,10 @@
     <Compile Include="Migrations\201903090655424_HrCvTables.Designer.cs">
       <DependentUpon>201903090655424_HrCvTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903131344241_HrEmployeesFixes.cs" />
+    <Compile Include="Migrations\201903131344241_HrEmployeesFixes.Designer.cs">
+      <DependentUpon>201903131344241_HrEmployeesFixes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AcademicYearRepository.cs" />
@@ -117,6 +121,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903090655424_HrCvTables.resx">
       <DependentUpon>201903090655424_HrCvTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903131344241_HrEmployeesFixes.resx">
+      <DependentUpon>201903131344241_HrEmployeesFixes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

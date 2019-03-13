@@ -55,13 +55,12 @@ namespace INTRANET.Model
 
         public bool ComplietedUzCv { get; set; }
 
-        [Required]
         public string ImageName { get; set; }
 
-        [Required]
+
         public string ImageNameContentType { get; set; }
 
-        [Required]
+
         [Column(TypeName = "varbinary")]
         public byte[] ImageNameContent { get; set; }
 
