@@ -67,6 +67,17 @@ namespace INTRANET.Model
         public string PhoneNo { get; set; }
         public string ExternalPhoneNo { get; set; }
 
+        public string PassportNo { get; set; }
+        public DateTime? PassportIssueDate { get; set; }
+        public string PassportIssuePlace { get; set; }
+
+        public int? CreatedBy { get; set; }
+        public DateTime? CreatedAt { get; set; }
+
+
+        public int? ModifiedBy { get; set; }
+        public DateTime? ModifiedAt { get; set; }
+
 
         public virtual HrDepartment Department { get; set; }
         public virtual HrPosition Position { get; set; }
