@@ -1,6 +1,7 @@
 ﻿using Autofac;
 //using Autofac.Integration.WebApi;
 using Autofac.Integration.Mvc;
+//using DataTables.AspNet.Core;
 using INTRANET.Data.Infrastructure;
 using INTRANET.Data.Repository;
 using INTRANET.Data.Repository.Interfaces;
@@ -37,6 +38,7 @@ namespace INTRANET
             //builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
             //builder.RegisterType<RoleRepository>().As<IRoleRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AcademicYearRepository>().As<IAcademicYearRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<HrEmployeeRepository>().As<IHrEmployeeRepository>().InstancePerLifetimeScope();
 
 
             ////servises
@@ -44,6 +46,8 @@ namespace INTRANET
             //builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope().PropertiesAutowired();
             //builder.RegisterType<RoleService>().As<IRoleService>().InstancePerLifetimeScope();
             builder.RegisterType<AcademicYearService>().As<IAcademicYearService>().InstancePerLifetimeScope();
+            builder.RegisterType<HrEmployeeService>().As<IHrEmployeeService>().InstancePerLifetimeScope();
+            //builder.RegisterType<IDataTablesRequest>().InstancePerLifetimeScope();
             
 
 
