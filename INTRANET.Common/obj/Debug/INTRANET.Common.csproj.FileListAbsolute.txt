@@ -1,0 +1,6 @@
+D:\CVProject\wiut-hr-cv\INTRANET.Common\bin\Debug\INTRANET.Common.dll
+D:\CVProject\wiut-hr-cv\INTRANET.Common\bin\Debug\INTRANET.Common.pdb
+D:\CVProject\wiut-hr-cv\INTRANET.Common\obj\Debug\INTRANET.Common.csprojAssemblyReference.cache
+D:\CVProject\wiut-hr-cv\INTRANET.Common\obj\Debug\INTRANET.Common.csproj.CoreCompileInputs.cache
+D:\CVProject\wiut-hr-cv\INTRANET.Common\obj\Debug\INTRANET.Common.dll
+D:\CVProject\wiut-hr-cv\INTRANET.Common\obj\Debug\INTRANET.Common.pdb

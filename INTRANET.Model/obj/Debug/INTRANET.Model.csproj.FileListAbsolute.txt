@@ -1,0 +1,16 @@
+D:\CVProject\wiut-hr-cv\INTRANET.Model\bin\Debug\INTRANET.Model.dll.config
+D:\CVProject\wiut-hr-cv\INTRANET.Model\bin\Debug\INTRANET.Model.dll
+D:\CVProject\wiut-hr-cv\INTRANET.Model\bin\Debug\INTRANET.Model.pdb
+D:\CVProject\wiut-hr-cv\INTRANET.Model\bin\Debug\EntityFramework.dll
+D:\CVProject\wiut-hr-cv\INTRANET.Model\bin\Debug\EntityFramework.SqlServer.dll
+D:\CVProject\wiut-hr-cv\INTRANET.Model\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+D:\CVProject\wiut-hr-cv\INTRANET.Model\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\CVProject\wiut-hr-cv\INTRANET.Model\bin\Debug\EntityFramework.xml
+D:\CVProject\wiut-hr-cv\INTRANET.Model\bin\Debug\EntityFramework.SqlServer.xml
+D:\CVProject\wiut-hr-cv\INTRANET.Model\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+D:\CVProject\wiut-hr-cv\INTRANET.Model\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\CVProject\wiut-hr-cv\INTRANET.Model\obj\Debug\INTRANET.Model.csprojAssemblyReference.cache
+D:\CVProject\wiut-hr-cv\INTRANET.Model\obj\Debug\INTRANET.Model.csproj.CoreCompileInputs.cache
+D:\CVProject\wiut-hr-cv\INTRANET.Model\obj\Debug\INTRANET.Model.csproj.CopyComplete
+D:\CVProject\wiut-hr-cv\INTRANET.Model\obj\Debug\INTRANET.Model.dll
+D:\CVProject\wiut-hr-cv\INTRANET.Model\obj\Debug\INTRANET.Model.pdb
