@@ -20,3 +20,5 @@ D:\CVProject\wiut-hr-cv\INTRANET.Data\obj\Debug\INTRANET.Data.csproj.CoreCompile
 D:\CVProject\wiut-hr-cv\INTRANET.Data\obj\Debug\INTRANET.Data.csproj.CopyComplete
 D:\CVProject\wiut-hr-cv\INTRANET.Data\obj\Debug\INTRANET.Data.dll
 D:\CVProject\wiut-hr-cv\INTRANET.Data\obj\Debug\INTRANET.Data.pdb
+D:\CVProject\wiut-hr-cv\INTRANET.Data\obj\Debug\INTRANET.Data.Migrations.HrEmployeesFixes.resources
+D:\CVProject\wiut-hr-cv\INTRANET.Data\obj\Debug\INTRANET.Data.Migrations.AdditionalFieldsRequested.resources
