@@ -266,25 +266,20 @@
     <Compile Include="Controllers\Api\AcademicYearController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-<<<<<<< HEAD
     <Compile Include="Controllers\HrEmployeeDocumentController.cs" />
-=======
     <Compile Include="Controllers\HrCvController.cs" />
->>>>>>> 43cc584a800a88589f3051cb52c1691ad3426b83
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\HrEmployeeDocumentListVM.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\HrEmployeeDocumentVM.cs" />
-<<<<<<< HEAD
-=======
     <Compile Include="ViewModels\HrEmployeeListVM.cs" />
->>>>>>> 43cc584a800a88589f3051cb52c1691ad3426b83
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\HrProjectDb.mdf" />
@@ -408,11 +403,8 @@
     <Content Include="Views\Tutorial\Edit.cshtml" />
     <Content Include="Views\Tutorial\Details.cshtml" />
     <Content Include="Views\LecturesAndTutorials\Index.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\HrEmployeeDocument\Index.cshtml" />
-=======
     <Content Include="Views\HrCv\Index.cshtml" />
->>>>>>> 43cc584a800a88589f3051cb52c1691ad3426b83
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\AcademicYear\" />

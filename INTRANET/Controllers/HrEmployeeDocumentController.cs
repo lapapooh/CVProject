@@ -10,7 +10,6 @@ using INTRANET.Data.Repository.Interfaces;
 using INTRANET.Data.Repository;
 using INTRANET.Data.Infrastructure;
 using INTRANET.Service.Interfaces;
-using INTRANET.ViewModels;
 using INTRANET.Model;
 using System.IO;
 
@@ -24,9 +23,11 @@ namespace INTRANET.Controllers
             _hrEmployeeDocumentService = hrEmployeeDocumentService;
         }
         public ActionResult Index(int Id)
-        {   var result = _hrEmployeeDocumentService.GetByEmployeeQueryable(Id);
-           
-            var list = result.Select(r => new HrEmployeeDocumentVM { FullName = r.Employee.FullName, EmployeeId=r.EmployeeId, Id=r.Id, Title=r.Title}).ToList();
+        {
+            var result = _hrEmployeeDocumentService.GetByEmployeeQueryable(Id);
+                       
+            var list = result.Select(r => new HrEmployeeDocumentListVM { Id = r.Id, Title = r.Title, EmployeeId = r.EmployeeId, EmployeeName = r.Employee.FullName}).ToList();
+
             return View(list.OrderBy(o => o.Title).ToList());
 
         }
@@ -35,12 +36,12 @@ namespace INTRANET.Controllers
         public FileResult DownloadDocument(int DocumentId)
         {
             var model=_hrEmployeeDocumentService.GetByID(DocumentId);
-            //return File(model.FileContent.ToArray(), MimeMapping.GetMimeMapping(model.FileName), model.FileName);
             return File(model.FileContent.ToArray(), model.FileContentType, model.FileName);
 
         }
          [HttpGet]
-        public ActionResult DeleteDocument(int DocumentId, int EmployeeId) {
+        public ActionResult DeleteDocument(int DocumentId, int EmployeeId)
+        {
             _hrEmployeeDocumentService.Delete(DocumentId);
             return RedirectToRoute(new
             {

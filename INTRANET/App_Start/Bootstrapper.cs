@@ -38,10 +38,8 @@ namespace INTRANET
             //builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
             //builder.RegisterType<RoleRepository>().As<IRoleRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AcademicYearRepository>().As<IAcademicYearRepository>().InstancePerLifetimeScope();
-<<<<<<< HEAD
-=======
+
             builder.RegisterType<HrEmployeeRepository>().As<IHrEmployeeRepository>().InstancePerLifetimeScope();
->>>>>>> 43cc584a800a88589f3051cb52c1691ad3426b83
             builder.RegisterType<HrEmployeeDocumentRepository>().As<IHrEmployeeDocumentRepository>().InstancePerLifetimeScope();
 
 
@@ -50,16 +48,11 @@ namespace INTRANET
             //builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope().PropertiesAutowired();
             //builder.RegisterType<RoleService>().As<IRoleService>().InstancePerLifetimeScope();
             builder.RegisterType<AcademicYearService>().As<IAcademicYearService>().InstancePerLifetimeScope();
-<<<<<<< HEAD
             builder.RegisterType<HrEmployeeDocumentService>().As<IHrEmployeeDocumentService>().InstancePerLifetimeScope();
 
-=======
             builder.RegisterType<HrEmployeeService>().As<IHrEmployeeService>().InstancePerLifetimeScope();
             builder.RegisterType<HrEmployeeDocumentService>().As<IHrEmployeeDocumentService>().InstancePerLifetimeScope();
             //builder.RegisterType<IDataTablesRequest>().InstancePerLifetimeScope();
-            
->>>>>>> 43cc584a800a88589f3051cb52c1691ad3426b83
-
 
             builder.RegisterFilterProvider();
             IContainer container = builder.Build();
