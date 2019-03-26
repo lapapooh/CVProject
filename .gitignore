@@ -2,3 +2,15 @@ INTRANET/App_Data/HrProjectDb.mdf
 
 /INTRANET/App_Data/HrProjectDb_log.ldf
 
+/.vs
+/INTRANET/obj
+/INTRANET/bin
+/INTRANET.Common/obj
+/INTRANET.Common/bin
+/INTRANET.Data/bin
+/INTRANET.Data/obj
+/INTRANET.Model/obj
+/INTRANET.Model/bin
+/INTRANET.Service/obj
+/INTRANET.Service/bin
+/packages
