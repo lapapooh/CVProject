@@ -55,18 +55,28 @@ namespace INTRANET.Model
 
         public bool ComplietedUzCv { get; set; }
 
-        [Required]
         public string ImageName { get; set; }
 
-        [Required]
+
         public string ImageNameContentType { get; set; }
 
-        [Required]
+
         [Column(TypeName = "varbinary")]
         public byte[] ImageNameContent { get; set; }
 
         public string PhoneNo { get; set; }
         public string ExternalPhoneNo { get; set; }
+
+        public string PassportNo { get; set; }
+        public DateTime? PassportIssueDate { get; set; }
+        public string PassportIssuePlace { get; set; }
+
+        public int? CreatedBy { get; set; }
+        public DateTime? CreatedAt { get; set; }
+
+
+        public int? ModifiedBy { get; set; }
+        public DateTime? ModifiedAt { get; set; }
 
 
         public virtual HrDepartment Department { get; set; }

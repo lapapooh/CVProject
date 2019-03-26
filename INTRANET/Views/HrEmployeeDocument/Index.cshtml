@@ -1,0 +1,56 @@
+﻿@using INTRANET.ViewModels
+@model  List<HrEmployeeDocumentVM>
+
+<h2>@Model.First().FullName - Document list</h2>
+<div class="table-hover">
+<table class="table">
+    <tr>
+        <th>
+            Title
+        </th>
+
+        <th>
+           Actions
+        </th>    
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+            <div>
+                <button type="button" class="btn btn-success" aria-label="Left Align"  onclick="location.href='@Url.Action("DownloadDocument", "HrEmployeeDocument", new {DocumentId=item.Id})'">
+                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                </button>
+
+
+                <button type="button" class="btn btn-danger" aria-label="Left Align"  onclick="location.href='@Url.Action("DeleteDocument", "HrEmployeeDocument", new {DocumentId=item.Id, EmployeeId=item.EmployeeId})'" >
+
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
+            </div>
+        </td>  
+
+    </tr>
+
+    }
+
+</table>
+</div>
+
+@*@section scripts{
+     <script type="text/javascript">
+         function DoComfirm()
+      {
+            if (confirm('Do you want to delete this file?')) {
+                  window.location.href = "@Url.Action("DeleteDocument", "HrEmployeeDocument", new {DocumentId= documentId, EmployeeId= employeeId })";
+
+              }
+      }
+      </script>
+
+      }*@
+
