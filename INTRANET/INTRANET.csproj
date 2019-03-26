@@ -262,6 +262,7 @@
     <Compile Include="Controllers\Api\AcademicYearController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HrEmployeeDocumentController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -271,6 +272,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\HrEmployeeDocumentVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\HrProjectDb.mdf" />
@@ -391,11 +393,12 @@
     <Content Include="Views\Tutorial\Edit.cshtml" />
     <Content Include="Views\Tutorial\Details.cshtml" />
     <Content Include="Views\LecturesAndTutorials\Index.cshtml" />
+    <Content Include="Views\HrEmployeeDocument\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\" />
     <Folder Include="Views\AcademicYear\" />
     <Folder Include="Views\Student\" />
+    <Folder Include="Views\test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

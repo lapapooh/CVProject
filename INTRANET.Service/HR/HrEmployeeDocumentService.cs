@@ -12,7 +12,7 @@ namespace INTRANET.Service
 {
     public class HrEmployeeDocumentService : BaseService<HrEmployeeDocument>, IHrEmployeeDocumentService
     {
-        public HrEmployeeDocumentService(IHrEmployeeDocumentRepository repository,
+            public HrEmployeeDocumentService(IHrEmployeeDocumentRepository repository,
                            IUnitOfWork unitOfWork)
             : base(repository, unitOfWork)
         {

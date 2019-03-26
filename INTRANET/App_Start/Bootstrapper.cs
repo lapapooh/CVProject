@@ -37,6 +37,7 @@ namespace INTRANET
             //builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
             //builder.RegisterType<RoleRepository>().As<IRoleRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AcademicYearRepository>().As<IAcademicYearRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<HrEmployeeDocumentRepository>().As<IHrEmployeeDocumentRepository>().InstancePerLifetimeScope();
 
 
             ////servises
@@ -44,7 +45,8 @@ namespace INTRANET
             //builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope().PropertiesAutowired();
             //builder.RegisterType<RoleService>().As<IRoleService>().InstancePerLifetimeScope();
             builder.RegisterType<AcademicYearService>().As<IAcademicYearService>().InstancePerLifetimeScope();
-            
+            builder.RegisterType<HrEmployeeDocumentService>().As<IHrEmployeeDocumentService>().InstancePerLifetimeScope();
+
 
 
             builder.RegisterFilterProvider();
