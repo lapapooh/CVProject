@@ -6,7 +6,7 @@ using INTRANET.Data.Repository;
 using INTRANET.Model;
 using INTRANET.Service;
 using INTRANET.Service.Interfaces;
-using INTRANET.ViewModels;
+using INTRANET.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,13 +21,11 @@ namespace INTRANET.Controllers
     public class HrCvController : Controller
     {
         public IHrEmployeeService HrEmployeeService { get; set; }
-        public IHrEmployeeDocumentService HrEmployeeDocumentService { get; set; }
 
 
-        public HrCvController(IHrEmployeeService hrEmployeeService, IHrEmployeeDocumentService hrEmployeeDocumentService)
+        public HrCvController(IHrEmployeeService hrEmployeeService)
         {
             HrEmployeeService = hrEmployeeService;
-            HrEmployeeDocumentService = hrEmployeeDocumentService;
         }
             
         // GET: HrCv
@@ -134,37 +132,6 @@ namespace INTRANET.Controllers
             {
                 throw;
             }
-        }
-
-
-        [HttpPost]
-        public ActionResult UploadDocument(int employeeId, string documentTitle, HttpPostedFileBase fileItem)
-        {
-            var model = new HrEmployeeDocument();
-            if (fileItem != null)
-            {
-                byte[] data;
-                using (var inputStream = fileItem.InputStream)
-                {
-                    var memoryStream = inputStream as MemoryStream;
-                    if (memoryStream == null)
-                    {
-                        memoryStream = new MemoryStream();
-                        inputStream.CopyTo(memoryStream);
-                    }
-                    data = memoryStream.ToArray();
-                }
-
-                model.FileContent = data;
-                model.FileName = fileItem.FileName;
-                model.FileContentType = fileItem.ContentType;
-                model.EmployeeId = employeeId;
-                model.Title = documentTitle;
-
-                HrEmployeeDocumentService.Create(model);
-
-            }
-            return RedirectToAction("Index");
         }
 
     }

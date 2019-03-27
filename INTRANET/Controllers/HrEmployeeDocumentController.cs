@@ -22,13 +22,14 @@ namespace INTRANET.Controllers
         {
             _hrEmployeeDocumentService = hrEmployeeDocumentService;
         }
-        public ActionResult Index(int Id)
+        public ActionResult Index()
         {
-            var result = _hrEmployeeDocumentService.GetByEmployeeQueryable(Id);
-                       
-            var list = result.Select(r => new HrEmployeeDocumentListVM { Id = r.Id, Title = r.Title, EmployeeId = r.EmployeeId, EmployeeName = r.Employee.FullName}).ToList();
+            //var result = _hrEmployeeDocumentService.GetByEmployeeQueryable(Id);
 
-            return View(list.OrderBy(o => o.Title).ToList());
+            //var list = result.Select(r => new HrEmployeeDocumentListVM { Id = r.Id, Title = r.Title, EmployeeId = r.EmployeeId, EmployeeName = r.Employee.FullName}).ToList();
+
+            //return View(list.OrderBy(o => o.Title).ToList());
+            return View();
 
         }
 
@@ -50,5 +51,35 @@ namespace INTRANET.Controllers
                 id = EmployeeId
             });
         }
-     }
+
+        [HttpPost]
+        public ActionResult UploadDocument(int employeeId, string documentTitle, HttpPostedFileBase fileItem)
+        {
+            var model = new HrEmployeeDocument();
+            if (fileItem != null)
+            {
+                byte[] data;
+                using (var inputStream = fileItem.InputStream)
+                {
+                    var memoryStream = inputStream as MemoryStream;
+                    if (memoryStream == null)
+                    {
+                        memoryStream = new MemoryStream();
+                        inputStream.CopyTo(memoryStream);
+                    }
+                    data = memoryStream.ToArray();
+                }
+
+                model.FileContent = data;
+                model.FileName = fileItem.FileName;
+                model.FileContentType = fileItem.ContentType;
+                model.EmployeeId = employeeId;
+                model.Title = documentTitle;
+
+                _hrEmployeeDocumentService.Create(model);
+
+            }
+            return RedirectToAction("Index");
+        }
+    }
 }
