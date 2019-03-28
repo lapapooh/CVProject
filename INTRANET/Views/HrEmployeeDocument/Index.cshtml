@@ -31,7 +31,9 @@
             <th>
                 Title
             </th>
-
+            <th>
+                File Name
+            </th>
             <th>
                 Actions
             </th>
@@ -39,25 +41,28 @@
 
         @foreach (var item in Model.HrEmployeeDocuments)
         {
-            <tr data-doc-id="@item.Id">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    <div>
-                        <button type="button" class="btn btn-success" aria-label="Left Align" onclick="location.href='@Url.Action("DownloadDocument", "HrEmployeeDocument", new {DocumentId=item.Id})'">
-                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-                        </button>
+        <tr data-doc-id="@item.Id">
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileName)
+            </td>
+            <td>
+                <div>
+                    <button type="button" class="btn btn-success" aria-label="Left Align" onclick="location.href='@Url.Action("DownloadDocument", "HrEmployeeDocument", new {DocumentId=item.Id})'">
+                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                    </button>
 
 
-                        <button type="button" class="btn btn-danger" aria-label="Left Align" onclick="DoComfirm(@item.Id)">
+                    <button type="button" class="btn btn-danger" aria-label="Left Align" onclick="DoComfirm(@item.Id)">
 
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                </td>
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </td>
 
-            </tr>
+        </tr>
 
         }
 
