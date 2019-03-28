@@ -30,7 +30,12 @@ namespace INTRANET.Controllers
         // GET: HrCv
         public ActionResult Index()
         {
-            return View();
+            var model = new HrCvListVM();
+
+            //get departments and positions,
+            //map to proeprties of the model
+
+            return View(model);
         }
 
         private HrEmployeeListVM MapToModel(HrEmployee hrEmployee)

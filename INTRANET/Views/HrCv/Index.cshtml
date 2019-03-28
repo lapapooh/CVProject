@@ -1,4 +1,6 @@
-﻿
+﻿@using INTRANET.Models
+@model  HrCvListVM
+
 @{
     ViewBag.Title = "HR CV";
 }
@@ -103,9 +105,9 @@
                             "searchable": false,
                             "orderable": false,
                             "render": function (data, type, full, meta) {
-                                return '<a href="/HrEmployeeDocument/Index/'+ data.Id +'" ><span class="glyphicon glyphicon-file"></span></a>';
+                                return '<a href="/HrEmployeeDocument/Index/' + data.Id + '" ><span class="glyphicon glyphicon-file"></span></a>';
                             }
-                                },
+                        },
 
 
                     ],
