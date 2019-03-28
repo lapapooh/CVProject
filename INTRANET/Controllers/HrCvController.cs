@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq;
-using System.Linq.Dynamic;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,12 +19,12 @@ namespace INTRANET.Controllers
 {
     public class HrCvController : Controller
     {
-        public IHrEmployeeService HrEmployeeService { get; set; }
+        public IHrEmployeeService _hrEmployeeService { get; set; }
 
 
         public HrCvController(IHrEmployeeService hrEmployeeService)
         {
-            HrEmployeeService = hrEmployeeService;
+            _hrEmployeeService = hrEmployeeService;
         }
             
         // GET: HrCv
@@ -40,8 +39,8 @@ namespace INTRANET.Controllers
             {
                 Id = hrEmployee.Id,
                 FullName = hrEmployee.FullName,
-                DepartmentName = hrEmployee.Department.TitleEn,
-                Position = hrEmployee.Position.TitleEn,
+                DepartmentName = hrEmployee.Department?.TitleEn,
+                PositionName = hrEmployee.Position?.TitleEn,
                 HasFilledRuCV = hrEmployee.ComplietedRuCv,
                 HasFilledUzCV = hrEmployee.ComplietedUzCv
             };
@@ -70,7 +69,7 @@ namespace INTRANET.Controllers
                 int recordsTotal = 0;
 
                 // Getting all Customer data  
-                var employeeData = HrEmployeeService.GetAllQueryable();
+                var employeeData = _hrEmployeeService.GetAllQueryable();
 
                 //Sorting  
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -115,6 +114,7 @@ namespace INTRANET.Controllers
                 ////Search  
                 //if (!string.IsNullOrEmpty(searchValue.ToString()))
                 //{
+                //    use contains instead of ==
                 //    employeeData = employeeData.Where(m => m.FullName == searchValue);
                 //}
 
@@ -128,9 +128,10 @@ namespace INTRANET.Controllers
                 //Returning Json Data  
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                //logging goes here
+                return Json(new { draw = 0, recordsFiltered = new object[0], recordsTotal = 0, data = 0 });
             }
         }
 

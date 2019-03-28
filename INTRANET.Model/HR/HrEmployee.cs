@@ -61,7 +61,7 @@ namespace INTRANET.Model
         public string ImageNameContentType { get; set; }
 
 
-        [Column(TypeName = "varbinary")]
+        [Column(TypeName = "varbinary(max)")]
         public byte[] ImageNameContent { get; set; }
 
         public string PhoneNo { get; set; }

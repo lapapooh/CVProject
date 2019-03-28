@@ -81,6 +81,10 @@
     <Compile Include="Migrations\201903181119090_AdditionalFieldsRequested.Designer.cs">
       <DependentUpon>201903181119090_AdditionalFieldsRequested.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903280613530_AdjustedFileFields.cs" />
+    <Compile Include="Migrations\201903280613530_AdjustedFileFields.Designer.cs">
+      <DependentUpon>201903280613530_AdjustedFileFields.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AcademicYearRepository.cs" />
@@ -131,6 +135,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903181119090_AdditionalFieldsRequested.resx">
       <DependentUpon>201903181119090_AdditionalFieldsRequested.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903280613530_AdjustedFileFields.resx">
+      <DependentUpon>201903280613530_AdjustedFileFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

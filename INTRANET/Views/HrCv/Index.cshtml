@@ -25,226 +25,106 @@
 </div>
 
 
+@section Styles {
+    <link href="~/Scripts/DataTables/datatables.min.css" rel="stylesheet" />
+    <link href="~/Scripts/DataTables/DataTables-1.10.13/css/dataTables.checkboxes.css" rel="stylesheet" />
+    <link href="~/Content/hrCvEmployeeList.css" rel="stylesheet" runat="server" />
+}
 
-<style>
 
-    .input-group {
-        position: relative;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: stretch;
-        width: 100%;
-    }
+@section Scripts {
 
-        .input-group > .form-control,
-        .input-group > .custom-select,
-        .input-group > .custom-file {
-            position: relative;
-            flex: 1 1 auto;
-            margin-bottom: 0;
-        }
-
-    .btn-file {
-        position: relative;
-        overflow: hidden;
-        vertical-align: middle;
-    }
-
-    .fileinput.input-group {
-        display: flex;
-        margin-bottom: 9px;
-        flex-wrap: nowrap;
-    }
-
-        .fileinput.input-group > * {
-            position: relative;
-            z-index: 2;
-        }
-
-    .fileinput .form-control {
-        padding: .375rem .75rem;
-        display: inline-block;
-        margin-bottom: 0px;
-        vertical-align: middle;
-        cursor: text;
-    }
-
-    .fileinput-filename {
-        display: inline-block;
-        overflow: hidden;
-        vertical-align: middle;
-    }
-
-    .form-control .fileinput-filename {
-        vertical-align: bottom;
-    }
-
-    .input-group > .form-control:not(:last-child),
-    .input-group > .custom-select:not(:last-child) {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-
-    .fileinput.input-group > .btn-file {
-        z-index: 1;
-    }
-
-    .fileinput-new {
-        padding-right: 10px;
-    }
-
-        .fileinput-new.input-group .btn-file,
-        .fileinput-new .input-group .btn-file {
-            border-radius: 0 4px 4px 0;
-        }
-
-        .fileinput-new.input-group .btn-file,
-        .fileinput-new .input-group .btn-file {
-            border-radius: 0 .25rem .25rem 0;
-        }
-
-    .input-group-addon:not(:first-child) {
-        border-left: 0;
-    }
-
-    .fileinput .input-group-addon {
-        padding: .375rem .75rem;
-        width: auto;
-    }
-
-    .fileinput-exists .fileinput-new,
-    .fileinput-new .fileinput-exists {
-        display: none;
-    }
-
-    .fileinput .btn {
-        vertical-align: middle;
-    }
-
-    .fileinput .input-group-addon {
-        padding: .375rem .75rem;
-    }
-
-    .btn:not(:disabled):not(.disabled) {
-        cursor: pointer;
-    }
-
-    .fileinput.input-group > .btn-file {
-        z-index: 1;
-    }
-
-    .fileinput-new.input-group .btn-file,
-    .fileinput-new .input-group .btn-file {
-        border-radius: 0 4px 4px 0;
-    }
-
-    .fileinput-new.input-group .btn-file,
-    .fileinput-new .input-group .btn-file {
-        border-radius: 0 .25rem .25rem 0;
-    }
-
-    .btn-file > input {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        font-size: 23px;
-        cursor: pointer;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        direction: ltr;
-    }
-</style>
-
-        @section Scripts {
-
-            <script src="~/Scripts/DataTables/datatables.min.js"></script>
-            <script src="~/Scripts/DataTables/DataTables-1.10.13/js/dataTables.checkboxes.min.js"></script>
-            <link href="~/Scripts/DataTables/datatables.min.css" rel="stylesheet" />
-            <link href="~/Scripts/DataTables/DataTables-1.10.13/css/dataTables.checkboxes.css" rel="stylesheet" />
-            <link href="~/Content/hrCvEmployeeList.css" rel="stylesheet" runat="server" />
+    <script src="~/Scripts/DataTables/datatables.min.js"></script>
+    <script src="~/Scripts/DataTables/DataTables-1.10.13/js/dataTables.checkboxes.min.js"></script>
 
 
 
 
-            <script>
-                $(document).ready(function () {
-                    $("#hrEmployeGrid").DataTable({
-                        "processing": true, // for show progress bar
-                        "serverSide": true, // for process server side
-                        "filter": true, // this is for disable filter (search box)
-                        "orderMulti": false, // for disable multiple column at once
-                        "pageLength": 5,
 
-                        "ajax": {
-                            "url": "/HrCv/LoadData",
-                            "type": "POST",
-                            "datatype": "json"
+    <script>
+        $(document).ready(function () {
+            $("#hrEmployeGrid").DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "pageLength": 5,
+
+                "ajax": {
+                    "url": "/HrCv/LoadData",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+
+                "columnDefs":
+                    [
+                        {
+                            "targets": [0],
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, full, meta) {
+                                return '<input type="checkbox" name="employeeIds[]" value="'
+                                    + data.Id + '">';
+                            }
+
                         },
+                        {
+                            "targets": [4],
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, full, meta) {
+                                var checked = '';
+                                if (data)
+                                    checked = 'checked="checked"';
 
-                        "columnDefs":
-                            [
-                                {
-                                    "targets": [0],
-                                    "searchable": false,
-                                    "orderable": false,
-                                    "render": function (data, type, full, meta) {
-                                        return '<input type="checkbox" name="id[]" value="'
-                                            + $('<div/>').text(data).html() + '">';
-                                    }
-
-                                },
-                                {
-                                    "targets": [4],
-                                    "searchable": false,
-                                    "orderable": false,
-                                    "render": function (data, type, full, meta) {
-                                        return '<input type="checkbox" name="id[]" value="'
-                                            + $('<div/>').text(data).html() + '">' +
-                                            '<span class="glyphicon glyphicon-edit"></span>' +
-                                            '<span class="glyphicon glyphicon-download-alt"></span>';
-                                    }
-                                },
-                                {
-                                    "targets": [5],
-                                    "searchable": false,
-                                    "orderable": false,
-                                    "render": function (data, type, full, meta) {
-                                        return '<input type="checkbox" name="id[]" value="'
-                                            + $('<div/>').text(data).html() + '">' +
-                                            '<span class="glyphicon glyphicon-edit"></span>' +
-                                            '<span class="glyphicon glyphicon-download-alt"></span>';
-                                    }
-                                },
-                                {
-                                    "targets": [6],
-                                    "searchable": false,
-                                    "orderable": false,
-                                    "render": function (data, type, full, meta) {
-                                        return '<span class="glyphicon glyphicon-file"></span>';
-                                    }
-                                },
-
-
-                            ],
-                        "select": {
-                            'style': 'multi'
+                                return '<input type="checkbox" disabled="disabled" '
+                                    + checked + '>' +
+                                    '<span class="glyphicon glyphicon-edit"></span>' +
+                                    '<span class="glyphicon glyphicon-download-alt"></span>';
+                            }
                         },
-                        "order": [[1, 'asc']],
-                        "columns": [
-                            { "data": {} },
-                            { "data": "FullName", "name": "FullName", "autoWidth": true },
-                            { "data": "DepartmentName", "name": "DepartmentName", "autoWidth": true },
-                            { "data": "Position", "name": "Position", "autoWidth": true },
-                            { "data": "HasFilledRuCV", "name": "HasFilledRuCV", "autoWidth": true },
-                            { "data": "HasFilledUzCV", "name": "HasFilledUzCV", "autoWidth": true },
-                            { "data": {} },
-                        ]
-                    });
-                });
+                        {
+                            "targets": [5],
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, full, meta) {
+                                var checked = '';
+                                if (data)
+                                    checked = 'checked="checked"';
 
-            </script>
+                                return '<input type="checkbox" disabled="disabled" '
+                                    + checked + '>' +
+                                    '<span class="glyphicon glyphicon-edit"></span>' +
+                                    '<span class="glyphicon glyphicon-download-alt"></span>';
+                            }
+                        },
+                        {
+                            "targets": [6],
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, full, meta) {
+                                return '<a href="/HrEmployeeDocument/Index/'+ data.Id +'" ><span class="glyphicon glyphicon-file"></span></a>';
+                            }
+                                },
 
-        }
+
+                    ],
+                "select": {
+                    'style': 'multi'
+                },
+                "order": [[1, 'asc']],
+                "columns": [
+                    { "data": {} },
+                    { "data": "FullName", "name": "FullName", "autoWidth": true },
+                    { "data": "DepartmentName", "name": "DepartmentName", "autoWidth": true },
+                    { "data": "PositionName", "name": "PositionName", "autoWidth": true },
+                    { "data": "HasFilledRuCV", "name": "HasFilledRuCV", "autoWidth": true },
+                    { "data": "HasFilledUzCV", "name": "HasFilledUzCV", "autoWidth": true },
+                    { "data": {} },
+                ]
+            });
+        });
+
+    </script>
+
+}

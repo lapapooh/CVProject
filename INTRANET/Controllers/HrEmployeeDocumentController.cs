@@ -18,38 +18,63 @@ namespace INTRANET.Controllers
     public class HrEmployeeDocumentController : Controller
     {
         public IHrEmployeeDocumentService _hrEmployeeDocumentService { get; set; }
-        public HrEmployeeDocumentController(IHrEmployeeDocumentService hrEmployeeDocumentService)
+        public IHrEmployeeService _hrEmployeeService { get; set; }
+        public HrEmployeeDocumentController(IHrEmployeeDocumentService hrEmployeeDocumentService, IHrEmployeeService hrEmployeeService)
         {
             _hrEmployeeDocumentService = hrEmployeeDocumentService;
+            _hrEmployeeService = hrEmployeeService;
         }
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            //var result = _hrEmployeeDocumentService.GetByEmployeeQueryable(Id);
+            if (!id.HasValue) return RedirectToAction("Index", "HrCv");
 
-            //var list = result.Select(r => new HrEmployeeDocumentListVM { Id = r.Id, Title = r.Title, EmployeeId = r.EmployeeId, EmployeeName = r.Employee.FullName}).ToList();
+            var employee = _hrEmployeeService.GetByID(id.Value);
 
-            //return View(list.OrderBy(o => o.Title).ToList());
-            return View();
+            if (employee == null)
+                return RedirectToAction("Index", "HrCv");
+
+            var model = new HrEmployeeDocumentListVM()
+            {
+                EmployeeId = id.Value,
+                EmployeeName = employee.FullName,
+                HrEmployeeDocuments = _hrEmployeeDocumentService
+                                    .GetByEmployeeQueryable(id.Value)
+                                    .Select(d=> new HrEmployeeDocumentVM
+                                    {
+                                        Id = d.Id,
+                                        FileName = d.FileName,
+                                        Title = d.Title
+                                    }).ToList()
+            };
+
+
+            return View(model);
 
         }
 
         [HttpGet]
-        public FileResult DownloadDocument(int DocumentId)
+        public FileResult DownloadDocument(int documentId)
         {
-            var model=_hrEmployeeDocumentService.GetByID(DocumentId);
+            var model=_hrEmployeeDocumentService.GetByID(documentId);
             return File(model.FileContent.ToArray(), model.FileContentType, model.FileName);
 
         }
-         [HttpGet]
-        public ActionResult DeleteDocument(int DocumentId, int EmployeeId)
+
+        [HttpPost]
+        public ActionResult DeleteDocument(int documentId)
         {
-            _hrEmployeeDocumentService.Delete(DocumentId);
-            return RedirectToRoute(new
+            try
             {
-                controller = "HrEmployeeDocument",
-                action = "Index",
-                id = EmployeeId
-            });
+                _hrEmployeeDocumentService.Delete(documentId);
+                return Json(new { IsSuccess = true });
+            }
+            catch(Exception ex)
+            {
+                //logging goes here
+                return Json(new { IsSuccess = false });
+            }
+            
+
         }
 
         [HttpPost]
@@ -79,7 +104,7 @@ namespace INTRANET.Controllers
                 _hrEmployeeDocumentService.Create(model);
 
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new {Id = employeeId });
         }
     }
 }

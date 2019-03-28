@@ -22,7 +22,7 @@ namespace INTRANET.Model
         public string FileContentType { get; set; }
 
         [Required]
-        [Column(TypeName = "varbinary")]
+        [Column(TypeName = "varbinary(max)")]
         public byte[] FileContent { get; set; }
         [Required]
         [ForeignKey("Employee")]
