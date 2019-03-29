@@ -42,7 +42,6 @@ namespace INTRANET.Controllers
 
             var positionsList = _hrPositionService
                                     .GetAll()
-                                    .ToList()
                                     .Select(a => new SelectListItem {Text = a.TitleEn, Value = a.Id.ToString()
                                     }).ToList();
             var model = new HrCvListVM {
@@ -67,7 +66,7 @@ namespace INTRANET.Controllers
         }
 
 
-        public ActionResult LoadData()
+        public ActionResult LoadData(int[] selectedDepartments, int[] selectedPositions)
         {
             try
             {

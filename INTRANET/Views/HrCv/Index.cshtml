@@ -6,44 +6,32 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
-<table>
-
-    <tr>
-
-        <td>
-            <div class="float-left">
-                @foreach (var item in Model.Departments)
-            {
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox"
-                                   name="SelectedDepartment"
-                                   value="@item.Value" /> @item.Text
-                            </label>
-                        </div>
-                }
+<div class="container">
+    <h3>Departments</h3>
+    @foreach (var item in Model.Departments)
+    {
+        <div class="col col-md-2">
+            <label>
+                <input type="checkbox"
+                       name="selectedDepartments"
+                       value="@item.Value" /> @item.Text
+                </label>
             </div>
-        </td>
-
-        <td>
-            <div class="container">
-                @foreach (var item in Model.Positions)
-            {
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox"
-                                   name="SelectedDepartment"
-                                   value="@item.Value" /> @item.Text
-                            </label>
-                        </div>
-                }
-            </div>
-        </td>
-
-    </tr>
-
-</table>
+        }
+</div>
+<div class="container">
+    <h3>Positions</h3>
+    @foreach (var item in Model.Positions)
+    {
+        <div class="col col-md-2">
+            <label>
+                <input type="checkbox"
+                       name="selectedPositions"
+                       value="@item.Value" /> @item.Text
+                </label>
+        </div>
+    }
+</div>
 
 
 <div class="container">
@@ -104,7 +92,7 @@
                             "searchable": false,
                             "orderable": false,
                             "render": function (data, type, full, meta) {
-                                return '<input type="checkbox" name="employeeIds[]" value="'
+                                return '<input type="checkbox" name="selectedEmployees" value="'
                                     + data.Id + '">';
                             }
 
@@ -164,7 +152,27 @@
                     { "data": {} },
                 ]
             });
+            //$("#hrEmployeGrid").DataTable().ajax.reload()
+            //will reload the grid
         });
+
+        function GetSelectedDepartments() {
+            var departments = [];
+            $.each($("input[name='selectedDepartments']:checked"), function () {
+                departments.push($(this).val());
+            });
+
+            return departments;
+        }
+
+        function GetSelectedPositions() {
+            var positions = [];
+            $.each($("input[name='selectedPositions']:checked"), function () {
+                positions.push($(this).val());
+            });
+
+            return positions;
+        }
 
     </script>
 }
