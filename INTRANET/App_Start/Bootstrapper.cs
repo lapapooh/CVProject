@@ -41,6 +41,8 @@ namespace INTRANET
 
             builder.RegisterType<HrEmployeeRepository>().As<IHrEmployeeRepository>().InstancePerLifetimeScope();
             builder.RegisterType<HrEmployeeDocumentRepository>().As<IHrEmployeeDocumentRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<HrDepartmentRepository>().As<IHrDepartmentRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<HrPositionRepository>().As<IHrPositionRepository>().InstancePerLifetimeScope();
 
 
             ////servises
@@ -53,6 +55,9 @@ namespace INTRANET
             builder.RegisterType<HrEmployeeService>().As<IHrEmployeeService>().InstancePerLifetimeScope();
             builder.RegisterType<HrEmployeeDocumentService>().As<IHrEmployeeDocumentService>().InstancePerLifetimeScope();
             //builder.RegisterType<IDataTablesRequest>().InstancePerLifetimeScope();
+            builder.RegisterType<HrDepartmentService>().As<IHrDepartmentService>().InstancePerLifetimeScope();
+            builder.RegisterType<HrPositionService>().As<IHrPositionService>().InstancePerLifetimeScope();
+
 
             builder.RegisterFilterProvider();
             IContainer container = builder.Build();

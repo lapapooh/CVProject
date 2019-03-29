@@ -7,6 +7,45 @@
 
 <h2>@ViewBag.Title</h2>
 
+<table>
+
+    <tr>
+
+        <td>
+            <div class="float-left">
+                @foreach (var item in Model.Departments)
+            {
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                   name="SelectedDepartment"
+                                   value="@item.Value" /> @item.Text
+                            </label>
+                        </div>
+                }
+            </div>
+        </td>
+
+        <td>
+            <div class="container">
+                @foreach (var item in Model.Positions)
+            {
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                   name="SelectedDepartment"
+                                   value="@item.Value" /> @item.Text
+                            </label>
+                        </div>
+                }
+            </div>
+        </td>
+
+    </tr>
+
+</table>
+
+
 <div class="container">
     <br />
     <div>
@@ -128,5 +167,4 @@
         });
 
     </script>
-
 }

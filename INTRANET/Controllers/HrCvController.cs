@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,20 +19,36 @@ namespace INTRANET.Controllers
     public class HrCvController : Controller
     {
         public IHrEmployeeService _hrEmployeeService { get; set; }
+        public IHrDepartmentService _hrDepartmentService { get; set; }
+        public IHrPositionService _hrPositionService { get; set; }
 
-
-        public HrCvController(IHrEmployeeService hrEmployeeService)
+        public HrCvController(IHrEmployeeService hrEmployeeService,
+            IHrDepartmentService hrDepartmentService, IHrPositionService hrPositionService)
         {
             _hrEmployeeService = hrEmployeeService;
+            _hrDepartmentService = hrDepartmentService;
+            _hrPositionService = hrPositionService;
         }
-            
+
         // GET: HrCv
         public ActionResult Index()
-        {
-            var model = new HrCvListVM();
+        {            
+            var departmentsList = _hrDepartmentService
+                                    .GetAll()
+                                    .Select(a => new SelectListItem {
+                                        Text = a.TitleEn,
+                                        Value = a.Id.ToString()
+                                    }).ToList();
 
-            //get departments and positions,
-            //map to proeprties of the model
+            var positionsList = _hrPositionService
+                                    .GetAll()
+                                    .ToList()
+                                    .Select(a => new SelectListItem {Text = a.TitleEn, Value = a.Id.ToString()
+                                    }).ToList();
+            var model = new HrCvListVM {
+                Departments = departmentsList,
+                Positions = positionsList
+            };
 
             return View(model);
         }
@@ -112,7 +127,7 @@ namespace INTRANET.Controllers
                                 employeeData = employeeData.OrderByDescending(c => c.ComplietedUzCv);
                             break;
                         default:
-                                employeeData = employeeData.OrderBy(c => c.FullName);
+                            employeeData = employeeData.OrderBy(c => c.FullName);
                             break;
                     }
                 }
