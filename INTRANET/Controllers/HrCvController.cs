@@ -172,6 +172,6 @@ namespace INTRANET.Controllers
                 return Json(new { draw = 0, recordsFiltered = new object[0], recordsTotal = 0, data = 0 });
             }
         }
-
+  
     }
 }
