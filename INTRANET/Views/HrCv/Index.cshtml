@@ -13,6 +13,7 @@
         <div class="col col-md-2">
             <label>
                 <input type="checkbox"
+                       class="filteringCheckbox"
                        name="selectedDepartments"
                        value="@item.Value" /> @item.Text
                 </label>
@@ -26,6 +27,7 @@
         <div class="col col-md-2">
             <label>
                 <input type="checkbox"
+                       class="filteringCheckbox"
                        name="selectedPositions"
                        value="@item.Value" /> @item.Text
                 </label>
@@ -53,32 +55,32 @@
 </div>
 
 
-<button type="button" id="CVStatus" class="btn btn-info" data-toggle="modal" data-target="#status">CV completion status</button>
+<button type="button" id="CvStatusButton" class="btn btn-info" data-toggle="modal" data-target="#status">Change CV completion status</button>
 <div class="modal" role="dialog" id="status">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">CV status change options</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h4 class="modal-title">CV status change options
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </h4>
+                
             </div>
             <div class="modal-body">
-                <form>
-
-                    @Html.DropDownList("CVStatusChangeOption",
+                    <p>Select for which employees status should be changed</p>
+                    @Html.DropDownList("ChangeCompletionStatusMode",
                     new List<SelectListItem>() {
-                      new SelectListItem { Text="Selected employees", Value="1", Selected=true},
-                         new SelectListItem { Text="All employees ", Value="2"},
+                      new SelectListItem { Text="Selected employees", Value=((int)INTRANET.Common.HrCvChangeCompletionStatusMode.SelectedEmployees).ToString(), Selected=true},
+                         new SelectListItem { Text="All employees ", Value=((int)INTRANET.Common.HrCvChangeCompletionStatusMode.AllEmployees).ToString()},
                     },
                     //"Select",
                     new { @class = "form-control" })
-
+                    <p></p>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success">Submit</button>
+                        <button type="button" class="btn btn-success">Change</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                     </div>
-                </form>
             </div>
         </div>
     </div>
@@ -101,15 +103,10 @@
 
 
     <script>
-        $('#CVStatus').click(function () {
-            $("#status").modal();
-        });
-    </script>
-
-
-    <script>
+        var hrEmployeGrid = false;
         $(document).ready(function () {
-            $("#hrEmployeGrid").DataTable({
+
+            hrEmployeGrid =  $("#hrEmployeGrid").DataTable({
                 "processing": true, // for show progress bar
                 "serverSide": true, // for process server side
                 "filter": true, // this is for disable filter (search box)
@@ -120,23 +117,9 @@
                     "url": "/HrCv/LoadData",
                     "type": "POST",
                     "datatype": "json",
-                    "data": {
-                        "selectedDepartments": function GetSelectedDepartments() {
-                            var departments = [];
-                            $.each($("input[name='selectedDepartments']:checked"), function () {
-                                departments.push($(this).val());
-                            });
-
-                            return departments;
-                        },
-                        "selectedPositions": function GetSelectedPositions() {
-                            var positions = [];
-                            $.each($("input[name='selectedPositions']:checked"), function () {
-                                positions.push($(this).val());
-                            });
-
-                            return positions;
-                        }
+                    "data": function(d){
+                        d.selectedDepartments = GetSelectedDepartments();
+                        d.selectedPositions = GetSelectedPositions();
                     }
                 },
 
@@ -207,10 +190,48 @@
                     { "data": {} },
                 ]
             });
-            //$("#hrEmployeGrid").DataTable().ajax.reload()
-            //will reload the grid
+
+            $('.filteringCheckbox').change(function () {
+                RefreshGrid();
+            });
+
+            $('#CvStatusButton').click(function () {
+                $("#status").modal();
+            });
         });
 
+        function RefreshGrid() {
+            hrEmployeGrid.ajax.reload();
+        }
+
+        function GetSelectedDepartments() {
+            var departments = [];
+            $.each($("input[name='selectedDepartments']:checked"), function () {
+                departments.push($(this).val());
+            });
+
+            return departments;
+        }
+
+        function GetSelectedPositions() {
+            var positions = [];
+            $.each($("input[name='selectedPositions']:checked"), function () {
+                positions.push($(this).val());
+            });
+
+            return positions;
+        }
+
+        function ChangeCvStatus() {
+            //todo:
+            //1.get selected value from ChangeCompletionStatusMode dropdownlist
+            //2.get selected employees (checkbox in first column of the table ticked)
+            //use code snippet in function above as sample
+            //3.create ajax post request to ChangeCvCompletionStatus of the controller with selected employees and mode
+            //4.if request was successfull - (in response property IsSuccess == true) - refresh grid
+            //function that refreshes grid is available above
+
+        }
 
     </script>
 }

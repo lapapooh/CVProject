@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using INTRANET.Common;
 using INTRANET.Data.Infrastructure;
 using INTRANET.Data.Repository.Interfaces;
 using INTRANET.Model;
@@ -38,6 +39,34 @@ namespace INTRANET.Service
         public IQueryable<HrEmployee> GetAllQueryable()
         {
             return this._repository.GetAny();
+        }
+
+        public void ChangeCvCompletionStatus(HrCvChangeCompletionStatusMode mode, int[] selectedEmployees)
+        {
+            //safety check
+            if (mode == null) return;
+
+            //no selection - do nothing
+            if (mode == HrCvChangeCompletionStatusMode.SelectedEmployees
+                && (selectedEmployees == null || !selectedEmployees.Any()))
+                return;
+
+            //initially all
+            var employees = GetAllQueryable();
+
+            //if needed - filter according to selection
+            if (mode == HrCvChangeCompletionStatusMode.SelectedEmployees)
+                employees = employees.Where(e => selectedEmployees.Contains(e.Id));
+
+            foreach(var e in employees)
+            {
+                e.ComplietedRuCv = false;
+                e.ComplietedUzCv = false;
+                this._repository.Update(e);
+            }
+
+            Save();
+
         }
     }
 }

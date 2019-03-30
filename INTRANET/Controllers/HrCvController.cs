@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using INTRANET.Common;
 
 namespace INTRANET.Controllers
 {
@@ -75,17 +76,17 @@ namespace INTRANET.Controllers
         {
             try
             {
-                var draw = int.Parse(HttpContext.Request.Form["draw"].FirstOrDefault().ToString());
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
                 // Skiping number of Rows count  
-                var start = int.Parse(Request.Form["start"].FirstOrDefault().ToString());
+                var start = Request.Form.GetValues("start").FirstOrDefault();
                 // Paging Length 10,20  
-                var length = int.Parse(Request.Form["length"].FirstOrDefault().ToString());
+                var length = Request.Form.GetValues("length").FirstOrDefault();
                 // Sort Column Name  
-                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault().ToString();
+                var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
                 // Sort Column Direction ( asc ,desc)  
-                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault().ToString();
+                var sortColumnDirection = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
                 // Search Value from (Search box)  
-                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+                var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
 
                 //Paging Size (10,20,50,100)  
                 int pageSize = length != null ? Convert.ToInt32(length) : 0;
@@ -136,13 +137,13 @@ namespace INTRANET.Controllers
                     }
                 }
 
-                if (selectedDepartments.Any())
+                if (selectedDepartments != null && selectedDepartments.Any())
                     employeeData = employeeData.Where(
                         e => e.DepartmentId.HasValue &&
                         selectedDepartments.Contains(e.DepartmentId.Value));
 
 
-                if (selectedPositions.Any())
+                if (selectedPositions != null && selectedPositions.Any())
                     employeeData = employeeData.Where(
                         e => e.PositionId.HasValue &&
                         selectedPositions.Contains(e.PositionId.Value));
@@ -150,11 +151,10 @@ namespace INTRANET.Controllers
 
 
                 ////Search  
-                //if (!string.IsNullOrEmpty(searchValue.ToString()))
-                //{
-                //    use contains instead of ==
-                //    employeeData = employeeData.Where(m => m.FullName == searchValue);
-                //}
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    employeeData = employeeData.Where(m => m.FullName.Contains(searchValue));
+                }
 
                 //total number of rows count   
                 recordsTotal = employeeData.Count();
@@ -169,9 +169,24 @@ namespace INTRANET.Controllers
             catch (Exception ex)
             {
                 //logging goes here
-                return Json(new { draw = 0, recordsFiltered = new object[0], recordsTotal = 0, data = 0 });
+                return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = new object[0] });
             }
         }
-  
+
+        [HttpPost]
+        public ActionResult ChangeCvCompletionStatus(HrCvChangeCompletionStatusMode mode, int[] selectedEmployees)
+        {
+            try
+            {
+                _hrEmployeeService.ChangeCvCompletionStatus(mode, selectedEmployees);
+                return Json(new { IsSuccess = true });
+            }
+            catch (Exception ex)
+            {
+                //logging goes here
+                return Json(new { IsSuccess = false});
+            }
+        }
+
     }
 }
