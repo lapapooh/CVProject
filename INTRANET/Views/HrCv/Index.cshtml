@@ -17,7 +17,7 @@
                        value="@item.Value" /> @item.Text
                 </label>
             </div>
-        }
+    }
 </div>
 <div class="container">
     <h3>Positions</h3>
@@ -29,7 +29,7 @@
                        name="selectedPositions"
                        value="@item.Value" /> @item.Text
                 </label>
-        </div>
+            </div>
     }
 </div>
 
@@ -77,12 +77,30 @@
                 "serverSide": true, // for process server side
                 "filter": true, // this is for disable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
-                "pageLength": 5,
+                //"pageLength": 5,
 
                 "ajax": {
                     "url": "/HrCv/LoadData",
                     "type": "POST",
-                    "datatype": "json"
+                    "datatype": "json",
+                    "data": {
+                        "selectedDepartments": function GetSelectedDepartments() {
+                            var departments = [];
+                            $.each($("input[name='selectedDepartments']:checked"), function () {
+                                departments.push($(this).val());
+                            });
+
+                            return departments;
+                        },
+                        "selectedPositions": function GetSelectedPositions() {
+                            var positions = [];
+                            $.each($("input[name='selectedPositions']:checked"), function () {
+                                positions.push($(this).val());
+                            });
+
+                            return positions;
+                        }
+                    }
                 },
 
                 "columnDefs":
@@ -155,24 +173,6 @@
             //$("#hrEmployeGrid").DataTable().ajax.reload()
             //will reload the grid
         });
-
-        function GetSelectedDepartments() {
-            var departments = [];
-            $.each($("input[name='selectedDepartments']:checked"), function () {
-                departments.push($(this).val());
-            });
-
-            return departments;
-        }
-
-        function GetSelectedPositions() {
-            var positions = [];
-            $.each($("input[name='selectedPositions']:checked"), function () {
-                positions.push($(this).val());
-            });
-
-            return positions;
-        }
-
+         
     </script>
 }

@@ -32,19 +32,24 @@ namespace INTRANET.Controllers
 
         // GET: HrCv
         public ActionResult Index()
-        {            
+        {
             var departmentsList = _hrDepartmentService
                                     .GetAll()
-                                    .Select(a => new SelectListItem {
+                                    .Select(a => new SelectListItem
+                                    {
                                         Text = a.TitleEn,
                                         Value = a.Id.ToString()
                                     }).ToList();
 
             var positionsList = _hrPositionService
                                     .GetAll()
-                                    .Select(a => new SelectListItem {Text = a.TitleEn, Value = a.Id.ToString()
+                                    .Select(a => new SelectListItem
+                                    {
+                                        Text = a.TitleEn,
+                                        Value = a.Id.ToString()
                                     }).ToList();
-            var model = new HrCvListVM {
+            var model = new HrCvListVM
+            {
                 Departments = departmentsList,
                 Positions = positionsList
             };
@@ -66,7 +71,7 @@ namespace INTRANET.Controllers
         }
 
 
-        public ActionResult LoadData(int[] selectedDepartments, int[] selectedPositions)
+        public ActionResult LoadData(int [] selectedDepartments, int[] selectedPositions)
         {
             try
             {
@@ -130,6 +135,20 @@ namespace INTRANET.Controllers
                             break;
                     }
                 }
+
+                if (selectedDepartments.Any())
+                    employeeData = employeeData.Where(
+                        e => e.DepartmentId.HasValue &&
+                        selectedDepartments.Contains(e.DepartmentId.Value));
+
+
+                if (selectedPositions.Any())
+                    employeeData = employeeData.Where(
+                        e => e.PositionId.HasValue &&
+                        selectedPositions.Contains(e.PositionId.Value));
+
+
+
                 ////Search  
                 //if (!string.IsNullOrEmpty(searchValue.ToString()))
                 //{
