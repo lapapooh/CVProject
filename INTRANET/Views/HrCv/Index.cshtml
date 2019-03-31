@@ -1,4 +1,5 @@
 ﻿@using INTRANET.Models
+@using INTRANET.Common
 @model  HrCvListVM
 
 @{
@@ -55,32 +56,32 @@
 </div>
 
 
-<button type="button" id="CvStatusButton" class="btn btn-info" data-toggle="modal" data-target="#status">Change CV completion status</button>
-<div class="modal" role="dialog" id="status">
+<button type="button" id="CvStatusButton" class="btn btn-info" data-toggle="modal" data-target="#CvstatusChangeDialog">Change CV completion status</button>
+<div class="modal" role="dialog" id="CvstatusChangeDialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">CV status change options
+                <h4 class="modal-title">
+                    CV status change options
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </h4>
-                
             </div>
             <div class="modal-body">
-                    <p>Select for which employees status should be changed</p>
-                    @Html.DropDownList("ChangeCompletionStatusMode",
+                <p>Select for which employees status should be changed</p>
+                @Html.DropDownList("ChangeCompletionStatusMode",
                     new List<SelectListItem>() {
-                      new SelectListItem { Text="Selected employees", Value=((int)INTRANET.Common.HrCvChangeCompletionStatusMode.SelectedEmployees).ToString(), Selected=true},
-                         new SelectListItem { Text="All employees ", Value=((int)INTRANET.Common.HrCvChangeCompletionStatusMode.AllEmployees).ToString()},
+                      new SelectListItem { Text="Selected employees", Value=((int)HrCvChangeCompletionStatusMode.SelectedEmployees).ToString(), Selected=true},
+                         new SelectListItem { Text="All employees ", Value=((int)HrCvChangeCompletionStatusMode.AllEmployees).ToString()},
                     },
                     //"Select",
                     new { @class = "form-control" })
-                    <p></p>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success">Change</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                    </div>
+                <p></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="ChangeCVStatusButton">Change</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -106,7 +107,7 @@
         var hrEmployeGrid = false;
         $(document).ready(function () {
 
-            hrEmployeGrid =  $("#hrEmployeGrid").DataTable({
+            hrEmployeGrid = $("#hrEmployeGrid").DataTable({
                 "processing": true, // for show progress bar
                 "serverSide": true, // for process server side
                 "filter": true, // this is for disable filter (search box)
@@ -117,7 +118,7 @@
                     "url": "/HrCv/LoadData",
                     "type": "POST",
                     "datatype": "json",
-                    "data": function(d){
+                    "data": function (d) {
                         d.selectedDepartments = GetSelectedDepartments();
                         d.selectedPositions = GetSelectedPositions();
                     }
@@ -196,7 +197,7 @@
             });
 
             $('#CvStatusButton').click(function () {
-                $("#status").modal();
+                $("#CvstatusChangeDialog").modal();
             });
         });
 
@@ -222,15 +223,44 @@
             return positions;
         }
 
-        function ChangeCvStatus() {
-            //todo:
-            //1.get selected value from ChangeCompletionStatusMode dropdownlist
-            //2.get selected employees (checkbox in first column of the table ticked)
-            //use code snippet in function above as sample
-            //3.create ajax post request to ChangeCvCompletionStatus of the controller with selected employees and mode
-            //4.if request was successfull - (in response property IsSuccess == true) - refresh grid
-            //function that refreshes grid is available above
 
+        $('#ChangeCVStatusButton').click(function () {
+            $('#CvstatusChangeDialog').modal('hide');
+            ChangeCvStatus();
+        });
+
+        function GetSelectedEmployees() {
+            var selectedEmployees = []
+            $.each($("input[name='selectedEmployees']:checked"), function () {
+                selectedEmployees.push($(this).val());
+            });
+            return selectedEmployees;
+        }
+
+        function GetCvStatusDropDownValue() {
+            var CVChangeStatusMode = $("#ChangeCompletionStatusMode").val();
+            return CVChangeStatusMode;
+        }
+
+        function ChangeCvStatus() {
+            var dropDownValue = GetCvStatusDropDownValue();
+            var selectedEmployeeList = GetSelectedEmployees();
+            var jsonData = { 'mode': dropDownValue, selectedEmployees: selectedEmployeeList };
+            $.ajax({
+                url: "/HrCv/ChangeCvCompletionStatus",
+                type: "POST",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(jsonData),
+                success: function (data) {
+                    if (data.IsSuccess == true) {
+                        RefreshGrid()
+                    }
+                },
+                error: function (data) {
+                    alert("Error during request. Try again later")
+                }
+            });
         }
 
     </script>
