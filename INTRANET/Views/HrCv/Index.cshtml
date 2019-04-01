@@ -237,15 +237,10 @@
             return selectedEmployees;
         }
 
-        function GetCvStatusDropDownValue() {
-            var CVChangeStatusMode = $("#ChangeCompletionStatusMode").val();
-            return CVChangeStatusMode;
-        }
-
         function ChangeCvStatus() {
-            var dropDownValue = GetCvStatusDropDownValue();
+
             var selectedEmployeeList = GetSelectedEmployees();
-            var jsonData = { 'mode': dropDownValue, selectedEmployees: selectedEmployeeList };
+            var jsonData = { 'mode': $("#ChangeCompletionStatusMode").val(), selectedEmployees: selectedEmployeeList };
             $.ajax({
                 url: "/HrCv/ChangeCvCompletionStatus",
                 type: "POST",
@@ -255,6 +250,9 @@
                 success: function (data) {
                     if (data.IsSuccess == true) {
                         RefreshGrid()
+                    }
+                    else {
+                        alert("Error during request. Try again later")
                     }
                 },
                 error: function (data) {
