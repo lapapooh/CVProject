@@ -99,7 +99,8 @@ namespace INTRANET.Controllers
                 model.FileName = fileItem.FileName;
                 model.FileContentType = fileItem.ContentType;
                 model.EmployeeId = employeeId;
-                model.Title = documentTitle ?? fileItem.FileName; //or will give arror if user did not type title
+                //model.Title = documentTitle ?? fileItem.FileName; //or will give arror if user did not type title
+                model.Title = string.IsNullOrEmpty(documentTitle) ? fileItem.FileName : documentTitle; //or will give arror if user did not type title
 
                 _hrEmployeeDocumentService.Create(model);
 
