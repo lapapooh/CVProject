@@ -41,28 +41,28 @@
 
         @foreach (var item in Model.HrEmployeeDocuments)
         {
-        <tr data-doc-id="@item.Id">
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileName)
-            </td>
-            <td>
-                <div>
-                    <button type="button" class="btn btn-success" aria-label="Left Align" onclick="location.href='@Url.Action("DownloadDocument", "HrEmployeeDocument", new {DocumentId=item.Id})'">
-                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-                    </button>
+            <tr data-doc-id="@item.Id">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    <div>
+                        <button type="button" class="btn btn-success" aria-label="Left Align" onclick="location.href='@Url.Action("DownloadDocument", "HrEmployeeDocument", new {DocumentId=item.Id})'">
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                        </button>
 
 
-                    <button type="button" class="btn btn-danger" aria-label="Left Align" onclick="DoComfirm(@item.Id)">
+                        <button type="button" class="btn btn-danger" aria-label="Left Align" onclick="DoComfirm(@item.Id)">
 
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </button>
-                </div>
-            </td>
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </td>
 
-        </tr>
+            </tr>
 
         }
 
@@ -71,27 +71,24 @@
 
 
 @section scripts{
-    
+
 
     <script type="text/javascript">
-        function DoComfirm(id)
-        {
+        function DoComfirm(id) {
             if (!confirm('Do you want to delete this file?')) return;
 
             $.ajax({
                 type: "POST",
-                url: @Url.Action("DeleteDocument"),
+                url: "/HrEmployeeDocument/DeleteDocument",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                // The key needs to match your method's input parameter (case-sensitive).
                 data: JSON.stringify({ documentId: id }),
                 success: function (data) {
                     if (data.IsSuccess) {
-                        $('table#doc-table tr[data-doc-id="' + doc + '"]').remove();
+                        $('table#doc-table tr[data-doc-id="' + id + '"]').remove();
                     }
                 }
             });
-
         }
     </script>
 }
