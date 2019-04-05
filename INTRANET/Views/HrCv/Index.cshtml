@@ -44,8 +44,23 @@
                 <tr>
                     <th><input name="select_all" value="1" id="select-all" type="checkbox" /></th>
                     <th>Full name</th>
-                    <th>Department </th>
-                    <th>Position</th>
+                    <th>
+                        <div>
+                            <button class="btn-primary-outline" id="departmentFilter" data-toggle="modal" data-target="#departments">
+                                <span class="glyphicon glyphicon-filter"></span>
+                            </button>
+                            Department
+                        </div>
+
+                    </th>
+                    <th>
+                        <div>
+                            <button class="btn-primary-outline" id="positionFilter"data-toggle="modal" data-target="#positions">
+                                <span class="glyphicon glyphicon-filter"></span>
+                            </button>
+                            Position
+                        </div>
+                    </th>
                     <th>CV Uz</th>
                     <th>CV Ru</th>
                     <th>Docs</th>
@@ -86,6 +101,72 @@
         </div>
     </div>
 </div>
+
+<div class="modal" role="dialog" id="departments">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Select departments
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </h4>
+            </div>
+            <div class="modal-body">
+                @foreach (var item in Model.Departments)
+                {
+                    <div>
+                        <label>
+                            <input type="checkbox"
+                                   class="filteringCheckbox"
+                                   name="selectedDepartments"
+                                   value="@item.Value" /> @item.Text
+                            </label>
+                        </div>
+                }
+                <p></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="positions">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Select positions
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </h4>
+            </div>
+            <div class="modal-body">
+                @foreach (var item in Model.Positions)
+                {
+                    <div>
+                        <label>
+                            <input type="checkbox"
+                                   class="filteringCheckbox"
+                                   name="selectedPositions"
+                                   value="@item.Value" /> @item.Text
+                            </label>
+                        </div>
+                }
+                <p></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @section Styles {
     <link href="~/Scripts/DataTables/datatables.min.css" rel="stylesheet" />
@@ -274,5 +355,11 @@
             }
         });
 
+        $('#departmentFilter').click(function () {
+            $("#departments").modal();
+        });
+        $('#positionFilter').click(function () {
+            $("#positions").modal();
+        });
     </script>
 }
