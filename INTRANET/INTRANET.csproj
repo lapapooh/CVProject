@@ -274,6 +274,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\HrCvListVM.cs" />
+    <Compile Include="Models\HrCvVM.cs" />
     <Compile Include="Models\HrEmployeeListVM.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -405,6 +406,7 @@
     <Content Include="Views\LecturesAndTutorials\Index.cshtml" />
     <Content Include="Views\HrEmployeeDocument\Index.cshtml" />
     <Content Include="Views\HrCv\Index.cshtml" />
+    <Content Include="Views\HrCv\FillCv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\AcademicYear\" />

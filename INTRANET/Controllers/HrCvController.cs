@@ -188,5 +188,10 @@ namespace INTRANET.Controllers
             }
         }
 
+        public ActionResult FillCv (int employeeId, HrCvLanguage language)
+        {
+            return View(); 
+        }
+
     }
 }
