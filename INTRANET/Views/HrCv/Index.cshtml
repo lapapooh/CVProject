@@ -7,34 +7,6 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<div class="container">
-    <h3>Departments</h3>
-    @foreach (var item in Model.Departments)
-    {
-        <div class="col col-md-2">
-            <label>
-                <input type="checkbox"
-                       class="filteringCheckbox"
-                       name="selectedDepartments"
-                       value="@item.Value" /> @item.Text
-                </label>
-            </div>
-    }
-</div>
-<div class="container">
-    <h3>Positions</h3>
-    @foreach (var item in Model.Positions)
-    {
-        <div class="col col-md-2">
-            <label>
-                <input type="checkbox"
-                       class="filteringCheckbox"
-                       name="selectedPositions"
-                       value="@item.Value" /> @item.Text
-                </label>
-            </div>
-    }
-</div>
 
 <div class="container">
     <br />
@@ -44,8 +16,14 @@
                 <tr>
                     <th><input name="select_all" value="1" id="select-all" type="checkbox" /></th>
                     <th>Full name</th>
-                    <th>Department </th>
-                    <th>Position</th>
+                    <th>
+                        <span id="departmentFilter" data-toggle="modal" data-target="#departments" class="filter-button glyphicon glyphicon-filter"></span>
+                        Department
+                    </th>
+                    <th>
+                        <span id="positionFilter" data-toggle="modal" data-target="#positions" class="filter-button glyphicon glyphicon-filter"></span>
+                        Position
+                    </th>
                     <th>CV Uz</th>
                     <th>CV Ru</th>
                     <th>Docs</th>
@@ -87,6 +65,72 @@
     </div>
 </div>
 
+<div class="modal" role="dialog" id="departments">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Select departments
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </h4>
+            </div>
+            <div class="modal-body">
+                @foreach (var item in Model.Departments)
+                {
+                    <div>
+                        <label>
+                            <input type="checkbox"
+                                   class="filteringCheckbox"
+                                   name="selectedDepartments"
+                                   value="@item.Value" /> @item.Text
+                            </label>
+                        </div>
+                }
+                <p></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="positions">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Select positions
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </h4>
+            </div>
+            <div class="modal-body">
+                @foreach (var item in Model.Positions)
+                {
+                    <div>
+                        <label>
+                            <input type="checkbox"
+                                   class="filteringCheckbox"
+                                   name="selectedPositions"
+                                   value="@item.Value" /> @item.Text
+                            </label>
+                        </div>
+                }
+                <p></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 @section Styles {
     <link href="~/Scripts/DataTables/datatables.min.css" rel="stylesheet" />
     <link href="~/Scripts/DataTables/DataTables-1.10.13/css/dataTables.checkboxes.css" rel="stylesheet" />
@@ -123,7 +167,15 @@
                         d.selectedPositions = GetSelectedPositions();
                     }
                 },
-
+                "fnDrawCallback": function (oSettings) {
+                    $("input[name='selectedEmployees']").click(function () {
+                        if ($("input[name='selectedEmployees']").length == $("input[name='selectedEmployees']:checked").length) {
+                            $("#select-all").prop("checked", true);
+                        } else {
+                            $("#select-all").prop("checked", false);
+                        }
+                    });
+                },
                 "columnDefs":
                     [
                         {
@@ -262,17 +314,15 @@
         }
 
         $("#select-all").click(function () {
-            $("input[name='selectedEmployees']").attr("checked", this.checked);
+            $("input[name='selectedEmployees']").prop("checked", this.checked);
         });
 
 
-        $("input[name='selectedEmployees']").click(function () {
-            if ($("input[name='selectedEmployees']").length == $("input[name='selectedEmployees']:checked").length) {
-                $("#select-all").attr("checked, checked");
-            } else {
-                $("#select-all").removeAttr("checked");
-            }
+        $('#departmentFilter').click(function () {
+            $("#departments").modal();
         });
-
+        $('#positionFilter').click(function () {
+            $("#positions").modal();
+        });
     </script>
 }
