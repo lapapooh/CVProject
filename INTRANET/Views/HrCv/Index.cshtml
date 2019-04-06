@@ -7,34 +7,6 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<div class="container">
-    <h3>Departments</h3>
-    @foreach (var item in Model.Departments)
-    {
-        <div class="col col-md-2">
-            <label>
-                <input type="checkbox"
-                       class="filteringCheckbox"
-                       name="selectedDepartments"
-                       value="@item.Value" /> @item.Text
-                </label>
-            </div>
-    }
-</div>
-<div class="container">
-    <h3>Positions</h3>
-    @foreach (var item in Model.Positions)
-    {
-        <div class="col col-md-2">
-            <label>
-                <input type="checkbox"
-                       class="filteringCheckbox"
-                       name="selectedPositions"
-                       value="@item.Value" /> @item.Text
-                </label>
-            </div>
-    }
-</div>
 
 <div class="container">
     <br />
