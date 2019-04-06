@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+.filter-button {
+    padding:5px;
+}
+.filter-button:hover {
+    background-color: lightgray
+}
