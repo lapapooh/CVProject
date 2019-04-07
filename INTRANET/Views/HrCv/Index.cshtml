@@ -1,4 +1,5 @@
-﻿@using INTRANET.Models
+﻿@using INTRANET.Model
+@using INTRANET.Models
 @using INTRANET.Common
 @model  HrCvListVM
 
@@ -192,14 +193,14 @@
                             "targets": [4],
                             "searchable": false,
                             "orderable": false,
-                            "render": function (data, type, full, meta) {
+                            "render": function (data, type, row) {
                                 var checked = '';
                                 if (data)
                                     checked = 'checked="checked"';
-
+                                
                                 return '<input type="checkbox" disabled="disabled" '
                                     + checked + '>' +
-                                    '<span class="glyphicon glyphicon-edit"></span>' +
+                                    '<a href="/HrCv/FillCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Uz).ToString()) + '"><span class="glyphicon glyphicon-edit"></span></a>' +
                                     '<span class="glyphicon glyphicon-download-alt"></span>';
                             }
                         },
@@ -207,14 +208,14 @@
                             "targets": [5],
                             "searchable": false,
                             "orderable": false,
-                            "render": function (data, type, full, meta) {
+                            "render": function (data, type, row) {
                                 var checked = '';
                                 if (data)
                                     checked = 'checked="checked"';
 
                                 return '<input type="checkbox" disabled="disabled" '
                                     + checked + '>' +
-                                    '<span class="glyphicon glyphicon-edit"></span>' +
+                                    '<a href="/HrCv/FillCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Ru).ToString()) + '"><span class="glyphicon glyphicon-edit"></span></a>' +
                                     '<span class="glyphicon glyphicon-download-alt"></span>';
                             }
                         },
