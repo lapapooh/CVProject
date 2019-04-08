@@ -1,10 +1,12 @@
 ﻿@using INTRANET.Models
 @model  HrEmployeeDocumentListVM
+@{
+    ViewBag.Title = Model.EmployeeName + " - Document list";
+}
 
 
 
-
-<h2>@Model.EmployeeName - Document list</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm("UploadDocument", "HrEmployeeDocument", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {

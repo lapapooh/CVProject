@@ -188,9 +188,23 @@ namespace INTRANET.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult FillCv (int employeeId, HrCvLanguage language)
-        {            
-            return View(); 
+        {
+            var employee = _hrEmployeeService.GetByID(employeeId);
+
+            if (employee == null)
+                return RedirectToAction("Index", "HrCv");
+
+            var model = new HrCvVM
+            {
+                EmployeeId = employeeId,
+                Language = language,
+                EmployeeName = employee.FullName
+            };
+
+
+            return View(model); 
         }
 
     }

@@ -1,5 +1,8 @@
-﻿@{
-    ViewBag.Title = "Fill CV";
+﻿@using INTRANET.Models
+@model  HrCvVM
+
+@{
+    ViewBag.Title = Model.EmployeeName + " - Fill CV";
 }
 
 <div class="container">
@@ -12,39 +15,39 @@
 
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Personal details</a></li>
-                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Education</a></li>
-                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Family</a></li>
+                    <li role="presentation" class="active"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal details</a></li>
+                    <li role="presentation"><a href="#education" aria-controls="education" role="tab" data-toggle="tab">Education</a></li>
+                    <li role="presentation"><a href="#family" aria-controls="family" role="tab" data-toggle="tab">Family</a></li>
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="home">
-                        Personal details
+                    <div role="tabpanel" class="tab-pane active" id="personal">
+                        <p>Personal details</p>
                         <br />
                         <div class="btn-group pull-right">
                             <div class="pull-right">
-                                <button class="btn btn-primary">Next</button>
+                                <button class="btn btn-primary btn-next">Next</button>
                             </div>
                         </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="profile">
-                        Education
+                    <div role="tabpanel" class="tab-pane" id="education">
+                        <p>Education</p>
                         <br />
                         <div class="btn-group">
-                            <button class="btn btn-warning">Previous</button>
+                            <button class="btn btn-warning btn-previous">Previous</button>
                         </div>
                         <div class="btn-group pull-right">
                             <div class="pull-right">
-                                <button class="btn btn-primary">Next</button>
+                                <button class="btn btn-primary btn-next">Next</button>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="messages">
-                        Family
+                    <div role="tabpanel" class="tab-pane" id="family">
+                        <p>Family</p>
                         <br />
                         <div class="btn-group">
-                            <button class="btn btn-warning">Previous</button>
+                            <button class="btn btn-warning btn-previous">Previous</button>
                         </div>
                         <div class="btn-group pull-right">
                             <div class="pull-right">
@@ -59,3 +62,18 @@
     </div>
 </div>
 
+@section styles {
+    <link href="~/Content/hrFillCv.css" rel="stylesheet" runat="server" />
+}
+
+@section scripts {
+    <script type="text/javascript">
+        $('.btn-next').click(function () {
+            $('.nav-tabs > .active').next('li').find('a').trigger('click');
+        });
+
+        $('.btn-previous').click(function () {
+            $('.nav-tabs > .active').prev('li').find('a').trigger('click');
+        });
+    </script>
+}

@@ -53,10 +53,12 @@ namespace INTRANET.Controllers
         }
 
         [HttpGet]
-        public FileResult DownloadDocument(int documentId)
+        public ActionResult DownloadDocument(int documentId)
         {
-            var model=_hrEmployeeDocumentService.GetByID(documentId);
-            return File(model.FileContent.ToArray(), model.FileContentType, model.FileName);
+            var document=_hrEmployeeDocumentService.GetByID(documentId);
+            if (document == null)
+                return RedirectToAction("Index", "HrCv");
+            return File(document.FileContent.ToArray(), document.FileContentType, document.FileName);
 
         }
 
