@@ -68,5 +68,10 @@ namespace INTRANET.Service
             Save();
 
         }
+
+        public HrEmployee GetByEmail(string emailLogin)
+        {
+            return GetAllQueryable().FirstOrDefault(e => e.EmailLogin.Equals(emailLogin));
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace INTRANET.Service.Interfaces
     {
         void Create(HrEmployee model);
         void Update(HrEmployee model);
+        HrEmployee GetByEmail(string emailLogin);
 
         void ChangeCvCompletionStatus(HrCvChangeCompletionStatusMode mode, int[] selectedEmployees);
 

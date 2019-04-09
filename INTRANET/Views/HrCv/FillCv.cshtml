@@ -12,51 +12,54 @@
     <div class="row">
         <div class="col-lg-12">
             <div>
+                @using (Html.BeginForm("FillCV", "HrCv", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.HiddenFor(m=> m.EmployeeId)
+                    @Html.HiddenFor(m => m.Language)
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal details</a></li>
+                        <li role="presentation"><a href="#labor" aria-controls="labor" role="tab" data-toggle="tab">Labor</a></li>
+                        <li role="presentation"><a href="#family" aria-controls="family" role="tab" data-toggle="tab">Family</a></li>
+                    </ul>
 
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal details</a></li>
-                    <li role="presentation"><a href="#education" aria-controls="education" role="tab" data-toggle="tab">Education</a></li>
-                    <li role="presentation"><a href="#family" aria-controls="family" role="tab" data-toggle="tab">Family</a></li>
-                </ul>
-
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="personal">
-                        <p>Personal details</p>
-                        <br />
-                        <div class="btn-group pull-right">
-                            <div class="pull-right">
-                                <button class="btn btn-primary btn-next">Next</button>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="personal">
+                            <p>Personal details</p>
+                            <br />
+                            <div class="btn-group pull-right">
+                                <div class="pull-right">
+                                    <button class="btn btn-primary btn-next">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="labor">
+                            <p>Education</p>
+                            <br />
+                            <div class="btn-group">
+                                <button class="btn btn-warning btn-previous">Previous</button>
+                            </div>
+                            <div class="btn-group pull-right">
+                                <div class="pull-right">
+                                    <button class="btn btn-primary btn-next">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="family">
+                            <p>Family</p>
+                            <br />
+                            <div class="btn-group">
+                                <button class="btn btn-warning btn-previous">Previous</button>
+                            </div>
+                            <div class="btn-group pull-right">
+                                <div class="pull-right">
+                                    <button class="btn btn-success">Submit</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="education">
-                        <p>Education</p>
-                        <br />
-                        <div class="btn-group">
-                            <button class="btn btn-warning btn-previous">Previous</button>
-                        </div>
-                        <div class="btn-group pull-right">
-                            <div class="pull-right">
-                                <button class="btn btn-primary btn-next">Next</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="family">
-                        <p>Family</p>
-                        <br />
-                        <div class="btn-group">
-                            <button class="btn btn-warning btn-previous">Previous</button>
-                        </div>
-                        <div class="btn-group pull-right">
-                            <div class="pull-right">
-                                <button class="btn btn-success">Submit</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                }
             </div>
         </div>
     </div>

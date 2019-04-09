@@ -33,23 +33,29 @@ namespace INTRANET.Controllers
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
 
-            var model = new HrEmployeeDocumentListVM()
-            {
-                EmployeeId = id.Value,
-                EmployeeName = employee.FullName,
-                HrEmployeeDocuments = _hrEmployeeDocumentService
-                                    .GetByEmployeeQueryable(id.Value)
-                                    .Select(d=> new HrEmployeeDocumentVM
-                                    {
-                                        Id = d.Id,
-                                        FileName = d.FileName,
-                                        Title = d.Title
-                                    }).ToList()
-            };
+            var model = PrepareVM(employee);
 
 
             return View(model);
 
+        }
+
+        [HttpGet]
+        public ActionResult View()
+        {
+            //for now hardcoded. 
+            //on integration - should get email of logged in user
+            var email = "mshpirko";
+
+            var employee = _hrEmployeeService.GetByEmail(email);
+
+            if (employee == null)
+                return RedirectToAction("Index", "HrCv");
+
+            var model = PrepareVM(employee);
+
+
+            return View("Index", model);
         }
 
         [HttpGet]
@@ -107,6 +113,24 @@ namespace INTRANET.Controllers
 
             }
             return RedirectToAction("Index", new {Id = employeeId });
+        }
+
+
+        private HrEmployeeDocumentListVM PrepareVM(HrEmployee employee)
+        {
+            return new HrEmployeeDocumentListVM()
+            {
+                EmployeeId = employee.Id,
+                EmployeeName = employee.FullName,
+                HrEmployeeDocuments = _hrEmployeeDocumentService
+                                    .GetByEmployeeQueryable(employee.Id)
+                                    .Select(d => new HrEmployeeDocumentVM
+                                    {
+                                        Id = d.Id,
+                                        FileName = d.FileName,
+                                        Title = d.Title
+                                    }).ToList()
+            };
         }
     }
 }

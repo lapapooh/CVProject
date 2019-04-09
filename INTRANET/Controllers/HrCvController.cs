@@ -22,13 +22,15 @@ namespace INTRANET.Controllers
         public IHrEmployeeService _hrEmployeeService { get; set; }
         public IHrDepartmentService _hrDepartmentService { get; set; }
         public IHrPositionService _hrPositionService { get; set; }
+        public IHrCvDetailService _hrCvDetailService { get; set; }
 
         public HrCvController(IHrEmployeeService hrEmployeeService,
-            IHrDepartmentService hrDepartmentService, IHrPositionService hrPositionService)
+            IHrDepartmentService hrDepartmentService, IHrPositionService hrPositionService, IHrCvDetailService hrCvDetailService)
         {
             _hrEmployeeService = hrEmployeeService;
             _hrDepartmentService = hrDepartmentService;
             _hrPositionService = hrPositionService;
+            _hrCvDetailService = hrCvDetailService;
         }
 
         // GET: HrCv
@@ -196,6 +198,20 @@ namespace INTRANET.Controllers
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
 
+            var details = _hrCvDetailService.GetForCv(employeeId, language);
+
+            //did not fill CV yet, crate record
+            if(details == null)
+            {
+                details = new HrCvDetail
+                {
+                    EmployeeId = employeeId,
+                    Language = language
+                };
+
+                _hrCvDetailService.Create(details);
+            }
+
             var model = new HrCvVM
             {
                 EmployeeId = employeeId,
@@ -205,6 +221,24 @@ namespace INTRANET.Controllers
 
 
             return View(model); 
+        }
+
+        [HttpPost]
+        public ActionResult FillCv(HrCvVM model, HttpPostedFileBase fileItem)
+        {
+
+            return RedirectToAction("FillCv", new { employeeId = model.EmployeeId, language = model.Language });
+        }
+
+        [HttpGet]
+        public ActionResult DownloadCv(int employeeId, HrCvLanguage language)
+        {
+            var employee = _hrEmployeeService.GetByID(employeeId);
+
+            if (employee == null)
+                return RedirectToAction("Index", "HrCv");
+
+            return RedirectToAction("Index");
         }
 
     }
