@@ -4,28 +4,32 @@
     ViewBag.Title = Model.EmployeeName + " - Document list";
 }
 
-
-
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("UploadDocument", "HrEmployeeDocument", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@if (Model.IsHrUser)
 {
-    <div class="container">
-        <div class="row">
-            <div class="form-group col-lg-12">
-                <label for="documentTitle">Document title:</label>
-                <input type="text" class="form-control" id="documentTitle" name="documentTitle">
-                <input type="hidden" id="employeeId" name="employeeId" value="@Model.EmployeeId">
-            </div>
-            <div class="form-group col-lg-12">
-                <input type="file" class="custom-file-input" id="fileItem" name="fileItem">
-            </div>
-            <div class="form-group col-lg-12">
-                <input type="submit" class="btn btn-primary" value="Upload" />
+
+    using (Html.BeginForm("UploadDocument", "HrEmployeeDocument", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="container">
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <label for="documentTitle">Document title:</label>
+                    <input type="text" class="form-control" id="documentTitle" name="documentTitle">
+                    <input type="hidden" id="employeeId" name="employeeId" value="@Model.EmployeeId">
+                </div>
+                <div class="form-group col-lg-12">
+                    <input type="file" class="custom-file-input" id="fileItem" name="fileItem">
+                </div>
+                <div class="form-group col-lg-12">
+                    <input type="submit" class="btn btn-primary" value="Upload" />
+                </div>
             </div>
         </div>
-    </div>
+    }
 }
+
+
 
 <div class="table-hover">
     <table id="doc-table" class="table">

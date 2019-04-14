@@ -14,7 +14,7 @@
             <div>
                 @using (Html.BeginForm("FillCV", "HrCv", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    @Html.HiddenFor(m=> m.EmployeeId)
+                    @Html.HiddenFor(m => m.EmployeeId)
                     @Html.HiddenFor(m => m.Language)
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
@@ -23,11 +23,77 @@
                         <li role="presentation"><a href="#family" aria-controls="family" role="tab" data-toggle="tab">Family</a></li>
                     </ul>
 
-                    <!-- Tab panes -->
+                    <!-- Tab panels -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="personal">
-                            <p>Personal details</p>
                             <br />
+                            @using (Html.BeginForm("FillCv", "HrCv", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                @*<script type="text/javascript">
+                                                    $('form').submit(function () {
+                                    Validation 
+
+                                    });
+                                  </script>*@
+                                <input type="hidden" id="employeeId" name="employeeId" value="@Model.EmployeeId">
+                                <div class="form-group">
+                                    <label for="department">Department:</label>
+                                    @Html.DropDownList("DepartmentDropdown",
+                                                 new List<SelectListItem>() {
+                                                 new SelectListItem { Text="Department", Value=1.ToString(), Selected=true},
+                                                  },
+                                                 new { @disabled = "disabled", @class = "form-control" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="position">Position:</label>
+                                    @Html.DropDownList("PositionDropdown",
+                                                 new List<SelectListItem>() {
+                                                 new SelectListItem { Text="Position", Value=1.ToString(), Selected=true,},
+                                                 new SelectListItem { Text="TEST", Value=1.ToString(), Selected=true,},
+
+                                                  },
+                                                 new { @disabled = "disabled", @class = "form-control" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="startPositionDate">Start date:</label>
+                                    <div class='input-group date'>
+                                        <input readonly type='text' class="form-control" value="5/5/2015" />
+                                    </div>
+                                </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone:</label>
+                                        <div class='input-group'>
+                                            <input type='text' id="phone" name="phone" class="form-control" data-val-required="Phone number is required" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone external:</label>
+                                        <div class='input-group'>
+                                            <input type='text' id="phoneExternal"  name="phoneExternal" class="form-control" data-val-required="External Phone number is required" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="photo">Photo:</label>
+                                        <div class="form-group col-lg-12">
+                                            <input type="file" accept="image/*" class="custom-file-input" id="fileItem" name="fileItem">
+                                        </div>
+                                        @*<input name="Save" type="submit" value="Save" />*@
+                                    </div>
+
+                                        <!-- Design idea, check it out -->
+
+                                    @*<div class="input-group">
+                                            <span class="input-group-addon">Department</span>
+                                            @Html.DropDownList("DepartmentDropdown",
+                                                 new List<SelectListItem>() {
+                                                 new SelectListItem { Text="Department", Value=1.ToString(), Selected=true},
+                                                  },
+                                                 new { @disabled = "disabled", @class = "form-control" })
+                                        </div>*@
+                            }
+
+
+
                             <div class="btn-group pull-right">
                                 <div class="pull-right">
                                     <button class="btn btn-primary btn-next">Next</button>
@@ -79,4 +145,40 @@
             $('.nav-tabs > .active').prev('li').find('a').trigger('click');
         });
     </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#fileItem').change(function () {
+                var filename = $(this).val();
+                var filePath = $.trim(filename);
+                if (filePath == "") {
+                    alert("Please browse a file to upload");
+                    return;
+                }
+
+                var $ext = filePath.split(".").pop().toLowerCase();
+                var $allow = new Array("png", "jpg");
+                if ($.inArray($ext, $allow) == -1) {
+                    alert("Only image files (.png, .jpg) are accepted, please browse a image file");
+                    return;
+                }
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#myForm").submit(function () {
+                $("#tabs").tabs("select", $("#myForm .input-validation-error").closest(".ui-tabs-panel").get(0).id);
+            });
+        });
+    </script>
+
+    <!--For validation -->
+    @*<script type="text/javascript">
+            $(document).ready(function () {
+                $("#myForm").submit(function () {
+                    $("#tabs").tabs("select", $("#myForm .input-validation-error").closest(".ui-tabs-panel").get(0).id);
+                });
+            });
+        </script>*@
 }

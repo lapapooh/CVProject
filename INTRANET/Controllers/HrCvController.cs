@@ -74,7 +74,7 @@ namespace INTRANET.Controllers
         }
 
 
-        public ActionResult LoadData(int [] selectedDepartments, int[] selectedPositions)
+        public ActionResult LoadData(int[] selectedDepartments, int[] selectedPositions)
         {
             try
             {
@@ -186,12 +186,12 @@ namespace INTRANET.Controllers
             catch (Exception ex)
             {
                 //logging goes here
-                return Json(new { IsSuccess = false});
+                return Json(new { IsSuccess = false });
             }
         }
 
         [HttpGet]
-        public ActionResult FillCv (int employeeId, HrCvLanguage language)
+        public ActionResult FillCv(int employeeId, HrCvLanguage language)
         {
             var employee = _hrEmployeeService.GetByID(employeeId);
 
@@ -201,7 +201,7 @@ namespace INTRANET.Controllers
             var details = _hrCvDetailService.GetForCv(employeeId, language);
 
             //did not fill CV yet, crate record
-            if(details == null)
+            if (details == null)
             {
                 details = new HrCvDetail
                 {
@@ -220,14 +220,52 @@ namespace INTRANET.Controllers
             };
 
 
-            return View(model); 
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult FillCv(HrCvVM model, HttpPostedFileBase fileItem)
+        public ActionResult FillCv(int employeeId, string phone, string phoneExternal, HttpPostedFileBase fileItem)
         {
+            //validation for .png and jpg files will be added
+            if (fileItem != null || phone != null || phoneExternal != null)
+            {
+                byte[] data;
+                using (var inputStream = fileItem.InputStream)
+                {
+                    var memoryStream = inputStream as MemoryStream;
+                    if (memoryStream == null)
+                    {
+                        memoryStream = new MemoryStream();
+                        inputStream.CopyTo(memoryStream);
+                    }
+                    data = memoryStream.ToArray();
+                }
+                phone = phone ?? "";
+                phoneExternal = phoneExternal ?? "";
 
-            return RedirectToAction("FillCv", new { employeeId = model.EmployeeId, language = model.Language });
+                HrEmployee employee = _hrEmployeeService.GetByID(employeeId);
+                if (employee != null)
+                {
+                    employee.PhoneNo = phone;
+                    employee.ExternalPhoneNo = phoneExternal;
+                    employee.ImageNameContent = data;
+
+                    try
+                    {
+                        HrCvDetail model = new HrCvDetail { EmployeeId = employeeId, Employee = employee };
+                        _hrCvDetailService.Update(model);
+                    }
+                    catch (Exception)
+                    {
+                        TempData["Message"] = "Form filled incorrectly";
+
+                        //throw;
+                    }
+                }
+
+            }
+            return RedirectToAction("FillCv", new { employeeId = employeeId, language = "en" }); //TODO: fix 
+
         }
 
         [HttpGet]
