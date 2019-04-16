@@ -224,9 +224,12 @@ namespace INTRANET.Controllers
         }
 
         [HttpPost]
+        //create update a view model HrCvVM, add the necessary fields (phone, external phone,etc.) except fileItem
+        //there will be tones of fields - do you want to list them all here?
         public ActionResult FillCv(int employeeId, string phone, string phoneExternal, HttpPostedFileBase fileItem)
         {
             //validation for .png and jpg files will be added
+            //if there is no file - it crashes
             if (fileItem != null || phone != null || phoneExternal != null)
             {
                 byte[] data;
@@ -257,7 +260,7 @@ namespace INTRANET.Controllers
                     }
                     catch (Exception)
                     {
-                        TempData["Message"] = "Form filled incorrectly";
+                        ModelState.AddModelError("", "Form filled incorrectly");
 
                         //throw;
                     }

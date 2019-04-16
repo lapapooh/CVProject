@@ -29,12 +29,7 @@
                             <br />
                             @using (Html.BeginForm("FillCv", "HrCv", FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
-                                @*<script type="text/javascript">
-                                                    $('form').submit(function () {
-                                    Validation 
 
-                                    });
-                                  </script>*@
                                 <input type="hidden" id="employeeId" name="employeeId" value="@Model.EmployeeId">
                                 <div class="form-group">
                                     <label for="department">Department:</label>
@@ -77,26 +72,19 @@
                                         <div class="form-group col-lg-12">
                                             <input type="file" accept="image/*" class="custom-file-input" id="fileItem" name="fileItem">
                                         </div>
-                                        @*<input name="Save" type="submit" value="Save" />*@
+
                                     </div>
 
-                                        <!-- Design idea, check it out -->
 
-                                    @*<div class="input-group">
-                                            <span class="input-group-addon">Department</span>
-                                            @Html.DropDownList("DepartmentDropdown",
-                                                 new List<SelectListItem>() {
-                                                 new SelectListItem { Text="Department", Value=1.ToString(), Selected=true},
-                                                  },
-                                                 new { @disabled = "disabled", @class = "form-control" })
-                                        </div>*@
+
+
                             }
 
 
 
                             <div class="btn-group pull-right">
                                 <div class="pull-right">
-                                    <button class="btn btn-primary btn-next">Next</button>
+                                    <a href="#" class="btn btn-primary btn-next">Next</a>
                                 </div>
                             </div>
                         </div>
@@ -104,11 +92,11 @@
                             <p>Education</p>
                             <br />
                             <div class="btn-group">
-                                <button class="btn btn-warning btn-previous">Previous</button>
+                                <a href="#" class="btn btn-warning btn-previous">Previous</a>
                             </div>
                             <div class="btn-group pull-right">
                                 <div class="pull-right">
-                                    <button class="btn btn-primary btn-next">Next</button>
+                                    <a href="#" class="btn btn-primary btn-next">Next</a>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +104,7 @@
                             <p>Family</p>
                             <br />
                             <div class="btn-group">
-                                <button class="btn btn-warning btn-previous">Previous</button>
+                                <a href="#" class="btn btn-warning btn-previous">Previous</a>
                             </div>
                             <div class="btn-group pull-right">
                                 <div class="pull-right">
@@ -165,20 +153,7 @@
         });
     </script>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#myForm").submit(function () {
-                $("#tabs").tabs("select", $("#myForm .input-validation-error").closest(".ui-tabs-panel").get(0).id);
-            });
-        });
-    </script>
 
-    <!--For validation -->
-    @*<script type="text/javascript">
-            $(document).ready(function () {
-                $("#myForm").submit(function () {
-                    $("#tabs").tabs("select", $("#myForm .input-validation-error").closest(".ui-tabs-panel").get(0).id);
-                });
-            });
-        </script>*@
+
+
 }
