@@ -198,25 +198,15 @@ namespace INTRANET.Controllers
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
 
-            var details = _hrCvDetailService.GetForCv(employeeId, language);
-
-            //did not fill CV yet, crate record
-            if (details == null)
-            {
-                details = new HrCvDetail
-                {
-                    EmployeeId = employeeId,
-                    Language = language
-                };
-
-                _hrCvDetailService.Create(details);
-            }
+            var details = GetCvDetail(employeeId, language);
 
             var model = new HrCvVM
             {
                 EmployeeId = employeeId,
                 Language = language,
-                EmployeeName = employee.FullName
+                EmployeeName = employee.FullName,
+                Phone = employee.PhoneNo,
+                ExternalPhone = employee.ExternalPhoneNo
             };
 
 
@@ -229,8 +219,11 @@ namespace INTRANET.Controllers
         //answer: not anymore :)
         public ActionResult FillCv(HrCvVM model, HttpPostedFileBase fileItem)
         {
+            var employee = _hrEmployeeService.GetByID(model.EmployeeId);
+            if (employee == null)
+                return RedirectToAction("Index");
+
             //validation for .png and jpg files will be added
-            //if there is no file - it crashes
             if (ModelState.IsValid)
             {
                 if (fileItem != null)
@@ -245,39 +238,33 @@ namespace INTRANET.Controllers
                             inputStream.CopyTo(memoryStream);
                         }
                         data = memoryStream.ToArray();
-                    }
-
-                    HrEmployee employee = _hrEmployeeService.GetByID(model.EmployeeId);
-                    if (employee != null)
-                    {
-                        employee.PhoneNo = model.Phone;
-                        employee.ExternalPhoneNo = model.ExternalPhone;
                         employee.ImageNameContent = data;
-
-                        try
-                        {
-                            HrCvDetail _model = new HrCvDetail { EmployeeId = model.EmployeeId, Employee = employee };
-                            _hrCvDetailService.Update(_model);
-                        }
-                        catch (Exception)
-                        {
-                            ModelState.AddModelError("", "Form filled incorrectly");
-
-                            //throw;
-                        }
+                        employee.ImageName = fileItem.FileName;
+                        employee.ImageNameContentType = fileItem.ContentType;
                     }
+                }
 
+
+                employee.PhoneNo = model.Phone;
+                employee.ExternalPhoneNo = model.ExternalPhone;
+                        
+
+                try
+                {
+                    _hrEmployeeService.Update(employee);
+                    var details = GetCvDetail(model.EmployeeId, model.Language);
+                    //todo - update fields
+                    _hrCvDetailService.Update(details);
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Form filled incorrectly");
 
                 }
-                //else
-                //{
-
-                //}
             }
+            model.EmployeeName = employee.FullName;
 
-
-            return RedirectToAction("FillCv", new { employeeId = model.EmployeeId, language = model.Language }); //TODO: fix 
-            //return View(model);
+            return View(model);
 
         }
 
@@ -290,6 +277,24 @@ namespace INTRANET.Controllers
                 return RedirectToAction("Index", "HrCv");
 
             return RedirectToAction("Index");
+        }
+
+        private HrCvDetail GetCvDetail(int employeeId, HrCvLanguage language)
+        {
+            var details = _hrCvDetailService.GetForCv(employeeId, language);
+
+            //did not fill CV yet, crate record
+            if (details == null)
+            {
+                details = new HrCvDetail
+                {
+                    EmployeeId = employeeId,
+                    Language = language
+                };
+
+                _hrCvDetailService.Create(details);
+            }
+            return details;
         }
 
     }
