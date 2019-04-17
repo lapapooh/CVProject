@@ -225,49 +225,59 @@ namespace INTRANET.Controllers
 
         [HttpPost]
         //create update a view model HrCvVM, add the necessary fields (phone, external phone,etc.) except fileItem
-        //there will be tones of fields - do you want to list them all here?
-        public ActionResult FillCv(int employeeId, string phone, string phoneExternal, HttpPostedFileBase fileItem)
+        //there will be tones of fields - do you want to list them all here? 
+        //answer: not anymore :)
+        public ActionResult FillCv(HrCvVM model, HttpPostedFileBase fileItem)
         {
             //validation for .png and jpg files will be added
             //if there is no file - it crashes
-            if (fileItem != null || phone != null || phoneExternal != null)
+            if (ModelState.IsValid)
             {
-                byte[] data;
-                using (var inputStream = fileItem.InputStream)
+                if (fileItem != null)
                 {
-                    var memoryStream = inputStream as MemoryStream;
-                    if (memoryStream == null)
+                    byte[] data;
+                    using (var inputStream = fileItem.InputStream)
                     {
-                        memoryStream = new MemoryStream();
-                        inputStream.CopyTo(memoryStream);
+                        var memoryStream = inputStream as MemoryStream;
+                        if (memoryStream == null)
+                        {
+                            memoryStream = new MemoryStream();
+                            inputStream.CopyTo(memoryStream);
+                        }
+                        data = memoryStream.ToArray();
                     }
-                    data = memoryStream.ToArray();
+
+                    HrEmployee employee = _hrEmployeeService.GetByID(model.EmployeeId);
+                    if (employee != null)
+                    {
+                        employee.PhoneNo = model.Phone;
+                        employee.ExternalPhoneNo = model.ExternalPhone;
+                        employee.ImageNameContent = data;
+
+                        try
+                        {
+                            HrCvDetail _model = new HrCvDetail { EmployeeId = model.EmployeeId, Employee = employee };
+                            _hrCvDetailService.Update(_model);
+                        }
+                        catch (Exception)
+                        {
+                            ModelState.AddModelError("", "Form filled incorrectly");
+
+                            //throw;
+                        }
+                    }
+
+
                 }
-                phone = phone ?? "";
-                phoneExternal = phoneExternal ?? "";
+                //else
+                //{
 
-                HrEmployee employee = _hrEmployeeService.GetByID(employeeId);
-                if (employee != null)
-                {
-                    employee.PhoneNo = phone;
-                    employee.ExternalPhoneNo = phoneExternal;
-                    employee.ImageNameContent = data;
-
-                    try
-                    {
-                        HrCvDetail model = new HrCvDetail { EmployeeId = employeeId, Employee = employee };
-                        _hrCvDetailService.Update(model);
-                    }
-                    catch (Exception)
-                    {
-                        ModelState.AddModelError("", "Form filled incorrectly");
-
-                        //throw;
-                    }
-                }
-
+                //}
             }
-            return RedirectToAction("FillCv", new { employeeId = employeeId, language = "en" }); //TODO: fix 
+
+
+            return RedirectToAction("FillCv", new { employeeId = model.EmployeeId, language = model.Language }); //TODO: fix 
+            //return View(model);
 
         }
 

@@ -30,24 +30,27 @@
                             @using (Html.BeginForm("FillCv", "HrCv", FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
 
-                                <input type="hidden" id="employeeId" name="employeeId" value="@Model.EmployeeId">
+                                <input type="hidden" id="employeeId" name="EmployeeId" value="@Model.EmployeeId">
+                                <input type="hidden" id="language" name="Language" value="@Model.Language">
+
+                                <div class="form-group">
+                                    <label for="photo">Photo:</label>
+                                    <div class="form-group col-lg-12">
+                                        <input type="file" accept="image/*" class="custom-file-input" id="fileItem" name="fileItem">
+                                    </div>
+
+                                </div>
                                 <div class="form-group">
                                     <label for="department">Department:</label>
-                                    @Html.DropDownList("DepartmentDropdown",
-                                                 new List<SelectListItem>() {
-                                                 new SelectListItem { Text="Department", Value=1.ToString(), Selected=true},
-                                                  },
-                                                 new { @disabled = "disabled", @class = "form-control" })
+                                    <div class='input-group date'>
+                                        <input readonly type='text' class="form-control" />
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="position">Position:</label>
-                                    @Html.DropDownList("PositionDropdown",
-                                                 new List<SelectListItem>() {
-                                                 new SelectListItem { Text="Position", Value=1.ToString(), Selected=true,},
-                                                 new SelectListItem { Text="TEST", Value=1.ToString(), Selected=true,},
-
-                                                  },
-                                                 new { @disabled = "disabled", @class = "form-control" })
+                                    <div class='input-group date'>
+                                        <input readonly type='text' class="form-control" />
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="startPositionDate">Start date:</label>
@@ -55,32 +58,25 @@
                                         <input readonly type='text' class="form-control" value="5/5/2015" />
                                     </div>
                                 </div>
-                                    <div class="form-group">
-                                        <label for="phone">Phone:</label>
-                                        <div class='input-group'>
-                                            <input type='text' id="phone" name="phone" class="form-control" data-val-required="Phone number is required" />
-                                        </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone:</label>
+                                    <div class='input-group'>
+                                        <input type='text' id="phone" name="Phone" class="form-control" data-val-required="Phone number is required" />
+                                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "error" })
+
+
                                     </div>
+                                </div>
                                     <div class="form-group">
                                         <label for="phone">Phone external:</label>
                                         <div class='input-group'>
-                                            <input type='text' id="phoneExternal"  name="phoneExternal" class="form-control" data-val-required="External Phone number is required" />
+                                            <input type='text' id="phoneExternal" name="ExternalPhone" class="form-control" data-val-required="External Phone number is required" />
+                                            @Html.ValidationMessageFor(model => model.ExternalPhone, "", new { @class = "error" })
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="photo">Photo:</label>
-                                        <div class="form-group col-lg-12">
-                                            <input type="file" accept="image/*" class="custom-file-input" id="fileItem" name="fileItem">
-                                        </div>
-
-                                    </div>
-
-
 
 
                             }
-
-
 
                             <div class="btn-group pull-right">
                                 <div class="pull-right">
@@ -124,6 +120,11 @@
 }
 
 @section scripts {
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
     <script type="text/javascript">
         $('.btn-next').click(function () {
             $('.nav-tabs > .active').next('li').find('a').trigger('click');
@@ -152,8 +153,5 @@
             })
         });
     </script>
-
-
-
 
 }
