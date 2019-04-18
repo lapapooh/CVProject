@@ -201,7 +201,8 @@
                                 return '<input type="checkbox" disabled="disabled" '
                                     + checked + '>' +
                                     '<a href="/HrCv/FillCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Uz).ToString()) + '"><span class="glyphicon glyphicon-edit"></span></a>' +
-                                    '<span class="glyphicon glyphicon-download-alt"></span>';
+                                    '<a href="/HrCv/DownloadCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Uz).ToString()) + '"><span class="glyphicon glyphicon-download-alt"></span></a>';
+                                    
                             }
                         },
                         {
@@ -216,7 +217,7 @@
                                 return '<input type="checkbox" disabled="disabled" '
                                     + checked + '>' +
                                     '<a href="/HrCv/FillCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Ru).ToString()) + '"><span class="glyphicon glyphicon-edit"></span></a>' +
-                                    '<span class="glyphicon glyphicon-download-alt"></span>';
+                                    '<a href="/HrCv/DownloadCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Ru).ToString()) + '"><span class="glyphicon glyphicon-download-alt"></span></a>';
                             }
                         },
                         {

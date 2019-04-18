@@ -43,6 +43,7 @@ namespace INTRANET
             builder.RegisterType<HrEmployeeDocumentRepository>().As<IHrEmployeeDocumentRepository>().InstancePerLifetimeScope();
             builder.RegisterType<HrDepartmentRepository>().As<IHrDepartmentRepository>().InstancePerLifetimeScope();
             builder.RegisterType<HrPositionRepository>().As<IHrPositionRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<HrCvDetailRepository>().As<IHrCvDetailRepository>().InstancePerLifetimeScope();
 
 
             ////servises
@@ -57,6 +58,7 @@ namespace INTRANET
             //builder.RegisterType<IDataTablesRequest>().InstancePerLifetimeScope();
             builder.RegisterType<HrDepartmentService>().As<IHrDepartmentService>().InstancePerLifetimeScope();
             builder.RegisterType<HrPositionService>().As<IHrPositionService>().InstancePerLifetimeScope();
+            builder.RegisterType<HrCvDetailService>().As<IHrCvDetailService>().InstancePerLifetimeScope();
 
 
             builder.RegisterFilterProvider();

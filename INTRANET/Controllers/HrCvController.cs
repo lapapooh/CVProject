@@ -14,6 +14,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using INTRANET.Common;
+using Xceed.Words.NET;
+using System.Reflection;
+using Spire.Doc;
+using System.Web.Hosting;
 
 namespace INTRANET.Controllers
 {
@@ -226,7 +230,6 @@ namespace INTRANET.Controllers
         [HttpPost]
         public ActionResult FillCv(HrCvVM model, HttpPostedFileBase fileItem)
         {
-
             return RedirectToAction("FillCv", new { employeeId = model.EmployeeId, language = model.Language });
         }
 
@@ -237,6 +240,83 @@ namespace INTRANET.Controllers
 
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
+
+            var path = "";
+            if (language == HrCvLanguage.Uz)
+            {
+                path = HostingEnvironment.MapPath("~/Content/HrCvTemplates/cv_template_uz.doc");
+                var employeeCV = _hrCvDetailService.GetForCv(employeeId, HrCvLanguage.Uz); 
+
+                Document doc = new Document();
+                doc.LoadFromFile(path);
+                doc.Replace("{FULLNAME}", employee.FullName, true, true);
+                doc.Replace("{CURRENTPOSITIONDATE}", employee.PositionStartDate.Value.ToString("dd MMMM yyyy"), true, true);
+                doc.Replace("{DATEOFBIRTH}", employee.DateOfBirth.ToString(), true, true);
+                doc.Replace("{PLACEOFBIRTH}", employee.PlaceOfBirth.ToString(), true, true);
+                doc.Replace("{NATIONALITY}", employeeCV?.Nationality ?? "", true, true);
+                doc.Replace("{PARTYMEMBERSHIP}", employeeCV?.PartyMembership ?? "", true, true);
+                doc.Replace("{EDUCATIONDEGREE}", employeeCV?.EducationDegree ?? "", true, true);
+                doc.Replace("{EDUCATIONSPECIALITY}", employeeCV?.EducationSpeciality ?? "", true, true);
+                doc.Replace("{ACADEMICDEGREE}", employeeCV?.AcademicDegree ?? "", true, true);
+                doc.Replace("{ACADEMICTITLE}", employeeCV?.AcademicTitle ?? "", true, true);
+                doc.Replace("{LANGUAGES}", employeeCV?.Languages ?? "", true, true);
+                doc.Replace("{AWARDS}", employeeCV?.Awards.ToString() ?? "", true, true);
+                doc.Replace("{MEMBERSHIPS}", employeeCV?.Memberships.ToString() ?? "", true, true);
+                doc.SaveToFile("Doc.doc", FileFormat.Doc);
+
+                byte[] data = null;
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    doc.SaveToStream(memoryStream, FileFormat.Doc);
+                    //save to byte array
+                    data = memoryStream.ToArray();
+                    
+                }
+                //Write it back to the client
+                Response.ContentType = "application/msword";
+                Response.AddHeader("content-disposition", "attachment;  filename=Doc.doc");
+                Response.BinaryWrite(data);
+                Response.Flush();
+                Response.End();
+                
+            }
+            else if (language == HrCvLanguage.Ru)
+            {
+                path = HostingEnvironment.MapPath("~/Content/HrCvTemplates/cv_template_ru.doc");
+
+                var employeeCV = _hrCvDetailService.GetForCv(employeeId, HrCvLanguage.Ru);
+                var now = DateTime.Now;
+                Document doc = new Document();
+                doc.LoadFromFile(path);
+                doc.Replace("{FULLNAME}", employee.FullName, true, true);
+                doc.Replace("{CURRENTPOSITIONDATE}", employee.PositionStartDate.Value.ToString("dd MMMM yyyy"), true, true);
+                doc.Replace("{DATEOFBIRTH}", employee.DateOfBirth.ToString("MM/dd/yyyy"), true, true);
+                doc.Replace("{PLACEOFBIRTH}", employee.PlaceOfBirth.ToString(), true, true);
+                doc.Replace("{NATIONALITY}", employeeCV?.Nationality ?? "", true, true);
+                doc.Replace("{PARTYMEMBERSHIP}", employeeCV?.PartyMembership ?? "", true, true);
+                doc.Replace("{EDUCATIONDEGREE}", employeeCV?.EducationDegree ?? "", true, true);
+                doc.Replace("{EDUCATIONSPECIALITY}", employeeCV?.EducationSpeciality ?? "", true, true);
+                doc.Replace("{ACADEMICDEGREE}", employeeCV?.AcademicDegree ?? "", true, true);
+                doc.Replace("{ACADEMICTITLE}", employeeCV?.AcademicTitle ?? "", true, true);
+                doc.Replace("{LANGUAGES}", employeeCV?.Languages ?? "", true, true);
+                doc.Replace("{AWARDS}", employeeCV?.Awards.ToString() ?? "", true, true);
+                doc.Replace("{MEMBERSHIPS}", employeeCV?.Memberships.ToString() ?? "", true, true);
+                doc.SaveToFile("Doc.doc", FileFormat.Doc);
+
+                byte[] data = null;
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    doc.SaveToStream(memoryStream, FileFormat.Doc);
+                    //save to byte array
+                    data = memoryStream.ToArray();
+                }
+                //Write it back to the client
+                Response.ContentType = "application/msword";
+                Response.AddHeader("content-disposition", "attachment;  filename=Doc.doc");
+                Response.BinaryWrite(data);
+                Response.Flush();
+                Response.End();
+            }
 
             return RedirectToAction("Index");
         }
