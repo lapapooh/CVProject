@@ -33,7 +33,7 @@ namespace INTRANET.Controllers
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
 
-            var model = PrepareVM(employee);
+            var model = PrepareVM(employee, true);
 
 
             return View(model);
@@ -52,7 +52,7 @@ namespace INTRANET.Controllers
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
 
-            var model = PrepareVM(employee);
+            var model = PrepareVM(employee, false);
 
 
             return View("Index", model);
@@ -116,10 +116,11 @@ namespace INTRANET.Controllers
         }
 
 
-        private HrEmployeeDocumentListVM PrepareVM(HrEmployee employee)
+        private HrEmployeeDocumentListVM PrepareVM(HrEmployee employee, bool isHr)
         {
             return new HrEmployeeDocumentListVM()
             {
+                IsHrUser=isHr,
                 EmployeeId = employee.Id,
                 EmployeeName = employee.FullName,
                 HrEmployeeDocuments = _hrEmployeeDocumentService

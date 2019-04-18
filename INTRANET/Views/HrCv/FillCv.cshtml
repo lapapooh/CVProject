@@ -12,45 +12,97 @@
     <div class="row">
         <div class="col-lg-12">
             <div>
-                @using (Html.BeginForm("FillCV", "HrCv", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("FillCV", "HrCv", new {employeeId = Model.EmployeeId, language = Model.Language }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    @Html.HiddenFor(m=> m.EmployeeId)
+                    @Html.HiddenFor(m => m.EmployeeId)
                     @Html.HiddenFor(m => m.Language)
+                    @Html.ValidationSummary()
+
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal details</a></li>
-                        <li role="presentation"><a href="#labor" aria-controls="labor" role="tab" data-toggle="tab">Labor</a></li>
-                        <li role="presentation"><a href="#family" aria-controls="family" role="tab" data-toggle="tab">Family</a></li>
+                        <li class="active"><a href="#personal" data-toggle="tab">Personal details</a></li>
+                        <li><a href="#labor"  data-toggle="tab">Labor</a></li>
+                        <li><a href="#family" data-toggle="tab">Family</a></li>
                     </ul>
-
-                    <!-- Tab panes -->
+                    <!-- Tab panels -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="personal">
-                            <p>Personal details</p>
                             <br />
+
+                            @Html.HiddenFor(m => m.EmployeeId)
+                            @Html.HiddenFor(m => m.Language)
+
+
+                            <div class="form-group">
+                                <label for="photo">Photo:</label>
+                                <div class="form-group col-lg-12">
+                                    <input type="file" accept="image/*" class="custom-file-input" id="fileItem" name="fileItem">
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="department">Department:</label>
+                                <div class='input-group date'>
+                                    <input readonly type='text' class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="position">Position:</label>
+                                <div class='input-group date'>
+                                    <input readonly type='text' class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="startPositionDate">Start date:</label>
+                                <div class='input-group date'>
+                                    <input readonly type='text' class="form-control" value="5/5/2015" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone:</label>
+                                <div class='input-group'>
+                                    @Html.TextBoxFor(m=> m.Phone, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "error" })
+
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone external:</label>
+                                <div class='input-group'>
+                                    @Html.TextBoxFor(m => m.ExternalPhone, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.ExternalPhone, "", new { @class = "error" })
+                                </div>
+                            </div>
+
+
+
+
                             <div class="btn-group pull-right">
                                 <div class="pull-right">
-                                    <button class="btn btn-primary btn-next">Next</button>
+                                    <span  class="btn btn-primary btn-next">Next</span>
                                 </div>
                             </div>
                         </div>
+
                         <div role="tabpanel" class="tab-pane" id="labor">
-                            <p>Education</p>
+                            <p>labor</p>
                             <br />
                             <div class="btn-group">
-                                <button class="btn btn-warning btn-previous">Previous</button>
+                                <span class="btn btn-warning btn-previous">Previous</span>
                             </div>
                             <div class="btn-group pull-right">
                                 <div class="pull-right">
-                                    <button class="btn btn-primary btn-next">Next</button>
+                                    <span class="btn btn-primary btn-next">Next</span>
                                 </div>
                             </div>
                         </div>
+
                         <div role="tabpanel" class="tab-pane" id="family">
                             <p>Family</p>
                             <br />
                             <div class="btn-group">
-                                <button class="btn btn-warning btn-previous">Previous</button>
+                                <span class="btn btn-warning btn-previous">Previous</span>
                             </div>
                             <div class="btn-group pull-right">
                                 <div class="pull-right">
@@ -59,8 +111,8 @@
                             </div>
                         </div>
                     </div>
-                }
-            </div>
+                    }
+                </div>
         </div>
     </div>
 </div>
@@ -70,6 +122,7 @@
 }
 
 @section scripts {
+
     <script type="text/javascript">
         $('.btn-next').click(function () {
             $('.nav-tabs > .active').next('li').find('a').trigger('click');
@@ -79,4 +132,24 @@
             $('.nav-tabs > .active').prev('li').find('a').trigger('click');
         });
     </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#fileItem').change(function () {
+                var filename = $(this).val();
+                var filePath = $.trim(filename);
+                if (filePath == "") {
+                    alert("Please browse a file to upload");
+                    return;
+                }
+
+                var $ext = filePath.split(".").pop().toLowerCase();
+                var $allow = new Array("png", "jpg");
+                if ($.inArray($ext, $allow) == -1) {
+                    alert("Only image files (.png, .jpg) are accepted, please browse a image file");
+                    return;
+                }
+            })
+        });
+    </script>
+
 }

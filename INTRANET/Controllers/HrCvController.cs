@@ -78,7 +78,7 @@ namespace INTRANET.Controllers
         }
 
 
-        public ActionResult LoadData(int [] selectedDepartments, int[] selectedPositions)
+        public ActionResult LoadData(int[] selectedDepartments, int[] selectedPositions)
         {
             try
             {
@@ -190,47 +190,88 @@ namespace INTRANET.Controllers
             catch (Exception ex)
             {
                 //logging goes here
-                return Json(new { IsSuccess = false});
+                return Json(new { IsSuccess = false });
             }
         }
 
         [HttpGet]
-        public ActionResult FillCv (int employeeId, HrCvLanguage language)
+        public ActionResult FillCv(int employeeId, HrCvLanguage language)
         {
             var employee = _hrEmployeeService.GetByID(employeeId);
 
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
 
-            var details = _hrCvDetailService.GetForCv(employeeId, language);
-
-            //did not fill CV yet, crate record
-            if(details == null)
-            {
-                details = new HrCvDetail
-                {
-                    EmployeeId = employeeId,
-                    Language = language
-                };
-
-                _hrCvDetailService.Create(details);
-            }
+            var details = GetCvDetail(employeeId, language);
 
             var model = new HrCvVM
             {
                 EmployeeId = employeeId,
                 Language = language,
-                EmployeeName = employee.FullName
+                EmployeeName = employee.FullName,
+                Phone = employee.PhoneNo,
+                ExternalPhone = employee.ExternalPhoneNo
             };
 
 
-            return View(model); 
+            return View(model);
         }
 
         [HttpPost]
+        //create update a view model HrCvVM, add the necessary fields (phone, external phone,etc.) except fileItem
+        //there will be tones of fields - do you want to list them all here? 
+        //answer: not anymore :)
         public ActionResult FillCv(HrCvVM model, HttpPostedFileBase fileItem)
         {
             return RedirectToAction("FillCv", new { employeeId = model.EmployeeId, language = model.Language });
+            var employee = _hrEmployeeService.GetByID(model.EmployeeId);
+            if (employee == null)
+                return RedirectToAction("Index");
+
+            //validation for .png and jpg files will be added
+            if (ModelState.IsValid)
+            {
+                if (fileItem != null)
+                {
+                    byte[] data;
+                    using (var inputStream = fileItem.InputStream)
+                    {
+                        var memoryStream = inputStream as MemoryStream;
+                        if (memoryStream == null)
+                        {
+                            memoryStream = new MemoryStream();
+                            inputStream.CopyTo(memoryStream);
+                        }
+                        data = memoryStream.ToArray();
+                        employee.ImageNameContent = data;
+                        employee.ImageName = fileItem.FileName;
+                        employee.ImageNameContentType = fileItem.ContentType;
+                    }
+                }
+
+
+                employee.PhoneNo = model.Phone;
+                employee.ExternalPhoneNo = model.ExternalPhone;
+                        
+
+                try
+                {
+                    _hrEmployeeService.Update(employee);
+                    var details = GetCvDetail(model.EmployeeId, model.Language);
+                    //todo - update fields
+                    _hrCvDetailService.Update(details);
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Form filled incorrectly");
+
+                }
+            }
+            model.EmployeeName = employee.FullName;
+
+            return View(model);
+
+
         }
 
         [HttpGet]
@@ -319,6 +360,24 @@ namespace INTRANET.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        private HrCvDetail GetCvDetail(int employeeId, HrCvLanguage language)
+        {
+            var details = _hrCvDetailService.GetForCv(employeeId, language);
+
+            //did not fill CV yet, crate record
+            if (details == null)
+            {
+                details = new HrCvDetail
+                {
+                    EmployeeId = employeeId,
+                    Language = language
+                };
+
+                _hrCvDetailService.Create(details);
+            }
+            return details;
         }
 
     }
