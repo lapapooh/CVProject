@@ -209,8 +209,12 @@ namespace INTRANET.Controllers
                 EmployeeId = employeeId,
                 Language = language,
                 EmployeeName = employee.FullName,
-                Phone = employee.PhoneNo,
-                ExternalPhone = employee.ExternalPhoneNo
+                //Phone = employee.PhoneNo,
+                //ExternalPhone = employee.ExternalPhoneNo,
+                Department = employee.Department,
+                Position = employee.Position,
+                EntryDate = employee.EntryDate
+
             };
 
 
@@ -218,47 +222,64 @@ namespace INTRANET.Controllers
         }
 
         [HttpPost]
-        //create update a view model HrCvVM, add the necessary fields (phone, external phone,etc.) except fileItem
-        //there will be tones of fields - do you want to list them all here? 
-        //answer: not anymore :)
         public ActionResult FillCv(HrCvVM model, HttpPostedFileBase fileItem)
         {
-            return RedirectToAction("FillCv", new { employeeId = model.EmployeeId, language = model.Language });
+            // return RedirectToAction("FillCv", new { employeeId = model.EmployeeId, language = model.Language });
             var employee = _hrEmployeeService.GetByID(model.EmployeeId);
             if (employee == null)
                 return RedirectToAction("Index");
 
-            //validation for .png and jpg files will be added
+            model.EmployeeName = employee.FullName;
+
+            //validation for .png and jpg files 
+            if (fileItem == null || fileItem.ContentLength == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Photo was not selected");
+                return View(model);
+            }
+
+            string ex = Path.GetExtension(fileItem.FileName);
+            List<string> acceptedExtensions = new List<string> { ".png", ".jpg" };
+
+            if (!acceptedExtensions.Contains(ex))
+            {
+                ModelState.AddModelError(string.Empty, "Photo must be in .png or .jpg format");
+                return View(model);
+            }
+
+
             if (ModelState.IsValid)
             {
-                if (fileItem != null)
+                byte[] data;
+                using (var inputStream = fileItem.InputStream)
                 {
-                    byte[] data;
-                    using (var inputStream = fileItem.InputStream)
+                    var memoryStream = inputStream as MemoryStream;
+                    if (memoryStream == null)
                     {
-                        var memoryStream = inputStream as MemoryStream;
-                        if (memoryStream == null)
-                        {
-                            memoryStream = new MemoryStream();
-                            inputStream.CopyTo(memoryStream);
-                        }
-                        data = memoryStream.ToArray();
-                        employee.ImageNameContent = data;
-                        employee.ImageName = fileItem.FileName;
-                        employee.ImageNameContentType = fileItem.ContentType;
+                        memoryStream = new MemoryStream();
+                        inputStream.CopyTo(memoryStream);
                     }
+                    data = memoryStream.ToArray();
+                    employee.ImageNameContent = data;
+                    employee.ImageName = fileItem.FileName;
+                    employee.ImageNameContentType = fileItem.ContentType;
                 }
-
 
                 employee.PhoneNo = model.Phone;
                 employee.ExternalPhoneNo = model.ExternalPhone;
-                        
+
 
                 try
                 {
                     _hrEmployeeService.Update(employee);
                     var details = GetCvDetail(model.EmployeeId, model.Language);
                     //todo - update fields
+                    details.Employee.PhoneNo = model.Phone;
+                    details.Employee.ExternalPhoneNo = model.ExternalPhone;
+                    details.Employee.ImageName = employee.ImageName;
+                    details.Employee.ImageNameContent = employee.ImageNameContent;
+                    details.Employee.ImageNameContentType = employee.ImageNameContentType;
+                    
                     _hrCvDetailService.Update(details);
                 }
                 catch (Exception)
@@ -267,11 +288,9 @@ namespace INTRANET.Controllers
 
                 }
             }
-            model.EmployeeName = employee.FullName;
+
 
             return View(model);
-
-
         }
 
         [HttpGet]
@@ -286,7 +305,7 @@ namespace INTRANET.Controllers
             if (language == HrCvLanguage.Uz)
             {
                 path = HostingEnvironment.MapPath("~/Content/HrCvTemplates/cv_template_uz.doc");
-                var employeeCV = _hrCvDetailService.GetForCv(employeeId, HrCvLanguage.Uz); 
+                var employeeCV = _hrCvDetailService.GetForCv(employeeId, HrCvLanguage.Uz);
 
                 Document doc = new Document();
                 doc.LoadFromFile(path);
@@ -311,7 +330,7 @@ namespace INTRANET.Controllers
                     doc.SaveToStream(memoryStream, FileFormat.Doc);
                     //save to byte array
                     data = memoryStream.ToArray();
-                    
+
                 }
                 //Write it back to the client
                 Response.ContentType = "application/msword";
@@ -319,7 +338,7 @@ namespace INTRANET.Controllers
                 Response.BinaryWrite(data);
                 Response.Flush();
                 Response.End();
-                
+
             }
             else if (language == HrCvLanguage.Ru)
             {
@@ -366,7 +385,7 @@ namespace INTRANET.Controllers
         {
             var details = _hrCvDetailService.GetForCv(employeeId, language);
 
-            //did not fill CV yet, crate record
+            //did not fill CV yet, create record
             if (details == null)
             {
                 details = new HrCvDetail

@@ -15,6 +15,10 @@ namespace INTRANET.Models
 
         public HrCvLanguage Language { get; set; }
 
+        public HrDepartment Department { get; set; }
+        public HrPosition Position { get; set; }
+        public DateTime EntryDate { get; set; }
+
         [Required(ErrorMessage = "Enter phone number")]
         public string Phone { get; set; }
 
