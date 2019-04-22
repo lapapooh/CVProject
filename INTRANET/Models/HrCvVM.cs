@@ -15,8 +15,19 @@ namespace INTRANET.Models
 
         public HrCvLanguage Language { get; set; }
 
-        public HrDepartment Department { get; set; }
-        public HrPosition Position { get; set; }
+        public string DepartmentName { get; set; }
+        public string PositionName { get; set; }
+        public string ImageContent { get; set; }
+
+        //fr easy access
+        public bool HasImage
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(ImageContent);
+            }
+        }
+
         public DateTime EntryDate { get; set; }
 
         [Required(ErrorMessage = "Enter phone number")]

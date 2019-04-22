@@ -208,15 +208,13 @@ namespace INTRANET.Controllers
             {
                 EmployeeId = employeeId,
                 Language = language,
-                EmployeeName = employee.FullName,
-                //Phone = employee.PhoneNo,
-                //ExternalPhone = employee.ExternalPhoneNo,
-                Department = employee.Department,
-                Position = employee.Position,
+                Phone = employee.PhoneNo,
+                ExternalPhone = employee.ExternalPhoneNo,
                 EntryDate = employee.EntryDate
 
             };
 
+            AddDefaultsToModel(model, employee);
 
             return View(model);
         }
@@ -224,47 +222,51 @@ namespace INTRANET.Controllers
         [HttpPost]
         public ActionResult FillCv(HrCvVM model, HttpPostedFileBase fileItem)
         {
-            // return RedirectToAction("FillCv", new { employeeId = model.EmployeeId, language = model.Language });
+
             var employee = _hrEmployeeService.GetByID(model.EmployeeId);
             if (employee == null)
                 return RedirectToAction("Index");
 
-            model.EmployeeName = employee.FullName;
+            AddDefaultsToModel(model, employee);
 
+            var hasImageFile = fileItem != null && fileItem.ContentLength > 0;
             //validation for .png and jpg files 
-            if (fileItem == null || fileItem.ContentLength == 0)
+            if (!hasImageFile)
             {
-                ModelState.AddModelError(string.Empty, "Photo was not selected");
-                return View(model);
+                //do not require image if previously there was one
+                if(employee.ImageNameContent == null || employee.ImageNameContent.Length == 0) //previously no image
+                    ModelState.AddModelError(string.Empty, "Photo was not selected");
             }
-
-            string ex = Path.GetExtension(fileItem.FileName);
-            List<string> acceptedExtensions = new List<string> { ".png", ".jpg" };
-
-            if (!acceptedExtensions.Contains(ex))
+            else
             {
-                ModelState.AddModelError(string.Empty, "Photo must be in .png or .jpg format");
-                return View(model);
-            }
+                string ex = Path.GetExtension(fileItem.FileName);
+                List<string> acceptedExtensions = new List<string> { ".png", ".jpg" };
 
+                if (!acceptedExtensions.Contains(ex))
+                {
+                    ModelState.AddModelError(string.Empty, "Photo must be in .png or .jpg format");
+                }
+            }
 
             if (ModelState.IsValid)
             {
-                byte[] data;
-                using (var inputStream = fileItem.InputStream)
+                if (hasImageFile)
                 {
-                    var memoryStream = inputStream as MemoryStream;
-                    if (memoryStream == null)
+                    byte[] data;
+                    using (var inputStream = fileItem.InputStream)
                     {
-                        memoryStream = new MemoryStream();
-                        inputStream.CopyTo(memoryStream);
+                        var memoryStream = inputStream as MemoryStream;
+                        if (memoryStream == null)
+                        {
+                            memoryStream = new MemoryStream();
+                            inputStream.CopyTo(memoryStream);
+                        }
+                        data = memoryStream.ToArray();
+                        employee.ImageNameContent = data;
+                        employee.ImageName = fileItem.FileName;
+                        employee.ImageNameContentType = fileItem.ContentType;
                     }
-                    data = memoryStream.ToArray();
-                    employee.ImageNameContent = data;
-                    employee.ImageName = fileItem.FileName;
-                    employee.ImageNameContentType = fileItem.ContentType;
                 }
-
                 employee.PhoneNo = model.Phone;
                 employee.ExternalPhoneNo = model.ExternalPhone;
 
@@ -397,6 +399,19 @@ namespace INTRANET.Controllers
                 _hrCvDetailService.Create(details);
             }
             return details;
+        }
+
+        //add readonly fields
+        private void AddDefaultsToModel(HrCvVM model, HrEmployee employee)
+        {
+            model.EmployeeName = employee.FullName;
+            model.DepartmentName = model.Language == HrCvLanguage.Ru ? employee.Department.TitleRu : employee.Department.TitleUz;
+            model.PositionName = model.Language == HrCvLanguage.Ru ? employee.Position.TitleRu : employee.Position.TitleUz;
+
+            if(employee.ImageNameContent != null && employee.ImageNameContent.Length > 0)
+            {
+                model.ImageContent = Convert.ToBase64String(employee.ImageNameContent);
+            }
         }
 
     }

@@ -1,0 +1,70 @@
+﻿@using INTRANET.Models
+@using INTRANET.Model
+@model  HrEmployeeDocumentListVM
+@{
+    ViewBag.Title = Model.EmployeeName;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#docs" aria-controls="docs" role="tab" data-toggle="tab">Documents</a></li>
+        <li role="presentation"><a href="#cv" aria-controls="dc" role="tab" data-toggle="tab">CVs</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="docs">
+            @{
+                Html.RenderPartial("_DocumentsTable", Model);
+            }
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="cv">
+            <div class="table-hover">
+                <table id="cv-table" class="table">
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Is Completed
+                        </th>
+                        <th>
+                            
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            Russian Language
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m=> m.CompletedRuCv, new { disabled = "disabled" }  )
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" href="@Url.Action("FillCv", "HrCV", new { employeeId = Model.EmployeeId, language = HrCvLanguage.Ru })">Fill CV</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Uzbek Language
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m => m.CompletedUzCv, new { disabled = "disabled" })
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" href="@Url.Action("FillCv", "HrCV", new { employeeId = Model.EmployeeId, language = HrCvLanguage.Uz })">Fill CV</a>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

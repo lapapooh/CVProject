@@ -6,100 +6,51 @@
 
 <h2>@ViewBag.Title</h2>
 
-@if (Model.IsHrUser)
-{
 
-    using (Html.BeginForm("UploadDocument", "HrEmployeeDocument", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        <div class="container">
-            <div class="row">
-                <div class="form-group col-lg-12">
-                    <label for="documentTitle">Document title:</label>
-                    <input type="text" class="form-control" id="documentTitle" name="documentTitle">
-                    <input type="hidden" id="employeeId" name="employeeId" value="@Model.EmployeeId">
-                </div>
-                <div class="form-group col-lg-12">
-                    <input type="file" class="custom-file-input" id="fileItem" name="fileItem">
-                </div>
-                <div class="form-group col-lg-12">
-                    <input type="submit" class="btn btn-primary" value="Upload" />
-                </div>
+@using (Html.BeginForm("UploadDocument", "HrEmployeeDocument", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="container">
+        <div class="row">
+            <div class="form-group col-lg-12">
+                <label for="documentTitle">Document title:</label>
+                <input type="text" class="form-control" id="documentTitle" name="documentTitle">
+                <input type="hidden" id="employeeId" name="employeeId" value="@Model.EmployeeId">
+            </div>
+            <div class="form-group col-lg-12">
+                <input type="file" class="custom-file-input" id="fileItem" name="fileItem">
+            </div>
+            <div class="form-group col-lg-12">
+                <input type="submit" class="btn btn-primary" value="Upload" />
             </div>
         </div>
-    }
+    </div>
 }
 
 
-
-<div class="table-hover">
-    <table id="doc-table" class="table">
-        <tr>
-            <th>
-                Title
-            </th>
-            <th>
-                File Name
-            </th>
-            <th>
-                Actions
-            </th>
-        </tr>
-
-        @foreach (var item in Model.HrEmployeeDocuments)
-        {
-            <tr data-doc-id="@item.Id">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FileName)
-                </td>
-                <td>
-                    <div>
-                        <button type="button" class="btn btn-success" aria-label="Left Align" onclick="location.href='@Url.Action("DownloadDocument", "HrEmployeeDocument", new {DocumentId=item.Id})'">
-                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-                        </button>
-
-                        @if (Model.IsHrUser)
-                        {
-                            <button type="button" class="btn btn-danger" aria-label="Left Align" onclick="DoComfirm(@item.Id)">
-
-                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            </button>
-                        }
-                    </div>
-                </td>
-
-            </tr>
-
-        }
-
-    </table>
-</div>
+@{
+    Html.RenderPartial("_DocumentsTable", Model);
+}
 
 
 @section scripts{
+    <script type="text/javascript">
+        function DoComfirm(id) {
+            if (!confirm('Do you want to delete this file?')) return;
 
-    @if (Model.IsHrUser)
-    {
-        <script type="text/javascript">
-            function DoComfirm(id) {
-                if (!confirm('Do you want to delete this file?')) return;
-
-                $.ajax({
-                    type: "POST",
-                    url: "/HrEmployeeDocument/DeleteDocument",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    data: JSON.stringify({ documentId: id }),
-                    success: function (data) {
-                        if (data.IsSuccess) {
-                            $('table#doc-table tr[data-doc-id="' + id + '"]').remove();
-                        }
+            $.ajax({
+                type: "POST",
+                url: "/HrEmployeeDocument/DeleteDocument",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({ documentId: id }),
+                success: function (data) {
+                    if (data.IsSuccess) {
+                        $('table#doc-table tr[data-doc-id="' + id + '"]').remove();
                     }
-                });
-            }
-        </script>
-    }
+                }
+            });
+        }
+    </script>
+
 }
 

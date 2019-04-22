@@ -12,6 +12,8 @@ namespace INTRANET.Models
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public List<HrEmployeeDocumentVM> HrEmployeeDocuments { get; set; }
+        public bool CompletedRuCv { get; set; }
+        public bool CompletedUzCv { get; set; }
     }
 
     public class HrEmployeeDocumentVM

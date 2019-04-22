@@ -305,6 +305,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\hrCvEmployeeList.css" />
     <Content Include="Content\hrFillCv.css" />
+    <Content Include="Content\HrCvImages\no-image.PNG" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -420,6 +421,8 @@
     <Content Include="Views\HrEmployeeDocument\Index.cshtml" />
     <Content Include="Views\HrCv\Index.cshtml" />
     <Content Include="Views\HrCv\FillCv.cshtml" />
+    <Content Include="Views\HrEmployeeDocument\View.cshtml" />
+    <Content Include="Views\HrEmployeeDocument\_DocumentsTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\AcademicYear\" />

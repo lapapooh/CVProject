@@ -1,0 +1,48 @@
+﻿@using INTRANET.Models
+@model  HrEmployeeDocumentListVM
+
+<div class="table-hover">
+    <table id="doc-table" class="table">
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                File Name
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+
+        @foreach (var item in Model.HrEmployeeDocuments)
+        {
+            <tr data-doc-id="@item.Id">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    <div>
+                        <button type="button" class="btn btn-success" aria-label="Left Align" onclick="location.href='@Url.Action("DownloadDocument", "HrEmployeeDocument", new {DocumentId=item.Id})'">
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                        </button>
+
+                        @if (Model.IsHrUser)
+                        {
+                            <button type="button" class="btn btn-danger" aria-label="Left Align" onclick="DoComfirm(@item.Id)">
+
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </button>
+                        }
+                    </div>
+                </td>
+
+            </tr>
+
+        }
+
+    </table>
+</div>

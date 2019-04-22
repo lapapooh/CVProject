@@ -55,7 +55,7 @@ namespace INTRANET.Controllers
             var model = PrepareVM(employee, false);
 
 
-            return View("Index", model);
+            return View(model);
         }
 
         [HttpGet]
@@ -130,7 +130,9 @@ namespace INTRANET.Controllers
                                         Id = d.Id,
                                         FileName = d.FileName,
                                         Title = d.Title
-                                    }).ToList()
+                                    }).ToList(),
+                CompletedRuCv = employee.ComplietedRuCv,
+                CompletedUzCv = employee.ComplietedUzCv
             };
         }
     }
