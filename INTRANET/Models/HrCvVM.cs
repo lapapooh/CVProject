@@ -13,6 +13,7 @@ namespace INTRANET.Models
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
 
+        [Required]
         public HrCvLanguage Language { get; set; }
 
         public string DepartmentName { get; set; }
@@ -36,5 +37,27 @@ namespace INTRANET.Models
         [Required(ErrorMessage = "Enter external phone number")]
         public string ExternalPhone { get; set; }
 
+        [Required]
+        public DateTime DateOfBirth { get; set; }
+        [Required]
+        public string PlaceOfBirth { get; set; }
+        [Required]
+        public string Nationality { get; set; }
+        [Required]
+        public string PartyMembership { get; set; }
+        [Required]
+        public string EducationDegree { get; set; }
+        [Required]
+        public string EducationSpeciality { get; set; }
+        [Required]
+        public string AcademicDegree { get; set; }
+        [Required]
+        public string AcademicTitle { get; set; }
+        [Required]
+        public string Languages { get; set; }
+
+        public List<string> EducationList { get; set; }
+        public List<string> AwardList { get; set; }
+        public List<string> MembershipList { get; set; }
     }
 }

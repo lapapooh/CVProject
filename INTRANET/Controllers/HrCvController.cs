@@ -210,7 +210,19 @@ namespace INTRANET.Controllers
                 Language = language,
                 Phone = employee.PhoneNo,
                 ExternalPhone = employee.ExternalPhoneNo,
-                EntryDate = employee.EntryDate
+                EntryDate = employee.EntryDate,
+                DateOfBirth = employee.DateOfBirth,
+                PlaceOfBirth = details.PlaceOfBirth,
+                Nationality = details.Nationality,
+                PartyMembership = details.PartyMembership,
+                EducationDegree = details.EducationDegree,
+                EducationSpeciality = details.EducationSpeciality,
+                AcademicDegree = details.AcademicDegree,
+                AcademicTitle = details.AcademicTitle,
+                Languages = details.Languages,
+                EducationList = details.Educations?.Select(c=> c.Education).ToList(),
+                AwardList = details.Awards?.Select(c=> c.Award).ToList(),
+                MembershipList = details.Memberships?.Select(c=> c.Membership).ToList()
 
             };
 
