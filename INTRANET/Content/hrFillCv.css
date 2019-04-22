@@ -4,3 +4,14 @@
 .tab-content > .tab-pane {
     padding-top:20px;
 }
+.field-validation-error {
+    color: red;
+    display: block
+}
+.tab-content input, .tab-content select, .tab-content textarea {
+    max-width: 100%;
+}
+
+.input-validation-error {
+    border-color:red
+}

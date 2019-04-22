@@ -27,9 +27,10 @@ namespace INTRANET.Service
             this._repository.Delete(c=> c.HrCvDetailId == cvDetailId);
             foreach (var model in models)
             {
+                model.HrCvDetailId = cvDetailId;
                 this._repository.Add(model);
             }
-            
+            Save();
         }
 
         public IEnumerable<HrCvMembership> GetForCvDetail(int cvDetailId)

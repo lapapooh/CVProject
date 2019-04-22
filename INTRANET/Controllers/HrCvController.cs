@@ -27,14 +27,17 @@ namespace INTRANET.Controllers
         public IHrDepartmentService _hrDepartmentService { get; set; }
         public IHrPositionService _hrPositionService { get; set; }
         public IHrCvDetailService _hrCvDetailService { get; set; }
+        public IHrCvEductionService _hrCvEducationService { get; set; }
 
         public HrCvController(IHrEmployeeService hrEmployeeService,
-            IHrDepartmentService hrDepartmentService, IHrPositionService hrPositionService, IHrCvDetailService hrCvDetailService)
+            IHrDepartmentService hrDepartmentService, IHrPositionService hrPositionService, IHrCvDetailService hrCvDetailService,
+            IHrCvEductionService hrCvEducationService)
         {
             _hrEmployeeService = hrEmployeeService;
             _hrDepartmentService = hrDepartmentService;
             _hrPositionService = hrPositionService;
             _hrCvDetailService = hrCvDetailService;
+            _hrCvEducationService = hrCvEducationService;
         }
 
         // GET: HrCv
@@ -211,7 +214,6 @@ namespace INTRANET.Controllers
                 Phone = employee.PhoneNo,
                 ExternalPhone = employee.ExternalPhoneNo,
                 EntryDate = employee.EntryDate,
-                DateOfBirth = employee.DateOfBirth,
                 PlaceOfBirth = details.PlaceOfBirth,
                 Nationality = details.Nationality,
                 PartyMembership = details.PartyMembership,
@@ -220,9 +222,7 @@ namespace INTRANET.Controllers
                 AcademicDegree = details.AcademicDegree,
                 AcademicTitle = details.AcademicTitle,
                 Languages = details.Languages,
-                EducationList = details.Educations?.Select(c=> c.Education).ToList(),
-                AwardList = details.Awards?.Select(c=> c.Award).ToList(),
-                MembershipList = details.Memberships?.Select(c=> c.Membership).ToList()
+                EducationList = _hrCvEducationService.GetForCvDetail(details.Id).Select(c=> c.Education).ToList()
 
             };
 
@@ -240,6 +240,11 @@ namespace INTRANET.Controllers
                 return RedirectToAction("Index");
 
             AddDefaultsToModel(model, employee);
+
+
+            //safety check to avoid null reference exceptions
+            if (model.EducationList == null)
+                model.EducationList = new List<string>();
 
             var hasImageFile = fileItem != null && fileItem.ContentLength > 0;
             //validation for .png and jpg files 
@@ -287,14 +292,17 @@ namespace INTRANET.Controllers
                 {
                     _hrEmployeeService.Update(employee);
                     var details = GetCvDetail(model.EmployeeId, model.Language);
-                    //todo - update fields
-                    details.Employee.PhoneNo = model.Phone;
-                    details.Employee.ExternalPhoneNo = model.ExternalPhone;
-                    details.Employee.ImageName = employee.ImageName;
-                    details.Employee.ImageNameContent = employee.ImageNameContent;
-                    details.Employee.ImageNameContentType = employee.ImageNameContentType;
-                    
+
+                    details.Nationality = model.Nationality;
+
                     _hrCvDetailService.Update(details);
+
+                    
+
+                    _hrCvEducationService.Save(model.EducationList.Where(e=> !string.IsNullOrWhiteSpace(e)).Select(e => new HrCvEduction
+                    {
+                        Education = e
+                    }).ToList(), details.Id);
                 }
                 catch (Exception)
                 {
@@ -419,8 +427,8 @@ namespace INTRANET.Controllers
             model.EmployeeName = employee.FullName;
             model.DepartmentName = model.Language == HrCvLanguage.Ru ? employee.Department.TitleRu : employee.Department.TitleUz;
             model.PositionName = model.Language == HrCvLanguage.Ru ? employee.Position.TitleRu : employee.Position.TitleUz;
-
-            if(employee.ImageNameContent != null && employee.ImageNameContent.Length > 0)
+            model.DateOfBirth = employee.DateOfBirth;
+            if (employee.ImageNameContent != null && employee.ImageNameContent.Length > 0)
             {
                 model.ImageContent = Convert.ToBase64String(employee.ImageNameContent);
             }
