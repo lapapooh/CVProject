@@ -20,7 +20,7 @@ namespace INTRANET.Models
         public string PositionName { get; set; }
         public string ImageContent { get; set; }
 
-        //fr easy access
+        //for easy access
         public bool HasImage
         {
             get
@@ -59,5 +59,8 @@ namespace INTRANET.Models
         public List<string> EducationList { get; set; }
         public List<string> AwardList { get; set; }
         public List<string> MembershipList { get; set; }
+        public List<HrCvLaborVM> LaborDetailList { get; set; }
+        public List<HrCvRelativesVM> RelativesDetailsList { get; set; }
+
     }
 }

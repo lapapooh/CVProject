@@ -163,7 +163,7 @@
                                     <div class="form-group">
                                         <b>Education History:</b>
                                         <a href="#" data-bind="click: $root.addEducation" class="btn btn-success">Add</a>
-                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-12" data-bind='foreach: educations'>
                                     <div class="col-md-9">
@@ -233,8 +233,38 @@
 
                         </div>
                         <div role="tabpanel" class="tab-pane" id="labor">
-                            <p>labor</p>
                             <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <b>Labor details:</b>
+                                        <a href="#" data-bind="click: $root.addLaborDetail" class="btn btn-success">Add</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" data-bind='foreach: laborDetails'>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Years: </label>
+                                            <input class="form-control" data-bind="value: Years" />
+                                            @*<input class="form-control" data-bind="value: Years, attr: {name: 'LaborDetailList[' + $index() + '].Years'}" />*@
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Description: </label>
+                                            <input class="form-control" data-bind="value: Description" />
+                                            @*<input class="form-control" data-bind="value: Description, attr: {name: 'LaborDetailList[' + $index() + '].Description'}" />*@
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <a href="#" data-bind="click: $root.removeLaborDetail" class="btn btn-warning">Remove</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="btn-group">
                                 <span class="btn btn-warning btn-previous">Previous</span>
                             </div>
@@ -248,6 +278,65 @@
                         <div role="tabpanel" class="tab-pane" id="family">
                             <p>Family</p>
                             <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <b>Relatives:</b>
+                                        <a href="#" data-bind="click: $root.addRelative" class="btn btn-success">Add</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" data-bind='foreach: relatives'>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Degree: </label>
+                                                <input class="form-control" data-bind="value: Degree" />
+                                                @*<input class="form-control" data-bind="value: Degree, attr: {name: 'RelativesDetailsList[' + $index() + '].Degree'}" />*@
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>FullName: </label>
+                                                <input class="form-control" data-bind="value: FullName" />
+                                                @*<input class="form-control" data-bind="value: FullName, attr: {name: 'RelativesDetailsList[' + $index() + '].FullName'}" />*@
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>BirthDateAndPlace: </label>
+                                                <input class="form-control" data-bind="value: BirthDateAndPlace" />
+                                                @*<input class="form-control" data-bind="value: BirthDateAndPlace, attr: {name: 'RelativesDetailsList[' + $index() + '].BirthDateAndPlace'}" />*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>LaborDetails: </label>
+                                                <input class="form-control" data-bind="value: LaborDetails" />
+                                                @*<input class="form-control" data-bind="value: LaborDetails, attr: {name: 'RelativesDetailsList[' + $index() + '].LaborDetails'}" />*@
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>LaborDetails: </label>
+                                                <input class="form-control" data-bind="value: Address" />
+                                                @*<input class="form-control" data-bind="value: Address, attr: {name: 'RelativesDetailsList[' + $index() + '].Address'}" />*@
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <a href="#" data-bind="click: $root.removeRelative" class="btn btn-warning">Remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
                             <div class="btn-group">
                                 <span class="btn btn-warning btn-previous">Previous</span>
                             </div>
@@ -304,17 +393,25 @@
         //to handle observable string array
         var item = function (text) {
             var self = this;
-
             self.Name = ko.observable(text);
-        }
+        };
+        //var laborItem=function(Years, Description){
+        //    var self=this;
+        //    self.Years=ko.observable(Years);
+        //    self.Description=ko.observable(Description);
+        //};
+
         //use ths model for the whole page
         //to add logic for labor, relatives, etc:
         //1. add those to arguments of constructor
         //2. create methods for add and delete
         //3. do not forget about HTML markup
-        var CvModel = function (educations) {
+        var CvModel = function (educations, laborDetails, relatives) {
+
             var self = this;
             self.educations = ko.observableArray(educations);
+            self.laborDetails = ko.ObservableArray(laborDetails);
+            self.relatives = ko.observableArray(relatives);
 
             self.addEducation = function () {
                 self.educations.push(new item(""));
@@ -324,9 +421,35 @@
                 console.log(self.educations);
                 self.educations.remove(function (item) { console.log(item); return item == education; });
             };
+            self.addLaborDetail = function () {
+                self.laborDetails.push({
+                    Years: "",
+                    Description: ""
+                });
+            }
+            self.removeLaborDetail = function (labor) {
+                self.laborDetails.remove(labor);
+                //self.laborDetails.remove(function (laborItem) { console.log(laborItem); return laborItem == labor; })
+            }
+            self.addRelative=function(){
+                self.relatives.push({
+                    Degree:"",
+                    FullName:"",
+                    BirthDateAndPlace:"",
+                    LaborDetails:"",
+                    Address:""
+                });
+            }
+
+            self.removeRelative=function(relative){
+                self.relatives.remove(relative);
+                //self.relatives.remove(function (relative) { console.log(relative); return relative == relative; })
+            }
         };
-        
-        var viewModel = new CvModel(@Html.Raw(Json.Encode(Model.EducationList.Select(e=> new {Name = e }))));
+
+        var viewModel = new CvModel(@Html.Raw(Json.Encode(Model.EducationList.Select(e=> new {Name = e }))),
+            @Html.Raw(Json.Encode(Model.LaborDetailList.Select(e=> new { Years = e.Years, Description= e.Description}))),
+            @Html.Raw(Json.Encode(Model.RelativesDetailsList.Select(e=> new { Degree = e.Degree, FullName= e.Degree, BirthDateAndPlace=e.BirthDateAndPlace, LaborDetails=e.LaborDetails, Address=e.Address}))));
         ko.applyBindings(viewModel);
 
     </script>
