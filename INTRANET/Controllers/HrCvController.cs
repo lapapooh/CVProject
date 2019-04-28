@@ -229,6 +229,14 @@ namespace INTRANET.Controllers
                 RelativesDetailsList = _hrCvRelativeService.GetForCvDetail(details.Id).Select(c => new HrCvRelativesVM { Degree = c.Degree, FullName = c.FullName, BirthDateAndPlace = c.BirthDateAndPlace, LaborDetails = c.LaborDetails, Address = c.Address, }).ToList()
             };
 
+            //add default first row
+            if (!model.EducationList.Any())
+                model.EducationList.Add("");
+            if (!model.LaborDetailList.Any())
+                model.LaborDetailList.Add(new HrCvLaborVM());
+            if (!model.RelativesDetailsList.Any())
+                model.RelativesDetailsList.Add(new HrCvRelativesVM());
+
             AddDefaultsToModel(model, employee);
 
             return View(model);
@@ -248,6 +256,12 @@ namespace INTRANET.Controllers
             //safety check to avoid null reference exceptions
             if (model.EducationList == null)
                 model.EducationList = new List<string>();
+
+            if (model.LaborDetailList == null)
+                model.LaborDetailList = new List<HrCvLaborVM>();
+
+            if (model.RelativesDetailsList == null)
+                model.RelativesDetailsList = new List<HrCvRelativesVM>();
 
             var hasImageFile = fileItem != null && fileItem.ContentLength > 0;
             //validation for .png and jpg files 
@@ -297,10 +311,15 @@ namespace INTRANET.Controllers
                     var details = GetCvDetail(model.EmployeeId, model.Language);
 
                     details.Nationality = model.Nationality;
+                    details.Languages = model.Languages;
+                    details.PlaceOfBirth = model.PlaceOfBirth;
+                    details.PartyMembership = model.PartyMembership;
+                    details.AcademicDegree = model.AcademicDegree;
+                    details.AcademicTitle = model.AcademicTitle;
+                    details.EducationDegree = model.EducationDegree;
+                    details.EducationSpeciality = model.EducationSpeciality;
 
                     _hrCvDetailService.Update(details);
-
-
 
                     _hrCvEducationService.Save(model.EducationList.Where(e => !string.IsNullOrWhiteSpace(e)).Select(e => new HrCvEduction
                     {

@@ -23,8 +23,8 @@
                         <li class="active"><a href="#general" data-toggle="tab">General</a></li>
                         <li><a href="#personal" data-toggle="tab">Personal details</a></li>
                         <li><a href="#additional" data-toggle="tab">Additional details</a></li>
-                        <li><a href="#labor" data-toggle="tab">Labor</a></li>
-                        <li><a href="#family" data-toggle="tab">Family</a></li>
+                        <li><a href="#labor" data-toggle="tab">Labor history</a></li>
+                        <li><a href="#family" data-toggle="tab">Relatives</a></li>
                     </ul>
                     <!-- Tab panels -->
                     <div class="tab-content">
@@ -98,21 +98,21 @@
                         </div>
                         <div role="tabpanel" class="tab-pane" id="personal">
                             <br />
-                            <div class="row">
-                                <div class="col-md-2">
+
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="DateOfBirth">Date of Birth:</label>
                                         <input readonly type='text' class="form-control" value="@Model.DateOfBirth.ToShortDateString()" />
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Nationality">Nationality:</label>
                                         @Html.TextBoxFor(m => m.Nationality, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "error" })
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="PlaceOfBirth">Place of Birth:</label>
                                         @Html.TextBoxFor(m => m.PlaceOfBirth, new { @class = "form-control" })
@@ -120,15 +120,15 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="PartyMembership">Party Membership:</label>
                                         @Html.TextBoxFor(m => m.PartyMembership, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.PartyMembership, "", new { @class = "error" })
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
+
+
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="AcademicDegree">Academic Degree:</label>
@@ -157,35 +157,51 @@
                                         @Html.ValidationMessageFor(model => model.EducationSpeciality, "", new { @class = "error" })
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
+   
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <b>Education History:</b>
-                                        <a href="#" data-bind="click: $root.addEducation" class="btn btn-success">Add</a>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-12" data-bind='foreach: educations'>
-                                    <div class="col-md-9">
-                                        <div class="form-group">
-                                            <input class="form-control" data-bind="value: Name, attr: {name: 'EducationList[' + $index() + ']'}" />
+                                    <!--for labels and hint messages, need this row for alignemnt of controls-->
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <a href="#" data-bind="click: $root.removeEducation" class="btn btn-warning">Remove</a>
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <input class="form-control" data-bind="value: Name, attr: {name: 'EducationList[' + $index() + ']'}" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <a href="#" data-bind="click: $root.removeEducation" class="btn btn-warning">Remove</a>
+                                                <a href="#" data-bind="click: $root.addEducation" class="btn btn-success">Add</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="btn-group">
-                                        <span class="btn btn-warning btn-previous">Previous</span>
-                                    </div>
-                                    <div class="btn-group pull-right">
-                                        <div class="pull-right">
-                                            <span class="btn btn-primary btn-next">Next</span>
-                                        </div>
+
+                            <div class="col-md-12 btn-container">
+                                <div class="btn-group">
+                                    <span class="btn btn-warning btn-previous">Previous</span>
+                                </div>
+                                <div class="btn-group pull-right">
+                                    <div class="pull-right">
+                                        <span class="btn btn-primary btn-next">Next</span>
                                     </div>
                                 </div>
                             </div>
@@ -220,7 +236,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12">
+                            <div class="col-md-12 btn-container">
                                 <div class="btn-group">
                                     <span class="btn btn-warning btn-previous">Previous</span>
                                 </div>
@@ -234,115 +250,143 @@
                         </div>
                         <div role="tabpanel" class="tab-pane" id="labor">
                             <br />
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <b>Labor details:</b>
-                                        <a href="#" data-bind="click: $root.addLaborDetail" class="btn btn-success">Add</a>
-                                    </div>
-                                </div>
-                                <div class="col-md-12" data-bind='foreach: laborDetails'>
+
+                            <div class="col-md-12" data-bind='foreach: laborDetails'>
+                                <!--for labels and hint messages, need this row for alignemnt of controls-->
+                                <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Years: </label>
-                                            <input class="form-control" data-bind="value: Years" />
-                                            @*<input class="form-control" data-bind="value: Years, attr: {name: 'LaborDetailList[' + $index() + '].Years'}" />*@
-
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Description: </label>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>Description: </label>
-                                            <input class="form-control" data-bind="value: Description" />
-                                            @*<input class="form-control" data-bind="value: Description, attr: {name: 'LaborDetailList[' + $index() + '].Description'}" />*@
+                                            <label>&nbsp;</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: Years" />
 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: Description" />
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <a href="#" data-bind="click: $root.removeLaborDetail" class="btn btn-warning">Remove</a>
+                                            <a href="#" data-bind="click: $root.addLaborDetail" class="btn btn-success">Add</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="btn-group">
-                                <span class="btn btn-warning btn-previous">Previous</span>
-                            </div>
-                            <div class="btn-group pull-right">
-                                <div class="pull-right">
-                                    <span class="btn btn-primary btn-next">Next</span>
+                            <div class="col-md-12 btn-container">
+                                <div class="btn-group">
+                                    <span class="btn btn-warning btn-previous">Previous</span>
+                                </div>
+                                <div class="btn-group pull-right">
+                                    <div class="pull-right">
+                                        <span class="btn btn-primary btn-next">Next</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div role="tabpanel" class="tab-pane" id="family">
-                            <p>Family</p>
                             <br />
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <b>Relatives:</b>
-                                        <a href="#" data-bind="click: $root.addRelative" class="btn btn-success">Add</a>
+
+                            <div class="col-md-12" data-bind='foreach: relatives'>
+                                <!--for labels and hint messages, need this row for alignemnt of controls-->
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Full Name: </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label>Date and place of birth: </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Relationship Degree: </label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12" data-bind='foreach: relatives'>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Degree: </label>
-                                                <input class="form-control" data-bind="value: Degree" />
-                                                @*<input class="form-control" data-bind="value: Degree, attr: {name: 'RelativesDetailsList[' + $index() + '].Degree'}" />*@
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: FullName" />
 
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>FullName: </label>
-                                                <input class="form-control" data-bind="value: FullName" />
-                                                @*<input class="form-control" data-bind="value: FullName, attr: {name: 'RelativesDetailsList[' + $index() + '].FullName'}" />*@
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>BirthDateAndPlace: </label>
-                                                <input class="form-control" data-bind="value: BirthDateAndPlace" />
-                                                @*<input class="form-control" data-bind="value: BirthDateAndPlace, attr: {name: 'RelativesDetailsList[' + $index() + '].BirthDateAndPlace'}" />*@
-                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>LaborDetails: </label>
-                                                <input class="form-control" data-bind="value: LaborDetails" />
-                                                @*<input class="form-control" data-bind="value: LaborDetails, attr: {name: 'RelativesDetailsList[' + $index() + '].LaborDetails'}" />*@
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>LaborDetails: </label>
-                                                <input class="form-control" data-bind="value: Address" />
-                                                @*<input class="form-control" data-bind="value: Address, attr: {name: 'RelativesDetailsList[' + $index() + '].Address'}" />*@
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <a href="#" data-bind="click: $root.removeRelative" class="btn btn-warning">Remove</a>
-                                            </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: BirthDateAndPlace" />
                                         </div>
                                     </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: Degree" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Labor Details: </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label>Address: </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: LaborDetails" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: Address" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <a href="#" data-bind="click: $root.removeRelative" class="btn btn-warning">Remove</a>
+                                            <a href="#" data-bind="click: $root.addRelative" class="btn btn-success">Add</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-
-                            <div class="btn-group">
-                                <span class="btn btn-warning btn-previous">Previous</span>
-                            </div>
-                            <div class="btn-group pull-right">
-                                <div class="pull-right">
-                                    <button class="btn btn-success">Submit</button>
+                            <div class="col-md-12 btn-container">
+                                <div class="btn-group">
+                                    <span class="btn btn-warning btn-previous">Previous</span>
+                                </div>
+                                <div class="btn-group pull-right">
+                                    <div class="pull-right">
+                                        <button class="btn btn-success">Submit</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -410,7 +454,7 @@
 
             var self = this;
             self.educations = ko.observableArray(educations);
-            self.laborDetails = ko.ObservableArray(laborDetails);
+            self.laborDetails = ko.observableArray(laborDetails);
             self.relatives = ko.observableArray(relatives);
 
             self.addEducation = function () {
@@ -418,8 +462,10 @@
             };
 
             self.removeEducation = function (education) {
-                console.log(self.educations);
-                self.educations.remove(function (item) { console.log(item); return item == education; });
+                self.educations.remove(education);
+                //add default empty row
+                if (self.educations().length == 0)
+                    self.addEducation();
             };
             self.addLaborDetail = function () {
                 self.laborDetails.push({
@@ -429,7 +475,9 @@
             }
             self.removeLaborDetail = function (labor) {
                 self.laborDetails.remove(labor);
-                //self.laborDetails.remove(function (laborItem) { console.log(laborItem); return laborItem == labor; })
+                //add default empty row
+                if (self.laborDetails().length == 0)
+                    self.addLaborDetail();
             }
             self.addRelative=function(){
                 self.relatives.push({
@@ -443,7 +491,9 @@
 
             self.removeRelative=function(relative){
                 self.relatives.remove(relative);
-                //self.relatives.remove(function (relative) { console.log(relative); return relative == relative; })
+                //add default empty row
+                if (self.relatives().length == 0)
+                    self.addRelative();
             }
         };
 
