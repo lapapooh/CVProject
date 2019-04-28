@@ -14,7 +14,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using INTRANET.Common;
-using Xceed.Words.NET;
 using System.Reflection;
 using Spire.Doc;
 using System.Web.Hosting;
@@ -311,7 +310,6 @@ namespace INTRANET.Controllers
                 }
             }
 
-
             return View(model);
         }
 
@@ -323,13 +321,15 @@ namespace INTRANET.Controllers
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
 
-            var path = "";
+            var path = HostingEnvironment.MapPath("~/Content/HrCvTemplates/");
+            var cvLanguage = HrCvLanguage.Uz;
+            var employeeCV = _hrCvDetailService.GetForCv(employeeId, cvLanguage);
+            Document doc = new Document();
+
             if (language == HrCvLanguage.Uz)
             {
-                path = HostingEnvironment.MapPath("~/Content/HrCvTemplates/cv_template_uz.doc");
-                var employeeCV = _hrCvDetailService.GetForCv(employeeId, HrCvLanguage.Uz);
+                path += "cv_template_uz.doc";
 
-                Document doc = new Document();
                 doc.LoadFromFile(path);
                 doc.Replace("{FULLNAME}", employee.FullName, true, true);
                 doc.Replace("{CURRENTPOSITIONDATE}", employee.PositionStartDate.Value.ToString("dd MMMM yyyy"), true, true);
@@ -344,7 +344,23 @@ namespace INTRANET.Controllers
                 doc.Replace("{LANGUAGES}", employeeCV?.Languages ?? "", true, true);
                 doc.Replace("{AWARDS}", employeeCV?.Awards.ToString() ?? "", true, true);
                 doc.Replace("{MEMBERSHIPS}", employeeCV?.Memberships.ToString() ?? "", true, true);
-                doc.SaveToFile("Doc.doc", FileFormat.Doc);
+
+                Table table = doc.Sections[0].Tables[0] as Spire.Doc.Table;
+
+                //Insert a new row at the bottom of the table
+                table.AddRow(true, 5);
+                table.Rows[2].Cells[1].Paragraphs[0].AppendText("TEST TEST TEST TEST");
+
+                doc.SaveToFile(employee.FullName + "(Uz).doc".Replace(@"\", " ")
+                                .Replace(@"/", " ")
+                                .Replace(@":", " ")
+                                .Replace(@"*", " ")
+                                .Replace(@"?", " ")
+                                .Replace("\"", " ")
+                                .Replace(@"<", " ")
+                                .Replace(@">", " ")
+                                .Replace(@"|", " ")
+                                .Replace(@"  ", " "), FileFormat.Doc);
 
                 byte[] data = null;
                 using (MemoryStream memoryStream = new MemoryStream())
@@ -352,11 +368,11 @@ namespace INTRANET.Controllers
                     doc.SaveToStream(memoryStream, FileFormat.Doc);
                     //save to byte array
                     data = memoryStream.ToArray();
-
                 }
+
                 //Write it back to the client
                 Response.ContentType = "application/msword";
-                Response.AddHeader("content-disposition", "attachment;  filename=Doc.doc");
+                Response.AddHeader("content-disposition", "attachment;  filename=" + employee.FullName + "(Uz).doc");
                 Response.BinaryWrite(data);
                 Response.Flush();
                 Response.End();
@@ -364,11 +380,9 @@ namespace INTRANET.Controllers
             }
             else if (language == HrCvLanguage.Ru)
             {
-                path = HostingEnvironment.MapPath("~/Content/HrCvTemplates/cv_template_ru.doc");
+                path += "cv_template_ru.doc";
+                cvLanguage = HrCvLanguage.Ru;
 
-                var employeeCV = _hrCvDetailService.GetForCv(employeeId, HrCvLanguage.Ru);
-                var now = DateTime.Now;
-                Document doc = new Document();
                 doc.LoadFromFile(path);
                 doc.Replace("{FULLNAME}", employee.FullName, true, true);
                 doc.Replace("{CURRENTPOSITIONDATE}", employee.PositionStartDate.Value.ToString("dd MMMM yyyy"), true, true);
@@ -383,7 +397,22 @@ namespace INTRANET.Controllers
                 doc.Replace("{LANGUAGES}", employeeCV?.Languages ?? "", true, true);
                 doc.Replace("{AWARDS}", employeeCV?.Awards.ToString() ?? "", true, true);
                 doc.Replace("{MEMBERSHIPS}", employeeCV?.Memberships.ToString() ?? "", true, true);
-                doc.SaveToFile("Doc.doc", FileFormat.Doc);
+
+                Table table = doc.Sections[0].Tables[0] as Spire.Doc.Table;
+                //Insert a new row at the bottom of the table
+                table.AddRow(true, 5);
+                table.Rows[2].Cells[1].Paragraphs[0].AppendText("TEST TEST TEST TEST");
+
+                doc.SaveToFile(employee.FullName + "(Ru).doc".Replace(@"\", " ")
+                                .Replace(@"/", " ")
+                                .Replace(@":", " ")
+                                .Replace(@"*", " ")
+                                .Replace(@"?", " ")
+                                .Replace("\"", " ")
+                                .Replace(@"<", " ")
+                                .Replace(@">", " ")
+                                .Replace(@"|", " ")
+                                .Replace(@"  ", " "), FileFormat.Doc);
 
                 byte[] data = null;
                 using (MemoryStream memoryStream = new MemoryStream())
@@ -392,9 +421,9 @@ namespace INTRANET.Controllers
                     //save to byte array
                     data = memoryStream.ToArray();
                 }
-                //Write it back to the client
+
                 Response.ContentType = "application/msword";
-                Response.AddHeader("content-disposition", "attachment;  filename=Doc.doc");
+                Response.AddHeader("content-disposition", "attachment;  filename=" + employee.FullName + "(Ru).doc");
                 Response.BinaryWrite(data);
                 Response.Flush();
                 Response.End();
