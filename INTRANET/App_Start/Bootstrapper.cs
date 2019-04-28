@@ -45,6 +45,8 @@ namespace INTRANET
             builder.RegisterType<HrPositionRepository>().As<IHrPositionRepository>().InstancePerLifetimeScope();
             builder.RegisterType<HrCvDetailRepository>().As<IHrCvDetailRepository>().InstancePerLifetimeScope();
             builder.RegisterType<HrCvEductionRepository>().As<IHrCvEductionRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<HrCvRelativeRepository>().As<IHrCvRelativeRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<HrCvLaborRepository>().As<IHrCvLaborRepository>().InstancePerLifetimeScope();
 
             ////servises
             builder.RegisterType<ActiveDirectoryService>().As<IActiveDirectoryService>().InstancePerLifetimeScope();
@@ -60,6 +62,9 @@ namespace INTRANET
             builder.RegisterType<HrPositionService>().As<IHrPositionService>().InstancePerLifetimeScope();
             builder.RegisterType<HrCvDetailService>().As<IHrCvDetailService>().InstancePerLifetimeScope();
             builder.RegisterType<HrCvEductionService>().As<IHrCvEductionService>().InstancePerLifetimeScope();
+            builder.RegisterType<HrCvRelativeService>().As<IHrCvRelativeService>().InstancePerLifetimeScope();
+            builder.RegisterType<HrCvLaborService>().As<IHrCvLaborService>().InstancePerLifetimeScope();
+
 
             builder.RegisterFilterProvider();
             IContainer container = builder.Build();

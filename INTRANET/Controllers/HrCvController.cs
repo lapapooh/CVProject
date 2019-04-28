@@ -27,6 +27,9 @@ namespace INTRANET.Controllers
         public IHrPositionService _hrPositionService { get; set; }
         public IHrCvDetailService _hrCvDetailService { get; set; }
         public IHrCvEductionService _hrCvEducationService { get; set; }
+        public IHrCvLaborService _hrCvLaborService { get; set; }
+        public IHrCvRelativeService _hrCvRelativeService { get; set; }
+
 
         public HrCvController(IHrEmployeeService hrEmployeeService,
             IHrDepartmentService hrDepartmentService, IHrPositionService hrPositionService, IHrCvDetailService hrCvDetailService,
@@ -221,8 +224,9 @@ namespace INTRANET.Controllers
                 AcademicDegree = details.AcademicDegree,
                 AcademicTitle = details.AcademicTitle,
                 Languages = details.Languages,
-                EducationList = _hrCvEducationService.GetForCvDetail(details.Id).Select(c=> c.Education).ToList()
-
+                EducationList = _hrCvEducationService.GetForCvDetail(details.Id).Select(c => c.Education).ToList(),
+                LaborDetailList = _hrCvLaborService.GetForCvDetail(details.Id).Select(m => new HrCvLaborVM { Years = m.Years, Description = m.Description }).ToList(),
+                RelativesDetailsList = _hrCvRelativeService.GetForCvDetail(details.Id).Select(c => new HrCvRelativesVM { Degree = c.Degree, FullName = c.FullName, BirthDateAndPlace = c.BirthDateAndPlace, LaborDetails = c.LaborDetails, Address = c.Address, }).ToList()
             };
 
             AddDefaultsToModel(model, employee);
@@ -250,7 +254,7 @@ namespace INTRANET.Controllers
             if (!hasImageFile)
             {
                 //do not require image if previously there was one
-                if(employee.ImageNameContent == null || employee.ImageNameContent.Length == 0) //previously no image
+                if (employee.ImageNameContent == null || employee.ImageNameContent.Length == 0) //previously no image
                     ModelState.AddModelError(string.Empty, "Photo was not selected");
             }
             else
@@ -296,9 +300,9 @@ namespace INTRANET.Controllers
 
                     _hrCvDetailService.Update(details);
 
-                    
 
-                    _hrCvEducationService.Save(model.EducationList.Where(e=> !string.IsNullOrWhiteSpace(e)).Select(e => new HrCvEduction
+
+                    _hrCvEducationService.Save(model.EducationList.Where(e => !string.IsNullOrWhiteSpace(e)).Select(e => new HrCvEduction
                     {
                         Education = e
                     }).ToList(), details.Id);
