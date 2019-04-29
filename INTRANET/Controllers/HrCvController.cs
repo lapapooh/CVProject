@@ -17,6 +17,8 @@ using INTRANET.Common;
 using System.Reflection;
 using Spire.Doc;
 using System.Web.Hosting;
+using Spire.Doc.Documents;
+using Spire.Doc.Fields;
 
 namespace INTRANET.Controllers
 {
@@ -345,6 +347,7 @@ namespace INTRANET.Controllers
                 return RedirectToAction("Index", "HrCv");
 
             var employeeCV = _hrCvDetailService.GetForCv(employeeId, language);
+ 
             Document doc = new Document();
             string path;
             string filename;
@@ -358,7 +361,7 @@ namespace INTRANET.Controllers
             }
             else //only 2 possible cases
             {
-                path = "cv_template_ru.doc";
+                path = HostingEnvironment.MapPath("~/Content/HrCvTemplates/cv_template_ru.doc");
                 filename = employee.FullName + "(Ru).doc";
             }
 
@@ -378,9 +381,38 @@ namespace INTRANET.Controllers
             doc.Replace("{MEMBERSHIPS}", employeeCV?.Memberships.ToString() ?? "", true, true);
 
             Table table = doc.Sections[0].Tables[0] as Spire.Doc.Table;
-            //Insert a new row at the bottom of the table
-            table.AddRow(true, 5);
-            table.Rows[2].Cells[1].Paragraphs[0].AppendText("TEST TEST TEST TEST");
+            TableRow row = table.AddRow();
+
+            Paragraph p2 = row.Cells[0].AddParagraph();
+            TextRange TR2 = p2.AppendText("TEST");
+
+            TableRow lastRow = table.Rows[table.Rows.Count - 1];
+            TableRow newRow = lastRow.Clone();
+
+            Paragraph p3 = newRow.Cells[0].AddParagraph();
+            TextRange TR3 = p3.AppendText("TEST");
+
+            var details = GetCvDetail(employeeId, language);
+
+            var relativesList = _hrCvRelativeService.GetForCvDetail(details.Id);
+            while (relativesList.Count() < 0)
+            {
+                //TableRow DataRow = table.Rows[r + 1];
+
+                //TableRow lastRow1 = table.Rows[table.Rows.Count - 1];
+                //TableRow newRow1 = lastRow.Clone();
+                TableRow row1 = table.AddRow();
+
+                //C Represents Column.
+                for (int c = 0; c < table.Rows[1].Cells.Count; c++)
+                {
+                    //Cell Alignment
+                    row1.Cells[c].CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+                    //Fill Data in Rows
+                    Paragraph p4 = row1.Cells[c].AddParagraph();
+                    TextRange TR4 = p4.AppendText(relativesList.ElementAt(c).ToString());
+                }
+            }
 
             filename = filename.Replace(@"\", " ")
                             .Replace(@"/", " ")
