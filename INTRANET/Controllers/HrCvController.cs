@@ -19,6 +19,7 @@ using Spire.Doc;
 using System.Web.Hosting;
 using Spire.Doc.Documents;
 using Spire.Doc.Fields;
+using System.Drawing;
 
 namespace INTRANET.Controllers
 {
@@ -430,9 +431,35 @@ namespace INTRANET.Controllers
             doc.Replace("{AWARDS}", string.Join("; ", employeeCV?.Awards ?? new List<HrCvAward>()), true, true);
             doc.Replace("{MEMBERSHIPS}", string.Join("; ", employeeCV?.Memberships ?? new List<HrCvMembership>()), true, true);
 
-            
-            
-            
+            //replace image
+            //Loop through the paragraphs of the section
+            foreach (Paragraph paragraph in doc.Sections[0].Paragraphs)
+            {
+                //Loop through the child elements of paragraph
+                foreach (DocumentObject docObj in paragraph.ChildObjects)
+                {
+                    if (docObj.DocumentObjectType == DocumentObjectType.Picture)
+                    {
+                        DocPicture picture = docObj as DocPicture;
+                        var w = picture.Width;
+                        var h = picture.Height;
+                        if (employee.ImageNameContent != null && employee.ImageNameContent.Length > 0)
+                        {
+                            picture.LoadImage(Image.FromStream(new MemoryStream(employee.ImageNameContent)));
+                        } //no image loaded
+                        else
+                        {
+                            picture.LoadImage(Image.FromFile(HostingEnvironment.MapPath("~/Content/HrCvImages/no-image.PNG")));
+                        }
+                        //set back to initial image size
+                        picture.Width = w;
+                        picture.Height = h;
+                    }
+                }
+            }
+
+
+
             var details = GetCvDetail(employeeId, language);
 
             var relativesList = _hrCvRelativeService.GetForCvDetail(details.Id);
