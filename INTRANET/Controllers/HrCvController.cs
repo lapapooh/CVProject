@@ -29,6 +29,9 @@ namespace INTRANET.Controllers
         public IHrCvEductionService _hrCvEducationService { get; set; }
         public IHrCvLaborService _hrCvLaborService { get; set; }
         public IHrCvRelativeService _hrCvRelativeService { get; set; }
+        public IHrCvAwardService _hrCvAwardService { get; set; }
+        public IHrCvMembershipService _hrCvMembershipService { get; set; }
+
 
 
         public HrCvController(IHrEmployeeService hrEmployeeService,
@@ -225,6 +228,8 @@ namespace INTRANET.Controllers
                 AcademicTitle = details.AcademicTitle,
                 Languages = details.Languages,
                 EducationList = _hrCvEducationService.GetForCvDetail(details.Id).Select(c => c.Education).ToList(),
+                AwardList = _hrCvAwardService.GetForCvDetail(details.Id).Select(c => c.Award).ToList(),
+                MembershipList = _hrCvMembershipService.GetForCvDetail(details.Id).Select(c => c.Membership).ToList(),
                 LaborDetailList = _hrCvLaborService.GetForCvDetail(details.Id).Select(m => new HrCvLaborVM { Years = m.Years, Description = m.Description }).ToList(),
                 RelativesDetailsList = _hrCvRelativeService.GetForCvDetail(details.Id).Select(c => new HrCvRelativesVM { Degree = c.Degree, FullName = c.FullName, BirthDateAndPlace = c.BirthDateAndPlace, LaborDetails = c.LaborDetails, Address = c.Address, }).ToList()
             };
@@ -236,6 +241,10 @@ namespace INTRANET.Controllers
                 model.LaborDetailList.Add(new HrCvLaborVM());
             if (!model.RelativesDetailsList.Any())
                 model.RelativesDetailsList.Add(new HrCvRelativesVM());
+            if (!model.AwardList.Any())
+                model.AwardList.Add("");
+            if (!model.MembershipList.Any())
+                model.MembershipList.Add("");
 
             AddDefaultsToModel(model, employee);
 
@@ -325,6 +334,45 @@ namespace INTRANET.Controllers
                     {
                         Education = e
                     }).ToList(), details.Id);
+
+
+                    _hrCvAwardService.Save(model.AwardList.Where(e => !string.IsNullOrWhiteSpace(e)).Select(e => new HrCvAward
+                    {
+                        Award = e
+                    }).ToList(), details.Id);
+
+
+                    _hrCvLaborService.Save(model.LaborDetailList.Where(e =>
+                    !string.IsNullOrWhiteSpace(e.Years) &&
+                    !string.IsNullOrWhiteSpace(e.Description)).Select(e => new HrCvLabor
+                    {
+                        Years = e.Years,
+                        Description = e.Description,
+                    }).ToList(), details.Id);
+
+
+                    _hrCvRelativeService.Save(model.RelativesDetailsList.Where(e =>
+                    !string.IsNullOrWhiteSpace(e.Address) &&
+                    !string.IsNullOrWhiteSpace(e.BirthDateAndPlace) &&
+                    !string.IsNullOrWhiteSpace(e.Degree) &&
+                    !string.IsNullOrWhiteSpace(e.FullName) &&
+                    !string.IsNullOrWhiteSpace(e.LaborDetails)
+                    ).Select(e => new HrCvRelative
+                    {
+                        Degree = e.Degree,
+                        FullName = e.FullName,
+                        BirthDateAndPlace = e.BirthDateAndPlace,
+                        LaborDetails = e.LaborDetails,
+                        Address = e.Address
+
+                    }).ToList(), details.Id);
+
+                    _hrCvMembershipService.Save(model.MembershipList.Where(e => !string.IsNullOrWhiteSpace(e)).Select(e => new HrCvMembership
+                    {
+                        Membership = e
+                    }).ToList(), details.Id);
+
+
                 }
                 catch (Exception)
                 {

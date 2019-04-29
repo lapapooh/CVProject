@@ -47,6 +47,8 @@ namespace INTRANET
             builder.RegisterType<HrCvEductionRepository>().As<IHrCvEductionRepository>().InstancePerLifetimeScope();
             builder.RegisterType<HrCvRelativeRepository>().As<IHrCvRelativeRepository>().InstancePerLifetimeScope();
             builder.RegisterType<HrCvLaborRepository>().As<IHrCvLaborRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<HrCvAwardRepository>().As<IHrCvAwardRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<HrCvMembershipRepository>().As<IHrCvMembershipRepository>().InstancePerLifetimeScope();
 
             ////servises
             builder.RegisterType<ActiveDirectoryService>().As<IActiveDirectoryService>().InstancePerLifetimeScope();
@@ -64,6 +66,8 @@ namespace INTRANET
             builder.RegisterType<HrCvEductionService>().As<IHrCvEductionService>().InstancePerLifetimeScope();
             builder.RegisterType<HrCvRelativeService>().As<IHrCvRelativeService>().InstancePerLifetimeScope();
             builder.RegisterType<HrCvLaborService>().As<IHrCvLaborService>().InstancePerLifetimeScope();
+            builder.RegisterType<HrCvAwardService>().As<IHrCvAwardService>().InstancePerLifetimeScope();
+            builder.RegisterType<HrCvMembershipService>().As<IHrCvMembershipService>().InstancePerLifetimeScope();
 
 
             builder.RegisterFilterProvider();

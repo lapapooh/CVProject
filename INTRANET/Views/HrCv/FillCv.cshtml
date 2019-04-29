@@ -99,100 +99,100 @@
                         <div role="tabpanel" class="tab-pane" id="personal">
                             <br />
 
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="DateOfBirth">Date of Birth:</label>
-                                        <input readonly type='text' class="form-control" value="@Model.DateOfBirth.ToShortDateString()" />
-                                    </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="DateOfBirth">Date of Birth:</label>
+                                    <input readonly type='text' class="form-control" value="@Model.DateOfBirth.ToShortDateString()" />
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="Nationality">Nationality:</label>
-                                        @Html.TextBoxFor(m => m.Nationality, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "error" })
-                                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="Nationality">Nationality:</label>
+                                    @Html.TextBoxFor(m => m.Nationality, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "error" })
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="PlaceOfBirth">Place of Birth:</label>
-                                        @Html.TextBoxFor(m => m.PlaceOfBirth, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.PlaceOfBirth, "", new { @class = "error" })
-                                    </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="PlaceOfBirth">Place of Birth:</label>
+                                    @Html.TextBoxFor(m => m.PlaceOfBirth, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.PlaceOfBirth, "", new { @class = "error" })
                                 </div>
+                            </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="PartyMembership">Party Membership:</label>
-                                        @Html.TextBoxFor(m => m.PartyMembership, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.PartyMembership, "", new { @class = "error" })
-                                    </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="PartyMembership">Party Membership:</label>
+                                    @Html.TextBoxFor(m => m.PartyMembership, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.PartyMembership, "", new { @class = "error" })
                                 </div>
+                            </div>
 
 
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="AcademicDegree">Academic Degree:</label>
-                                        @Html.TextBoxFor(m => m.AcademicDegree, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.AcademicDegree, "", new { @class = "error" })
-                                    </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AcademicDegree">Academic Degree:</label>
+                                    @Html.TextBoxFor(m => m.AcademicDegree, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.AcademicDegree, "", new { @class = "error" })
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="AcademicTitle">Academic Title:</label>
-                                        @Html.TextBoxFor(m => m.AcademicTitle, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.AcademicTitle, "", new { @class = "error" })
-                                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AcademicTitle">Academic Title:</label>
+                                    @Html.TextBoxFor(m => m.AcademicTitle, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.AcademicTitle, "", new { @class = "error" })
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="EducationDegree">Education Degree:</label>
-                                        @Html.TextBoxFor(m => m.EducationDegree, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.EducationDegree, "", new { @class = "error" })
-                                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="EducationDegree">Education Degree:</label>
+                                    @Html.TextBoxFor(m => m.EducationDegree, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.EducationDegree, "", new { @class = "error" })
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="EducationSpeciality">Education Speciality:</label>
-                                        @Html.TextBoxFor(m => m.EducationSpeciality, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.EducationSpeciality, "", new { @class = "error" })
-                                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="EducationSpeciality">Education Speciality:</label>
+                                    @Html.TextBoxFor(m => m.EducationSpeciality, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.EducationSpeciality, "", new { @class = "error" })
                                 </div>
-   
+                            </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <b>Education History:</b>
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-md-12" data-bind='foreach: educations'>
-                                    <!--for labels and hint messages, need this row for alignemnt of controls-->
-                                    <div class="row">
-                                        <div class="col-md-9">
-                                            <div class="form-group">
 
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                
-                                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <b>Education History:</b>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12" data-bind='foreach: educations'>
+                                <!--for labels and hint messages, need this row for alignemnt of controls-->
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-9">
-                                            <div class="form-group">
-                                                <input class="form-control" data-bind="value: Name, attr: {name: 'EducationList[' + $index() + ']'}" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <a href="#" data-bind="click: $root.removeEducation" class="btn btn-warning">Remove</a>
-                                                <a href="#" data-bind="click: $root.addEducation" class="btn btn-success">Add</a>
-                                            </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: Name, attr: {name: 'EducationList[' + $index() + ']'}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <a href="#" data-bind="click: $root.removeEducation" class="btn btn-warning">Remove</a>
+                                            <a href="#" data-bind="click: $root.addEducation" class="btn btn-success">Add</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                             <div class="col-md-12 btn-container">
@@ -208,7 +208,7 @@
                         </div>
                         <div role="tabpanel" class="tab-pane" id="additional">
                             <br />
-                            <div class="col-md-3">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="Languages">Languages:</label>
                                     <div class='input-group'>
@@ -217,25 +217,71 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="AwardList">Awards:</label>
-                                    <div class='input-group'>
-                                        @Html.TextBoxFor(m => m.AwardList, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.AwardList, "", new { @class = "error" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="MembershipList">MembershipList:</label>
-                                    <div class='input-group'>
-                                        @Html.TextBoxFor(m => m.MembershipList, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.MembershipList, "", new { @class = "error" })
-                                    </div>
-                                </div>
-                            </div>
 
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Awards: </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" data-bind='foreach: awards'>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: Name, attr: {name: 'AwardList[' + $index() + ']'}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <a href="#" data-bind="click: $root.removeAward" class="btn btn-warning">Remove</a>
+                                            <a href="#" data-bind="click: $root.addAward" class="btn btn-success">Add</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Memberships: </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" data-bind='foreach: memberships'>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: Name, attr: {name: 'MembershipList[' + $index() + ']'}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <a href="#" data-bind="click: $root.removeMembership" class="btn btn-warning">Remove</a>
+                                            <a href="#" data-bind="click: $root.addMembership" class="btn btn-success">Add</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-12 btn-container">
                                 <div class="btn-group">
                                     <span class="btn btn-warning btn-previous">Previous</span>
@@ -439,23 +485,19 @@
             var self = this;
             self.Name = ko.observable(text);
         };
-        //var laborItem=function(Years, Description){
-        //    var self=this;
-        //    self.Years=ko.observable(Years);
-        //    self.Description=ko.observable(Description);
-        //};
-
         //use ths model for the whole page
         //to add logic for labor, relatives, etc:
         //1. add those to arguments of constructor
         //2. create methods for add and delete
         //3. do not forget about HTML markup
-        var CvModel = function (educations, laborDetails, relatives) {
+        var CvModel = function (educations, laborDetails, relatives, awards, memberships) {
 
             var self = this;
             self.educations = ko.observableArray(educations);
             self.laborDetails = ko.observableArray(laborDetails);
             self.relatives = ko.observableArray(relatives);
+            self.awards=ko.observableArray(awards);
+            self.memberships=ko.observableArray(memberships);
 
             self.addEducation = function () {
                 self.educations.push(new item(""));
@@ -495,11 +537,33 @@
                 if (self.relatives().length == 0)
                     self.addRelative();
             }
+
+            self.addAward=function(){
+                self.awards.push(new item(""));
+            }
+
+            self.removeAward=function(award){
+                self.awards.remove(award);
+                if (self.awards().length == 0)
+                    self.addAward();
+            }
+
+            self.addMembership=function(){
+                self.memberships.push(new item(""));
+            }
+
+            self.removeMembership=function(membership){
+                self.memberships.remove(membership);
+                if(self.memberships.length==0)
+                    self.addMembership();
+            }
         };
 
         var viewModel = new CvModel(@Html.Raw(Json.Encode(Model.EducationList.Select(e=> new {Name = e }))),
             @Html.Raw(Json.Encode(Model.LaborDetailList.Select(e=> new { Years = e.Years, Description= e.Description}))),
-            @Html.Raw(Json.Encode(Model.RelativesDetailsList.Select(e=> new { Degree = e.Degree, FullName= e.Degree, BirthDateAndPlace=e.BirthDateAndPlace, LaborDetails=e.LaborDetails, Address=e.Address}))));
+            @Html.Raw(Json.Encode(Model.RelativesDetailsList.Select(e=> new { Degree = e.Degree, FullName= e.Degree, BirthDateAndPlace=e.BirthDateAndPlace, LaborDetails=e.LaborDetails, Address=e.Address}))),
+            @Html.Raw(Json.Encode(Model.AwardList.Select(e=> new {Name = e }))),
+            @Html.Raw(Json.Encode(Model.MembershipList.Select(e=> new {Name = e }))));
         ko.applyBindings(viewModel);
 
     </script>
