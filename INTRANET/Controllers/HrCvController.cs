@@ -345,8 +345,9 @@ namespace INTRANET.Controllers
 
 
                     _hrCvLaborService.Save(model.LaborDetailList.Where(e =>
-                    !string.IsNullOrWhiteSpace(e.Years) &&
-                    !string.IsNullOrWhiteSpace(e.Description)).Select(e => new HrCvLabor
+                        !string.IsNullOrWhiteSpace(e.Years) &&
+                        !string.IsNullOrWhiteSpace(e.Description)
+                    ).Select(e => new HrCvLabor
                     {
                         Years = e.Years,
                         Description = e.Description,
@@ -354,11 +355,11 @@ namespace INTRANET.Controllers
 
 
                     _hrCvRelativeService.Save(model.RelativesDetailsList.Where(e =>
-                    !string.IsNullOrWhiteSpace(e.Address) &&
-                    !string.IsNullOrWhiteSpace(e.BirthDateAndPlace) &&
-                    !string.IsNullOrWhiteSpace(e.Degree) &&
-                    !string.IsNullOrWhiteSpace(e.FullName) &&
-                    !string.IsNullOrWhiteSpace(e.LaborDetails)
+                        !string.IsNullOrWhiteSpace(e.Address) &&
+                        !string.IsNullOrWhiteSpace(e.BirthDateAndPlace) &&
+                        !string.IsNullOrWhiteSpace(e.Degree) &&
+                        !string.IsNullOrWhiteSpace(e.FullName) &&
+                        !string.IsNullOrWhiteSpace(e.LaborDetails)
                     ).Select(e => new HrCvRelative
                     {
                         Degree = e.Degree,
@@ -414,10 +415,11 @@ namespace INTRANET.Controllers
             }
 
             doc.LoadFromFile(path);
-            doc.Replace("{FULLNAME}", employee.FullName, true, true);
-            doc.Replace("{CURRENTPOSITIONDATE}", employee.PositionStartDate.Value.ToString("dd MMMM yyyy"), true, true);
-            doc.Replace("{DATEOFBIRTH}", employee.DateOfBirth.ToString("MM/dd/yyyy"), true, true);
-            doc.Replace("{PLACEOFBIRTH}", employee.PlaceOfBirth.ToString(), true, true);
+            doc.Replace("{FULLNAME}", employee.FullName, true, false);
+            doc.Replace("{CURRENTPOSITION}", language == HrCvLanguage.Ru ? employee.Position.TitleRu : employee.Position.TitleUz, true, true);
+            doc.Replace("{CURRENTPOSITIONDATE}", employee.PositionStartDate?.ToString("dd MMMM yyyy"), true, true);
+            doc.Replace("{DATEOFBIRTH}", employee.DateOfBirth.ToString("dd.MM.yyyy"), true, true);
+            doc.Replace("{PLACEOFBIRTH}", employee.PlaceOfBirth, true, true);
             doc.Replace("{NATIONALITY}", employeeCV?.Nationality ?? "", true, true);
             doc.Replace("{PARTYMEMBERSHIP}", employeeCV?.PartyMembership ?? "", true, true);
             doc.Replace("{EDUCATIONDEGREE}", employeeCV?.EducationDegree ?? "", true, true);
@@ -425,42 +427,47 @@ namespace INTRANET.Controllers
             doc.Replace("{ACADEMICDEGREE}", employeeCV?.AcademicDegree ?? "", true, true);
             doc.Replace("{ACADEMICTITLE}", employeeCV?.AcademicTitle ?? "", true, true);
             doc.Replace("{LANGUAGES}", employeeCV?.Languages ?? "", true, true);
-            doc.Replace("{AWARDS}", employeeCV?.Awards.ToString() ?? "", true, true);
-            doc.Replace("{MEMBERSHIPS}", employeeCV?.Memberships.ToString() ?? "", true, true);
+            doc.Replace("{AWARDS}", string.Join("; ", employeeCV?.Awards ?? new List<HrCvAward>()), true, true);
+            doc.Replace("{MEMBERSHIPS}", string.Join("; ", employeeCV?.Memberships ?? new List<HrCvMembership>()), true, true);
 
-            Table table = doc.Sections[0].Tables[0] as Spire.Doc.Table;
-            TableRow row = table.AddRow();
-
-            Paragraph p2 = row.Cells[0].AddParagraph();
-            TextRange TR2 = p2.AppendText("TEST");
-
-            TableRow lastRow = table.Rows[table.Rows.Count - 1];
-            TableRow newRow = lastRow.Clone();
-
-            Paragraph p3 = newRow.Cells[0].AddParagraph();
-            TextRange TR3 = p3.AppendText("TEST");
-
+            
+            
+            
             var details = GetCvDetail(employeeId, language);
 
             var relativesList = _hrCvRelativeService.GetForCvDetail(details.Id);
-            while (relativesList.Count() < 0)
+
+            //for savety
+            if (doc.Sections.Count > 0 && doc.Sections[0].Tables.Count > 0)
             {
-                //TableRow DataRow = table.Rows[r + 1];
+                Table table = doc.Sections[0].Tables[0] as Spire.Doc.Table;
 
-                //TableRow lastRow1 = table.Rows[table.Rows.Count - 1];
-                //TableRow newRow1 = lastRow.Clone();
-                TableRow row1 = table.AddRow();
-
-                //C Represents Column.
-                for (int c = 0; c < table.Rows[1].Cells.Count; c++)
+                //by default there is row with template for data which is initially last row
+                //duplicate it, change text in cell, insert it before template
+                foreach (var r in relativesList)
                 {
-                    //Cell Alignment
-                    row1.Cells[c].CellFormat.VerticalAlignment = VerticalAlignment.Middle;
-                    //Fill Data in Rows
-                    Paragraph p4 = row1.Cells[c].AddParagraph();
-                    TextRange TR4 = p4.AppendText(relativesList.ElementAt(c).ToString());
+                    var lastRowIndex = table.Rows.Count - 1;
+                    if (lastRowIndex < 0) continue; //for savety
+
+                    TableRow lastRow = table.Rows[lastRowIndex];
+                    TableRow newRow = lastRow.Clone();
+
+                    if (newRow.Cells.Count < 5) continue;//for savety
+
+                    newRow.Cells[0].Paragraphs[0].Text = r.Degree;
+                    newRow.Cells[1].Paragraphs[0].Text = r.FullName;
+                    newRow.Cells[2].Paragraphs[0].Text = r.BirthDateAndPlace;
+                    newRow.Cells[3].Paragraphs[0].Text = r.LaborDetails;
+                    newRow.Cells[4].Paragraphs[0].Text = r.Address;
+
+                    table.Rows.Insert(lastRowIndex, newRow);
                 }
+
+                //remove last row as it contains just a template
+                table.Rows.RemoveAt(table.Rows.Count - 1);
             }
+
+            
 
             filename = filename.Replace(@"\", " ")
                             .Replace(@"/", " ")

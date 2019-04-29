@@ -319,13 +319,13 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <input class="form-control" data-bind="value: Years" />
+                                            <input class="form-control" data-bind="value: Years, attr: {name: 'LaborDetailList[' + $index() + '].Years'}" />
 
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input class="form-control" data-bind="value: Description" />
+                                            <input class="form-control" data-bind="value: Description, attr: {name: 'LaborDetailList[' + $index() + '].Description'}" />
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -374,18 +374,18 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <input class="form-control" data-bind="value: FullName" />
+                                            <input class="form-control" data-bind="value: FullName, attr: {name: 'RelativesDetailsList[' + $index() + '].FullName'}" />
 
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <input class="form-control" data-bind="value: BirthDateAndPlace" />
+                                            <input class="form-control" data-bind="value: BirthDateAndPlace, attr: {name: 'RelativesDetailsList[' + $index() + '].BirthDateAndPlace'}" />
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <input class="form-control" data-bind="value: Degree" />
+                                            <input class="form-control" data-bind="value: Degree, attr: {name: 'RelativesDetailsList[' + $index() + '].Degree'}" />
                                         </div>
                                     </div>
                                 </div>
@@ -409,12 +409,12 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <input class="form-control" data-bind="value: LaborDetails" />
+                                            <input class="form-control" data-bind="value: LaborDetails, attr: {name: 'RelativesDetailsList[' + $index() + '].LaborDetails'}" />
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <input class="form-control" data-bind="value: Address" />
+                                            <input class="form-control" data-bind="value: Address, attr: {name: 'RelativesDetailsList[' + $index() + '].Address'}" />
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -552,9 +552,10 @@
                 self.memberships.push(new item(""));
             }
 
-            self.removeMembership=function(membership){
+            self.removeMembership = function (membership) {
+
                 self.memberships.remove(membership);
-                if(self.memberships.length==0)
+                if(self.memberships().length==0)
                     self.addMembership();
             }
         };
