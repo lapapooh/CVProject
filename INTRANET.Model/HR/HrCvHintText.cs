@@ -15,6 +15,7 @@ namespace INTRANET.Model
         [Required]
         public HrCvField Field { get; set; }
         public string Text { get; set; }
+        public string FieldName { get; set; }
     }
 
     public enum HrCvField

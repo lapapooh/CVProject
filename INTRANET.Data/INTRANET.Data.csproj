@@ -85,6 +85,10 @@
     <Compile Include="Migrations\201903280613530_AdjustedFileFields.Designer.cs">
       <DependentUpon>201903280613530_AdjustedFileFields.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905010716290_NewFieldForHint.cs" />
+    <Compile Include="Migrations\201905010716290_NewFieldForHint.Designer.cs">
+      <DependentUpon>201905010716290_NewFieldForHint.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AcademicYearRepository.cs" />
@@ -138,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903280613530_AdjustedFileFields.resx">
       <DependentUpon>201903280613530_AdjustedFileFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905010716290_NewFieldForHint.resx">
+      <DependentUpon>201905010716290_NewFieldForHint.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
