@@ -39,13 +39,19 @@ namespace INTRANET.Controllers
 
         public HrCvController(IHrEmployeeService hrEmployeeService,
             IHrDepartmentService hrDepartmentService, IHrPositionService hrPositionService, IHrCvDetailService hrCvDetailService,
-            IHrCvEductionService hrCvEducationService)
+            IHrCvEductionService hrCvEducationService, IHrCvLaborService hrCvLaborService, IHrCvRelativeService hrCvRelativeService,
+            IHrCvAwardService hrCvAwardService, IHrCvMembershipService hrCvMembershipService)
         {
             _hrEmployeeService = hrEmployeeService;
             _hrDepartmentService = hrDepartmentService;
             _hrPositionService = hrPositionService;
             _hrCvDetailService = hrCvDetailService;
             _hrCvEducationService = hrCvEducationService;
+            _hrCvLaborService = hrCvLaborService;
+            _hrCvRelativeService = hrCvRelativeService;
+            _hrCvAwardService = hrCvAwardService;
+            _hrCvMembershipService = hrCvMembershipService;
+
         }
 
         // GET: HrCv
@@ -397,7 +403,7 @@ namespace INTRANET.Controllers
                 return RedirectToAction("Index", "HrCv");
 
             var employeeCV = _hrCvDetailService.GetForCv(employeeId, language);
- 
+
             Document doc = new Document();
             string path;
             string filename;
@@ -494,7 +500,7 @@ namespace INTRANET.Controllers
                 table.Rows.RemoveAt(table.Rows.Count - 1);
             }
 
-            
+
 
             filename = filename.Replace(@"\", " ")
                             .Replace(@"/", " ")

@@ -275,6 +275,7 @@
     <Compile Include="Controllers\Api\AcademicYearController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HrCvHintController.cs" />
     <Compile Include="Controllers\HrEmployeeDocumentController.cs" />
     <Compile Include="Controllers\HrCvController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -282,6 +283,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\HrCvHintVM.cs" />
     <Compile Include="Models\HrCvListVM.cs" />
     <Compile Include="Models\HrCvRelativesVM.cs" />
     <Compile Include="Models\HrCvVM.cs" />
@@ -423,6 +425,10 @@
     <Content Include="Views\HrCv\FillCv.cshtml" />
     <Content Include="Views\HrEmployeeDocument\View.cshtml" />
     <Content Include="Views\HrEmployeeDocument\_DocumentsTable.cshtml" />
+    <Content Include="Views\HrCvHint\Index.cshtml" />
+    <Content Include="Views\HrCvHint\Create.cshtml" />
+    <Content Include="Views\HrCvHint\Details.cshtml" />
+    <Content Include="Views\HrCvHint\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\AcademicYear\" />
