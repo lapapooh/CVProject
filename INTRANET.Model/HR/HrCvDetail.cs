@@ -36,7 +36,6 @@ namespace INTRANET.Model
     public enum HrCvLanguage
     {
         Ru = 1,
-        Uz = 2,
-        En = 3
+        Uz = 2
     }
 }
