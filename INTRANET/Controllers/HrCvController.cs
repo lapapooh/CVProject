@@ -401,8 +401,10 @@ namespace INTRANET.Controllers
 
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
-
-            var employeeCV = _hrCvDetailService.GetForCv(employeeId, language);
+            
+            var employeeCV = _hrCvDetailService.GetForCv(employeeId, language) ?? new HrCvDetail();
+            var awards = (employeeCV.Awards != null) ? employeeCV.Awards : new List<HrCvAward>();
+            var memberships = (employeeCV.Memberships != null) ? employeeCV.Memberships : new List<HrCvMembership>();
 
             Document doc = new Document();
             string path;
@@ -434,8 +436,8 @@ namespace INTRANET.Controllers
             doc.Replace("{ACADEMICDEGREE}", employeeCV?.AcademicDegree ?? "", true, true);
             doc.Replace("{ACADEMICTITLE}", employeeCV?.AcademicTitle ?? "", true, true);
             doc.Replace("{LANGUAGES}", employeeCV?.Languages ?? "", true, true);
-            doc.Replace("{AWARDS}", string.Join("; ", employeeCV?.Awards ?? new List<HrCvAward>()), true, true);
-            doc.Replace("{MEMBERSHIPS}", string.Join("; ", employeeCV?.Memberships ?? new List<HrCvMembership>()), true, true);
+            doc.Replace("{AWARDS}", string.Join("; ", awards.Select(x => x.Award).ToList()), true, true);
+            doc.Replace("{MEMBERSHIPS}", string.Join("; ", memberships.Select(x => x.Membership).ToList()), true, true);
 
             //replace image
             //Loop through the paragraphs of the section
