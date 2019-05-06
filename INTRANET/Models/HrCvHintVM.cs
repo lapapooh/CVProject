@@ -15,9 +15,10 @@ namespace INTRANET.Models
         [Required(ErrorMessage = "Field cannot be empty")]
         public HrCvField Field { get; set; }
         [Required(ErrorMessage = "Field Name cannot be empty")]
-        [Display(Name = "Field Name")]
+        [Display(Name = "Field title in selected language")]
         public string FieldName { get; set; }
         [Required(ErrorMessage = "Text cannot be empty")]
+        [Display(Name = "Hint text")]
         public string Text { get; set; }
     }
 }
