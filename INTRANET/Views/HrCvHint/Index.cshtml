@@ -26,31 +26,9 @@
             </td>
             <td>
                 <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "HrCvHint", new { id = item.Id })'">Edit</button>
-                <button type="button" class="btn btn-danger" onclick="DoComfirm(@item.Id)">Delete</button>    
+                <button type="button" class="btn btn-danger" onclick="if (confirm('Are you sure you want to delete?')) { window.location.href='@Url.Action("Delete", "HrCvHint", new { id=item.Id})'; }">Delete</button>
             </td>
         </tr>
     }
 
 </table>
-@section scripts{
-    <script type="text/javascript">
-        function DoComfirm(id) {
-            if (!confirm('Are you sure to delete this record ?')) return;
-
-            $.ajax({
-                type: "POST",
-                url: "/HrCvHint/Delete",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: JSON.stringify({ id: id }),
-                success: function () {
-                    $('table#hint-table tr[data-doc-id="' + id + '"]').remove();
-                },
-                error: function(e){
-                    console.log(e);
-                }
-            });
-        }
-    </script>
-
-}

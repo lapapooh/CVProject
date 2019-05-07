@@ -44,7 +44,7 @@ namespace INTRANET.Controllers
                 return View(model);
             }
         }
-        [HttpPost]
+        
         public ActionResult Delete(int id)
         {
             _hrCvHintService.Delete(id);
