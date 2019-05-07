@@ -278,6 +278,7 @@
     <Compile Include="Controllers\HrCvHintController.cs" />
     <Compile Include="Controllers\HrEmployeeDocumentController.cs" />
     <Compile Include="Controllers\HrCvController.cs" />
+    <Compile Include="Controllers\HrPositionController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -289,6 +290,7 @@
     <Compile Include="Models\HrCvVM.cs" />
     <Compile Include="Models\HrEmployeeListVM.cs" />
     <Compile Include="Models\HrCvLaborVM.cs" />
+    <Compile Include="Models\HrPositionVM.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -427,8 +429,10 @@
     <Content Include="Views\HrEmployeeDocument\_DocumentsTable.cshtml" />
     <Content Include="Views\HrCvHint\Index.cshtml" />
     <Content Include="Views\HrCvHint\Create.cshtml" />
-    <Content Include="Views\HrCvHint\Details.cshtml" />
     <Content Include="Views\HrCvHint\Edit.cshtml" />
+    <Content Include="Views\HrPosition\Index.cshtml" />
+    <Content Include="Views\HrPosition\Edit.cshtml" />
+    <Content Include="Views\HrPosition\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\AcademicYear\" />

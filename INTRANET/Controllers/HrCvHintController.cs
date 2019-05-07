@@ -44,18 +44,12 @@ namespace INTRANET.Controllers
                 return View(model);
             }
         }
-
+        
         public ActionResult Delete(int id)
         {
             _hrCvHintService.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public ActionResult Details(int id)
-        {
-            return View(MapTo(_hrCvHintService.GetByID(id)));
-        }
+        }       
 
         [HttpGet]
         public ActionResult Edit(int id)
