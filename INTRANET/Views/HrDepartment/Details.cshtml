@@ -1,0 +1,44 @@
+﻿@model INTRANET.Models.HrDepartmentVM
+
+<div>
+    <h4>HrDepartmentVM</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Code_1C)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Code_1C)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TitleRu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TitleRu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TitleUz)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TitleUz)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TitleEn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TitleEn)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
