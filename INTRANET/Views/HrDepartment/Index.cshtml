@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<INTRANET.Models.HrDepartmentVM>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<div>
+    <button type="button" class="btn btn-success btn-department" onclick="location.href='@Url.Action("Create", "HrDepartment")'">Create</button>
+</div>
 <table class="table">
     <tr>
 
@@ -18,22 +18,26 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TitleRu)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TitleUz)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TitleEn)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleRu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleUz)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleEn)
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "HrDepartment", new { id = item.Id })'">Edit</button>
+            </td>
+        </tr>
+    }
 
 </table>
+
+@section Styles {
+    <link href="~/Content/hrCvDepartment.css" rel="stylesheet" runat="server" />
+}

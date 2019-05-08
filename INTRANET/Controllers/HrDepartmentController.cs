@@ -58,6 +58,7 @@ namespace INTRANET.Controllers
         {
             return new HrDepartment
             {
+                Id = model.Id,
                 Code_1C = model.Code_1C,
                 TitleRu = model.TitleRu,
                 TitleUz = model.TitleUz,
@@ -68,6 +69,7 @@ namespace INTRANET.Controllers
         {
             return new HrDepartmentVM
             {
+                Id = model.Id,
                 Code_1C = model.Code_1C,
                 TitleRu = model.TitleRu,
                 TitleUz = model.TitleUz,

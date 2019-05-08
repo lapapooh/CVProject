@@ -51,6 +51,7 @@ namespace INTRANET
             builder.RegisterType<HrCvMembershipRepository>().As<IHrCvMembershipRepository>().InstancePerLifetimeScope();
             builder.RegisterType<HrCvHintTextRepository>().As<IHrCvHintTextRepository>().InstancePerLifetimeScope();
             builder.RegisterType<HrPositionRepository>().As<IHrPositionRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<HrDepartmentRepository>().As<IHrDepartmentRepository>().InstancePerLifetimeScope();
 
             ////servises
             builder.RegisterType<ActiveDirectoryService>().As<IActiveDirectoryService>().InstancePerLifetimeScope();
@@ -72,6 +73,7 @@ namespace INTRANET
             builder.RegisterType<HrCvMembershipService>().As<IHrCvMembershipService>().InstancePerLifetimeScope();
             builder.RegisterType<HrCvHintTextService>().As<IHrCvHintTextService>().InstancePerLifetimeScope();
             builder.RegisterType<HrPositionService>().As<IHrPositionService>().InstancePerLifetimeScope();
+            builder.RegisterType<HrDepartmentRepository>().As<IHrDepartmentRepository>().InstancePerLifetimeScope();
 
 
             builder.RegisterFilterProvider();

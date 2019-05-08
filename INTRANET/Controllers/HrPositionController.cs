@@ -76,7 +76,6 @@ namespace INTRANET.Controllers
                 TitleRu = model.TitleRu,
                 TitleEn = model.TitleEn,
                 TitleUz = model.TitleUz
-
             };
         }
     }
