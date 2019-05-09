@@ -46,5 +46,20 @@ namespace INTRANET.Service
         {
             return this._repository.GetAny();
         }
+
+        public void CreateDefauls(HrCvLanguage language)
+        {
+
+        }
+
+        private void CreateDefaultsRu()
+        {
+
+        }
+
+        private void CreateDefaultsUz()
+        {
+
+        }
     }
 }
