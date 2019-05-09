@@ -20,6 +20,8 @@ using System.Web.Hosting;
 using Spire.Doc.Documents;
 using Spire.Doc.Fields;
 using System.Drawing;
+using System.Net.Mail;
+using System.Text;
 
 namespace INTRANET.Controllers
 {
@@ -401,7 +403,7 @@ namespace INTRANET.Controllers
 
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
-            
+
             var employeeCV = _hrCvDetailService.GetForCv(employeeId, language) ?? new HrCvDetail();
             var awards = (employeeCV.Awards != null) ? employeeCV.Awards : new List<HrCvAward>();
             var memberships = (employeeCV.Memberships != null) ? employeeCV.Memberships : new List<HrCvMembership>();
@@ -559,6 +561,58 @@ namespace INTRANET.Controllers
                 model.ImageContent = Convert.ToBase64String(employee.ImageNameContent);
             }
         }
+
+        public ActionResult SendEmail(String text, int[] selectedEmployees)
+        {
+            if (!selectedEmployees.Any() || string.IsNullOrWhiteSpace(text))
+                return Json(new { IsSuccess = false });
+
+
+            List<string> emails = new List<string> { };
+
+            foreach (var employee in selectedEmployees)
+            {
+                var email = _hrEmployeeService.GetByID(employee).EmailLogin;
+                emails.Add(email);
+            }
+
+            if (!emails.Any())
+                return Json(new { IsSuccess = false });
+
+            try
+            {
+                foreach (var email in emails)
+                {
+                    /* string to = "d.bakhronova@wiut.uz";*/ //To address 
+                    //string to = "durdonabakhronova@yandex.com";
+                    string to = "d.bakhronova@wiut.uz";
+                    string from = "durdonabakhronova@yandex.com"; //From address
+                    MailMessage message = new MailMessage(from, to);
+                    message.Subject = "Hr CV issues";
+                    message.Body = "aaaaaaaaaaaaa";
+                    //message.BodyEncoding = Encoding.UTF8;
+                    //message.IsBodyHtml = true;
+                    //SmtpClient client = new SmtpClient("smtp.live.com", 587); //Gmail smtp
+                    //smtp.yandex.com   port:465
+                    SmtpClient client = new SmtpClient("smtp.yandex.com", 465);
+                    System.Net.NetworkCredential credential = new
+            System.Net.NetworkCredential("durdonabakhronova@yandex.com", "today2019");
+                    client.EnableSsl = true;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = credential;
+                    client.Send(message);
+                }
+                return Json(new { IsSuccess = true });
+
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+                return Json(new { IsSuccess = false });
+            }
+
+        }
+
 
     }
 }

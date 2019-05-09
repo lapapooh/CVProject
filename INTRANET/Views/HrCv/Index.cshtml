@@ -34,8 +34,12 @@
     </div>
 </div>
 
+<div class="row">
+    <button type="button" id="CvStatusButton" class="btn btn-info" data-toggle="modal" data-target="#CvstatusChangeDialog">Change CV completion status</button>
+    <button type="button" id="SendEmailButton" class="btn btn-success" data-toggle="modal" data-target="#SendEmailDialog">Send Email</button>
+</div>
 
-<button type="button" id="CvStatusButton" class="btn btn-info" data-toggle="modal" data-target="#CvstatusChangeDialog">Change CV completion status</button>
+
 <div class="modal" role="dialog" id="CvstatusChangeDialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -130,7 +134,29 @@
     </div>
 </div>
 
-
+<div class="modal" role="dialog" id="SendEmailDialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Compose a message
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <label for="message">Message: </label>
+                <textarea id="message" name="message" autofocus="autofocus" rows="10" cols="35"></textarea>
+                <p></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="SendMessageButton">Send</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Styles {
     <link href="~/Scripts/DataTables/datatables.min.css" rel="stylesheet" />
@@ -197,12 +223,12 @@
                                 var checked = '';
                                 if (data)
                                     checked = 'checked="checked"';
-                                
+
                                 return '<input type="checkbox" disabled="disabled" '
                                     + checked + '>' +
                                     '<a href="/HrCv/FillCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Uz).ToString()) + '"><span class="glyphicon glyphicon-edit"></span></a>' +
                                     '<a href="/HrCv/DownloadCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Uz).ToString()) + '"><span class="glyphicon glyphicon-download-alt"></span></a>';
-                                    
+
                             }
                         },
                         {
@@ -326,5 +352,58 @@
         $('#positionFilter').click(function () {
             $("#positions").modal();
         });
+        $('#SendEmailButton').click(function () {
+            var selectedEmployeeList = GetSelectedEmployees();
+            if (selectedEmployeeList.length > 0)
+                $("#SendEmailDialog").modal();
+            else
+                alert("Please, select employees first");
+
+        });
+
+        $('#SendMessageButton').click(function () {
+
+            if (trimAll(document.getElementById('message').value) === '') {
+                alert('You cannot send empty message. Please, enter the message');
+            } else {
+                $('#SendEmailDialog').modal('hide');
+                SendEmail();
+            }
+        });
+
+        function trimAll(sString) {
+            while (sString.substring(0, 1) == ' ') {
+                sString = sString.substring(1, sString.length);
+            }
+            while (sString.substring(sString.length - 1, sString.length) == ' ') {
+                sString = sString.substring(0, sString.length - 1);
+            }
+            return sString;
+        }
+
+        function SendEmail() {
+            var selectedEmployeeList = GetSelectedEmployees();
+            var message = $('textarea#message').val();
+            var jsonData = { 'text': message, selectedEmployees: selectedEmployeeList };
+            $.ajax({
+                url: "/HrCv/SendEmail",
+                type: "POST",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(jsonData),
+                success: function (data) {
+                    if (data.IsSuccess == true) {
+                        alert("Emails are sent");
+                    }
+                    else {
+                        alert("Error during sending. Try again later")
+                    }
+                },
+                error: function (data) {
+                    alert("Error during sending. Try again later")
+                }
+            });
+        }
+
     </script>
 }
