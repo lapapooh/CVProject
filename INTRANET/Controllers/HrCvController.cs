@@ -548,7 +548,6 @@ namespace INTRANET.Controllers
             }
             return details;
         }
-
         //add readonly fields
         private void AddDefaultsToModel(HrCvVM model, HrEmployee employee)
         {
@@ -561,6 +560,7 @@ namespace INTRANET.Controllers
                 model.ImageContent = Convert.ToBase64String(employee.ImageNameContent);
             }
         }
+
 
         public ActionResult SendEmail(String text, int[] selectedEmployees)
         {
@@ -583,24 +583,21 @@ namespace INTRANET.Controllers
             {
                 foreach (var email in emails)
                 {
-                    /* string to = "d.bakhronova@wiut.uz";*/ //To address 
-                    //string to = "durdonabakhronova@yandex.com";
-                    string to = "d.bakhronova@wiut.uz";
-                    string from = "durdonabakhronova@yandex.com"; //From address
-                    MailMessage message = new MailMessage(from, to);
-                    message.Subject = "Hr CV issues";
-                    message.Body = "aaaaaaaaaaaaa";
-                    //message.BodyEncoding = Encoding.UTF8;
-                    //message.IsBodyHtml = true;
-                    //SmtpClient client = new SmtpClient("smtp.live.com", 587); //Gmail smtp
-                    //smtp.yandex.com   port:465
-                    SmtpClient client = new SmtpClient("smtp.yandex.com", 465);
-                    System.Net.NetworkCredential credential = new
-            System.Net.NetworkCredential("durdonabakhronova@yandex.com", "today2019");
-                    client.EnableSsl = true;
-                    client.UseDefaultCredentials = false;
-                    client.Credentials = credential;
-                    client.Send(message);
+                    MailMessage mail = new MailMessage();
+                    mail.To.Add("d.bakhronova@wiut.uz"); //TODO: Add real receiver email                  
+                    mail.From = new MailAddress("hrcvwiut@yandex.com"); //TODO: Add real user email
+                    mail.Subject = "Hr Cv issue";
+
+                    mail.Body = text;
+
+                    mail.IsBodyHtml = true;
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Host = "smtp.yandex.com"; //TODO: use real credentials of sender account
+                    smtp.Credentials = new System.Net.NetworkCredential
+                         ("hrcvwiut@yandex.com", "wiut2019");
+                    smtp.Port = 587;
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
                 }
                 return Json(new { IsSuccess = true });
 
