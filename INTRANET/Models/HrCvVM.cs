@@ -57,7 +57,7 @@ namespace INTRANET.Models
         public string Languages { get; set; }
 
         public List<string> EducationList { get; set; }
-        public List<string> AwardList { get; set; }
+        public List<HrCvAwardVM> AwardList { get; set; }
         public List<string> MembershipList { get; set; }
         public List<HrCvLaborVM> LaborDetailList { get; set; }
         public List<HrCvRelativesVM> RelativesDetailsList { get; set; }

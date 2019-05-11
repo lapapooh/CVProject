@@ -58,38 +58,99 @@
                                 </div>
                             </div>
                             <div class="col-md-9">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="department">Department:</label>
-                                        <input readonly type='text' class="form-control" value="@Model.DepartmentName" />
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="department">@Model.GetFieldName(HrCvField.Department):</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="position">Position:</label>
-                                        <input readonly type='text' class="form-control" value="@Model.PositionName" />
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="position">@Model.GetFieldName(HrCvField.Position):</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="startPositionDate">Start date:</label>
-                                        <input readonly type='text' class="form-control" value="@Model.EntryDate.ToShortDateString()" />
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="startPositionDate">@Model.GetFieldName(HrCvField.StartDate):</label>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="phone">Phone:</label>
-                                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "error" })
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.Department)</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.Position)</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.StartDate)</p>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <input readonly type='text' class="form-control" value="@Model.DepartmentName" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <input readonly type='text' class="form-control" value="@Model.PositionName" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <input readonly type='text' class="form-control" value="@Model.EntryDate.ToShortDateString()" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="phone">@Model.GetFieldName(HrCvField.Phone):</label>
+                                        </div>
+                                    </div>
 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="phone">Phone external:</label>
-                                        @Html.TextBoxFor(m => m.ExternalPhone, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.ExternalPhone, "", new { @class = "error" })
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="phone">@Model.GetFieldName(HrCvField.ExternalPhone):</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.Phone)</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.ExternalPhone)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "error" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(m => m.ExternalPhone, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.ExternalPhone, "", new { @class = "error" })
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -103,71 +164,171 @@
                         </div>
                         <div role="tabpanel" class="tab-pane" id="personal">
                             <br />
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="DateOfBirth">Date of Birth:</label>
-                                    <input readonly type='text' class="form-control" value="@Model.DateOfBirth.ToShortDateString()" />
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="DateOfBirth">@Model.GetFieldName(HrCvField.DateOfBirth):</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Nationality">@Model.GetFieldName(HrCvField.Nationality):</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="Nationality">Nationality:</label>
-                                    @Html.TextBoxFor(m => m.Nationality, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "error" })
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p class="hint-text">@Model.GetFieldHint(HrCvField.DateOfBirth)</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p class="hint-text">@Model.GetFieldHint(HrCvField.Nationality)</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="PlaceOfBirth">Place of Birth:</label>
-                                    @Html.TextBoxFor(m => m.PlaceOfBirth, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.PlaceOfBirth, "", new { @class = "error" })
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input readonly type='text' class="form-control" value="@Model.DateOfBirth.ToShortDateString()" />
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="PartyMembership">Party Membership:</label>
-                                    @Html.TextBoxFor(m => m.PartyMembership, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.PartyMembership, "", new { @class = "error" })
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="AcademicDegree">Academic Degree:</label>
-                                    @Html.TextBoxFor(m => m.AcademicDegree, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.AcademicDegree, "", new { @class = "error" })
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="AcademicTitle">Academic Title:</label>
-                                    @Html.TextBoxFor(m => m.AcademicTitle, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.AcademicTitle, "", new { @class = "error" })
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="EducationDegree">Education Degree:</label>
-                                    @Html.TextBoxFor(m => m.EducationDegree, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.EducationDegree, "", new { @class = "error" })
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="EducationSpeciality">Education Speciality:</label>
-                                    @Html.TextBoxFor(m => m.EducationSpeciality, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.EducationSpeciality, "", new { @class = "error" })
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.Nationality, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "error" })
+                                    </div>
                                 </div>
                             </div>
 
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="PlaceOfBirth">@Model.GetFieldName(HrCvField.PlaceOfBirth):</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <p class="hint-text">@Model.GetFieldHint(HrCvField.PlaceOfBirth)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.PlaceOfBirth, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.PlaceOfBirth, "", new { @class = "error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="PartyMembership">@Model.GetFieldName(HrCvField.PartyMembership):</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <p class="hint-text">@Model.GetFieldHint(HrCvField.PartyMembership)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.PartyMembership, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.PartyMembership, "", new { @class = "error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="AcademicDegree">@Model.GetFieldName(HrCvField.AcademicDegree):</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="AcademicTitle">@Model.GetFieldName(HrCvField.AcademicTitle):</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="EducationDegree">@Model.GetFieldName(HrCvField.EducationDegree):</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="EducationSpeciality">@Model.GetFieldName(HrCvField.EducationSpeciality):</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p class="hint-text">@Model.GetFieldHint(HrCvField.AcademicDegree)</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p class="hint-text">@Model.GetFieldHint(HrCvField.AcademicTitle)</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p class="hint-text">@Model.GetFieldHint(HrCvField.EducationDegree)</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p class="hint-text">@Model.GetFieldHint(HrCvField.EducationSpeciality)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.AcademicDegree, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.AcademicDegree, "", new { @class = "error" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.AcademicTitle, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.AcademicTitle, "", new { @class = "error" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.EducationDegree, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.EducationDegree, "", new { @class = "error" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.EducationSpeciality, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.EducationSpeciality, "", new { @class = "error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
 
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <b>@Model.GetFieldName(HrCvField.EducationList):</b>
-
                                 </div>
                             </div>
                             <div class="col-md-12" data-bind='foreach: educations'>
@@ -214,37 +375,67 @@
                         <div role="tabpanel" class="tab-pane" id="additional">
                             <br />
                             <div class="col-md-12">
+                                <div class="row">
                                 <div class="form-group">
-                                    <label for="Languages">Languages:</label>
-                                    <div class='input-group'>
-                                        @Html.TextBoxFor(m => m.Languages, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.Languages, "", new { @class = "error" })
+                                    <label for="Languages">@Model.GetFieldName(HrCvField.Languages):</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.Languages)</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class='input-group'>
+                                            @Html.TextBoxFor(m => m.Languages, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Languages, "", new { @class = "error" })
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <br/>
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Awards: </label>
+                                    <label>@Model.GetFieldName(HrCvField.AwardsList): </label>
                                 </div>
                             </div>
                             <div class="col-md-12" data-bind='foreach: awards'>
                                 <div class="row">
-                                    <div class="col-md-9">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-
+                                            <label> @Model.GetFieldName(HrCvField.AwardsList_Award):</label>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-
+                                            <label> @Model.GetFieldName(HrCvField.AwardsList_Year):</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-9">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <input class="form-control" data-bind="value: Name, attr: {name: 'AwardList[' + $index() + ']'}" />
+                                            <p> @Model.GetFieldHint(HrCvField.AwardsList_Award):</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <p> @Model.GetFieldHint(HrCvField.AwardsList_Year):</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: Award, attr: {name: 'AwardList[' + $index() + '].Award'}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input class="form-control" data-bind="value: Year, attr: {name: 'AwardList[' + $index() + '].Year'}" />
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -255,21 +446,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <br/>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Memberships: </label>
+                                    <label>@Model.GetFieldName(HrCvField.MembershipList): </label>
                                 </div>
                             </div>
                             <div class="col-md-12" data-bind='foreach: memberships'>
                                 <div class="row">
                                     <div class="col-md-9">
                                         <div class="form-group">
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.MembershipList_Membership)</p>
                                         </div>
                                     </div>
                                 </div>
@@ -346,7 +533,6 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <input class="form-control" data-bind="value: Years, attr: {name: 'LaborDetailList[' + $index() + '].Years'}" />
-
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -376,24 +562,45 @@
 
                         <div role="tabpanel" class="tab-pane" id="family">
                             <br />
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>@Model.GetFieldName(HrCvField.RelativesList):</label>
+                                </div>
+                            </div>
 
                             <div class="col-md-12" data-bind='foreach: relatives'>
                                 <!--for labels and hint messages, need this row for alignemnt of controls-->
                                 <div class="row">
-
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Full Name: </label>
+                                            <label>@Model.GetFieldName(HrCvField.RelativesList_FullName): </label>
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <label>Date and place of birth: </label>
+                                            <label>@Model.GetFieldName(HrCvField.RelativesList_BirthDateAndPlace): </label>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>Relationship Degree: </label>
+                                            <label>@Model.GetFieldName(HrCvField.RelativesList_Degree): </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                                <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_FullName)</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                                <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_BirthDateAndPlace)</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                                <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_Degree)</p>
                                         </div>
                                     </div>
                                 </div>
@@ -415,15 +622,33 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br />
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Labor Details: </label>
+                                            <label>@Model.GetFieldName(HrCvField.RelativesList_Labor): </label>
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <label>Address: </label>
+                                            <label>@Model.GetFieldName(HrCvField.RelativesList_Address): </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <p>@Model.GetFieldHint(HrCvField.RelativesList_Labor): </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <p>@Model.GetFieldHint(HrCvField.RelativesList_Address): </p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -565,7 +790,10 @@
             }
 
             self.addAward=function(){
-                self.awards.push(new item(""));
+                self.awards.push({
+                    Award:"",
+                    Year:""
+                });
             }
 
             self.removeAward=function(award){
@@ -589,7 +817,7 @@
         var viewModel = new CvModel(@Html.Raw(Json.Encode(Model.EducationList.Select(e=> new {Name = e }))),
             @Html.Raw(Json.Encode(Model.LaborDetailList.Select(e=> new { Years = e.Years, Description= e.Description}))),
             @Html.Raw(Json.Encode(Model.RelativesDetailsList.Select(e=> new { Degree = e.Degree, FullName= e.Degree, BirthDateAndPlace=e.BirthDateAndPlace, LaborDetails=e.LaborDetails, Address=e.Address}))),
-            @Html.Raw(Json.Encode(Model.AwardList.Select(e=> new {Name = e }))),
+            @Html.Raw(Json.Encode(Model.AwardList.Select(e=> new {Award=e.Award, Year = e.Year }))),
             @Html.Raw(Json.Encode(Model.MembershipList.Select(e=> new {Name = e }))));
         ko.applyBindings(viewModel);
 
