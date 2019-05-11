@@ -36,13 +36,13 @@ namespace INTRANET.Controllers
         public IHrCvRelativeService _hrCvRelativeService { get; set; }
         public IHrCvAwardService _hrCvAwardService { get; set; }
         public IHrCvMembershipService _hrCvMembershipService { get; set; }
-
+        public IHrCvHintTextService _hrCvHintService { get; set; }
 
 
         public HrCvController(IHrEmployeeService hrEmployeeService,
             IHrDepartmentService hrDepartmentService, IHrPositionService hrPositionService, IHrCvDetailService hrCvDetailService,
             IHrCvEductionService hrCvEducationService, IHrCvLaborService hrCvLaborService, IHrCvRelativeService hrCvRelativeService,
-            IHrCvAwardService hrCvAwardService, IHrCvMembershipService hrCvMembershipService)
+            IHrCvAwardService hrCvAwardService, IHrCvMembershipService hrCvMembershipService, IHrCvHintTextService hrCvHintService)
         {
             _hrEmployeeService = hrEmployeeService;
             _hrDepartmentService = hrDepartmentService;
@@ -53,6 +53,7 @@ namespace INTRANET.Controllers
             _hrCvRelativeService = hrCvRelativeService;
             _hrCvAwardService = hrCvAwardService;
             _hrCvMembershipService = hrCvMembershipService;
+            _hrCvHintService = hrCvHintService;
 
         }
 
@@ -270,7 +271,7 @@ namespace INTRANET.Controllers
             if (employee == null)
                 return RedirectToAction("Index");
 
-            AddDefaultsToModel(model, employee);
+            
 
 
             //safety check to avoid null reference exceptions
@@ -388,11 +389,13 @@ namespace INTRANET.Controllers
                 }
                 catch (Exception)
                 {
+                    //TODO: log the exception
                     ModelState.AddModelError("", "Form filled incorrectly");
 
                 }
             }
 
+            AddDefaultsToModel(model, employee);
             return View(model);
         }
 
@@ -531,6 +534,58 @@ namespace INTRANET.Controllers
 
         }
 
+
+        public ActionResult SendEmail(string text, int[] selectedEmployees)
+        {
+            if (!selectedEmployees.Any() || string.IsNullOrWhiteSpace(text))
+                return Json(new { IsSuccess = false });
+
+
+            List<string> emails = new List<string> { };
+
+            foreach (var employee in selectedEmployees)
+            {
+                var email = _hrEmployeeService.GetByID(employee).EmailLogin;
+                emails.Add(email);
+            }
+
+            if (!emails.Any())
+                return Json(new { IsSuccess = false });
+
+            try
+            {
+                foreach (var email in emails)
+                {
+                    MailMessage mail = new MailMessage();
+                    mail.To.Add(email + "@wiut.uz"); //from 1C we know only login of the email                
+                    mail.From = new MailAddress("hrcvwiut@yandex.com"); //TODO: Add real user email
+                    mail.Subject = "HR CV issue";
+
+                    mail.Body = text;
+
+                    mail.IsBodyHtml = true;
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Host = "smtp.yandex.com"; //TODO: use real credentials of sender account
+                    smtp.Credentials = new System.Net.NetworkCredential
+                         ("hrcvwiut@yandex.com", "wiut2019");
+                    smtp.Port = 587;
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+                return Json(new { IsSuccess = true });
+
+            }
+            catch (Exception e)
+            {
+                //TODO: logging of the exception
+                return Json(new { IsSuccess = false });
+            }
+
+        }
+
+
+        #region "Private Utility methods"
+
         private HrCvDetail GetCvDetail(int employeeId, HrCvLanguage language)
         {
             var details = _hrCvDetailService.GetForCv(employeeId, language);
@@ -559,57 +614,18 @@ namespace INTRANET.Controllers
             {
                 model.ImageContent = Convert.ToBase64String(employee.ImageNameContent);
             }
+
+            var hints = _hrCvHintService.GetByLanguage(model.Language);
+            //lets be proactive and add defaults
+            if(!hints.Any())
+            {
+                _hrCvHintService.CreateDefaults(model.Language);
+                hints = _hrCvHintService.GetByLanguage(model.Language);
+            }
+            model.HintTexts = hints.ToList();
         }
 
-
-        public ActionResult SendEmail(String text, int[] selectedEmployees)
-        {
-            if (!selectedEmployees.Any() || string.IsNullOrWhiteSpace(text))
-                return Json(new { IsSuccess = false });
-
-
-            List<string> emails = new List<string> { };
-
-            foreach (var employee in selectedEmployees)
-            {
-                var email = _hrEmployeeService.GetByID(employee).EmailLogin;
-                emails.Add(email);
-            }
-
-            if (!emails.Any())
-                return Json(new { IsSuccess = false });
-
-            try
-            {
-                foreach (var email in emails)
-                {
-                    MailMessage mail = new MailMessage();
-                    mail.To.Add("d.bakhronova@wiut.uz"); //TODO: Add real receiver email                  
-                    mail.From = new MailAddress("hrcvwiut@yandex.com"); //TODO: Add real user email
-                    mail.Subject = "Hr Cv issue";
-
-                    mail.Body = text;
-
-                    mail.IsBodyHtml = true;
-                    SmtpClient smtp = new SmtpClient();
-                    smtp.Host = "smtp.yandex.com"; //TODO: use real credentials of sender account
-                    smtp.Credentials = new System.Net.NetworkCredential
-                         ("hrcvwiut@yandex.com", "wiut2019");
-                    smtp.Port = 587;
-                    smtp.EnableSsl = true;
-                    smtp.Send(mail);
-                }
-                return Json(new { IsSuccess = true });
-
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e);
-                return Json(new { IsSuccess = false });
-            }
-
-        }
-
+        #endregion
 
     }
 }

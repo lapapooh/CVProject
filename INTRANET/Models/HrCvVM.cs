@@ -62,5 +62,20 @@ namespace INTRANET.Models
         public List<HrCvLaborVM> LaborDetailList { get; set; }
         public List<HrCvRelativesVM> RelativesDetailsList { get; set; }
 
+
+        //to display translation of field labels and hint texts
+
+        public List<HrCvHintText> HintTexts { get; set; }
+
+        public string GetFieldName(HrCvField field)
+        {
+            return HintTexts.FirstOrDefault(f => f.Field == field)?.FieldName ?? "";
+        }
+
+        public string GetFieldHint(HrCvField field)
+        {
+            return HintTexts.FirstOrDefault(f => f.Field == field)?.Text ?? "";
+        }
+
     }
 }

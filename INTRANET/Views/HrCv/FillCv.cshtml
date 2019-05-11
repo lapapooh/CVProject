@@ -1,4 +1,6 @@
 ﻿@using INTRANET.Models
+
+@using INTRANET.Model
 @model  HrCvVM
 
 @{
@@ -37,7 +39,7 @@
 
 
                             <div class="col-md-3">
-                                <label for="photo">Photo:</label>
+                                <label for="photo">@Model.GetFieldName(HrCvField.Photo):</label>
                                 <div class="form-group">
                                     @if (Model.HasImage)
                                     {
@@ -47,6 +49,9 @@
                                     {
                                         <img width="100%" src="~/Content/HrCvImages/no-image.PNG" />
                                     }
+                                </div>
+                                <div class="form-group">
+                                    <p class="hint-text">@Model.GetFieldHint(HrCvField.Photo)</p>
                                 </div>
                                 <div class="form-group">
                                     <input type="file" accept="image/*" class="custom-file-input" id="fileItem" name="fileItem">
@@ -161,7 +166,7 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <b>Education History:</b>
+                                    <b>@Model.GetFieldName(HrCvField.EducationList):</b>
 
                                 </div>
                             </div>
@@ -170,7 +175,7 @@
                                 <div class="row">
                                     <div class="col-md-9">
                                         <div class="form-group">
-
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.EducationList_Educations)</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -296,18 +301,39 @@
                         </div>
                         <div role="tabpanel" class="tab-pane" id="labor">
                             <br />
-
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>@Model.GetFieldName(HrCvField.LaborList)</label>
+                                </div>
+                            </div>
                             <div class="col-md-12" data-bind='foreach: laborDetails'>
-                                <!--for labels and hint messages, need this row for alignemnt of controls-->
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>Years: </label>
+                                            <label>@Model.GetFieldName(HrCvField.LaborList_Years): </label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Description: </label>
+                                            <label>@Model.GetFieldName(HrCvField.LaborList_Labor): </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>&nbsp;</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--for labels and hint messages, need this row for alignemnt of controls-->
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.LaborList_Years): </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.LaborList_Labor): </p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">

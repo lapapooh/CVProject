@@ -13,22 +13,25 @@
             @Html.DisplayNameFor(model => model.Text)
         </th>
         <th></th>
+        <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr data-doc-id="@item.Id">
-            <td>
-                @Html.DisplayFor(modelItem => item.FieldName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Text)
-            </td>
-            <td>
-                <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "HrCvHint", new { id = item.Id })'">Edit</button>
-                <button type="button" class="btn btn-danger" onclick="if (confirm('Are you sure you want to delete?')) { window.location.href='@Url.Action("Delete", "HrCvHint", new { id=item.Id})'; }">Delete</button>
-            </td>
-        </tr>
+    <tr data-doc-id="@item.Id">
+        <td>
+            @Html.DisplayFor(modelItem => item.FieldName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Text)
+        </td>
+        <td>
+            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "HrCvHint", new { id = item.Id })'">Edit</button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger" onclick="if (confirm('Are you sure you want to delete?')) { window.location.href='@Url.Action("Delete", "HrCvHint", new { id=item.Id})'; }">Delete</button>
+        </td>
+    </tr>
     }
 
 </table>
