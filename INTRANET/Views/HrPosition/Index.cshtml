@@ -4,36 +4,57 @@
     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Create", "HrPosition")'">Create</button>
 </div>
 <br />
-<table class="table">
-    <tr>      
-        <th>
-            @Html.DisplayNameFor(model => model.TitleRu)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TitleUz)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TitleEn)
-        </th>
-        <th></th>
-    </tr>
+<table class="table" id="hrPositionGrid">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TitleRu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TitleUz)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TitleEn)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleRu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleUz)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleEn)
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "HrPosition", new { id = item.Id })'">Edit</button>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TitleRu)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TitleUz)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TitleEn)
-        </td>
-        <td>
-            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "HrPosition", new { id = item.Id })'">Edit</button>
-                   
-        </td>
-    </tr>
-}
+            </td>
+        </tr>
+    }
 
 </table>
+
+
+@section Styles {
+    <link href="~/Content/hrCvDepartment.css" rel="stylesheet" runat="server" />
+    <link href="~/Scripts/DataTables/datatables.min.css" rel="stylesheet" />
+    <link href="~/Scripts/DataTables/DataTables-1.10.13/css/dataTables.checkboxes.css" rel="stylesheet" />
+}
+
+@section Scripts {
+
+    <script src="~/Scripts/DataTables/datatables.min.js"></script>
+    <script src="~/Scripts/DataTables/DataTables-1.10.13/js/dataTables.checkboxes.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#hrPositionGrid").DataTable();
+        });
+    </script>
+}
