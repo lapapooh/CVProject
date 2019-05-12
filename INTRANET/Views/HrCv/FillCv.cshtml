@@ -825,7 +825,7 @@
 
         var viewModel = new CvModel(@Html.Raw(Json.Encode(Model.EducationList.Select(e=> new {Name = e }))),
             @Html.Raw(Json.Encode(Model.LaborDetailList.Select(e=> new { Years = e.Years, Description= e.Description}))),
-            @Html.Raw(Json.Encode(Model.RelativesDetailsList.Select(e=> new { Degree = e.Degree, FullName= e.Degree, BirthDateAndPlace=e.BirthDateAndPlace, LaborDetails=e.LaborDetails, Address=e.Address}))),
+            @Html.Raw(Json.Encode(Model.RelativesDetailsList.Select(e=> new { Degree = e.Degree, FullName= e.FullName, BirthDateAndPlace=e.BirthDateAndPlace, LaborDetails=e.LaborDetails, Address=e.Address}))),
             @Html.Raw(Json.Encode(Model.AwardList.Select(e=> new {Award=e.Award, Year = e.Year }))),
             @Html.Raw(Json.Encode(Model.MembershipList.Select(e=> new {Name = e }))));
         ko.applyBindings(viewModel);

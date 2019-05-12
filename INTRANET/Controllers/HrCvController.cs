@@ -22,6 +22,7 @@ using Spire.Doc.Fields;
 using System.Drawing;
 using System.Net.Mail;
 using System.Text;
+using System.Globalization;
 
 namespace INTRANET.Controllers
 {
@@ -84,19 +85,7 @@ namespace INTRANET.Controllers
             return View(model);
         }
 
-        private HrEmployeeListVM MapToModel(HrEmployee hrEmployee)
-        {
-            return new HrEmployeeListVM
-            {
-                Id = hrEmployee.Id,
-                FullName = hrEmployee.FullName,
-                DepartmentName = hrEmployee.Department?.TitleEn,
-                PositionName = hrEmployee.Position?.TitleEn,
-                HasFilledRuCV = hrEmployee.ComplietedRuCv,
-                HasFilledUzCV = hrEmployee.ComplietedUzCv
-            };
-        }
-
+        
 
         public ActionResult LoadData(int[] selectedDepartments, int[] selectedPositions)
         {
@@ -415,6 +404,8 @@ namespace INTRANET.Controllers
             var employeeCV = _hrCvDetailService.GetForCv(employeeId, language) ?? new HrCvDetail();
             var awards = (employeeCV.Awards != null) ? employeeCV.Awards : new List<HrCvAward>();
             var memberships = (employeeCV.Memberships != null) ? employeeCV.Memberships : new List<HrCvMembership>();
+            var educations = (employeeCV.Educations != null) ? employeeCV.Educations : new List<HrCvEduction>();
+            var labors = (employeeCV.Labors != null) ? employeeCV.Labors : new List<HrCvLabor>();
 
             Document doc = new Document();
             string path;
@@ -433,10 +424,12 @@ namespace INTRANET.Controllers
                 filename = employee.FullName + "(Ru).doc";
             }
 
+            var dateCulture = new CultureInfo(language == HrCvLanguage.Uz ? "uz-UZ" : "ru-RU");
+
             doc.LoadFromFile(path);
             doc.Replace("{FULLNAME}", employee.FullName, true, false);
             doc.Replace("{CURRENTPOSITION}", language == HrCvLanguage.Ru ? employee.Position.TitleRu : employee.Position.TitleUz, true, true);
-            doc.Replace("{CURRENTPOSITIONDATE}", employee.PositionStartDate?.ToString("dd MMMM yyyy"), true, true);
+            doc.Replace("{CURRENTPOSITIONDATE}", employee.PositionStartDate?.ToString("dd MMMM yyyy", dateCulture), true, true);
             doc.Replace("{DATEOFBIRTH}", employee.DateOfBirth.ToString("dd.MM.yyyy"), true, true);
             doc.Replace("{PLACEOFBIRTH}", employee.PlaceOfBirth, true, true);
             doc.Replace("{NATIONALITY}", employeeCV?.Nationality ?? "", true, true);
@@ -446,8 +439,57 @@ namespace INTRANET.Controllers
             doc.Replace("{ACADEMICDEGREE}", employeeCV?.AcademicDegree ?? "", true, true);
             doc.Replace("{ACADEMICTITLE}", employeeCV?.AcademicTitle ?? "", true, true);
             doc.Replace("{LANGUAGES}", employeeCV?.Languages ?? "", true, true);
-            doc.Replace("{AWARDS}", string.Join("; ", awards.Select(x => x.Award).ToList()), true, true);
+            doc.Replace("{AWARDS}", string.Join("; ", awards.Select(x => string.Format("{0} {1}", x.Award, x.Year)).ToList()), true, true);
             doc.Replace("{MEMBERSHIPS}", string.Join("; ", memberships.Select(x => x.Membership).ToList()), true, true);
+
+            //educations
+            if(!educations.Any())
+            {
+                //no education - remove placeholder
+                doc.Replace("{EDUCATIONS1}", "", true, true);
+                
+            }
+            else 
+            {
+                var isFirst = true;
+                foreach (var education in educations)
+                {
+                    if (isFirst)
+                    {
+                        doc.Replace("{EDUCATIONS1}", education.Education, true, true);
+                        isFirst = false;
+                        continue;
+                    }
+
+                    //duplicate the paragraph with placeholder, insert in old one
+                    var p = GetEducationSecondParagraph(doc);
+                    var i = GetEducationSecondParagraphIndex(doc);
+
+                    var newP = (Paragraph)p.Clone();
+                    p.Text = education.Education;
+                    doc.Sections[0].Paragraphs.Insert(i + 1, newP);
+                }
+
+            }
+
+            //finally remove previously duplicated paragraph or initial paragprah with placeholder
+            RemoveEducationSecondParagraph(doc);
+
+
+            //labor
+            foreach(var labor in labors)
+            {
+                var lp = GetLaborParagraph(doc);
+                var lpi = GetLaborParagraphIndex(doc);
+
+                var newP = (Paragraph)lp.Clone();
+                lp.Text = string.Format("{0}-\t{1}", labor.Years, labor.Description);
+                doc.Sections[0].Paragraphs.Insert(lpi + 1, newP);
+            }
+
+            //finally remove previously duplicated paragraph or initial paragprah with placeholder
+            var pi = GetLaborParagraphIndex(doc);
+            doc.Sections[0].Paragraphs.RemoveAt(pi);
 
             //replace image
             //Loop through the paragraphs of the section
@@ -628,6 +670,54 @@ namespace INTRANET.Controllers
                 hints = _hrCvHintService.GetByLanguage(model.Language);
             }
             model.HintTexts = hints.ToList();
+        }
+
+        private HrEmployeeListVM MapToModel(HrEmployee hrEmployee)
+        {
+            return new HrEmployeeListVM
+            {
+                Id = hrEmployee.Id,
+                FullName = hrEmployee.FullName,
+                DepartmentName = hrEmployee.Department?.TitleEn,
+                PositionName = hrEmployee.Position?.TitleEn,
+                HasFilledRuCV = hrEmployee.ComplietedRuCv,
+                HasFilledUzCV = hrEmployee.ComplietedUzCv
+            };
+        }
+
+        private void RemoveEducationSecondParagraph(Document doc)
+        {
+            var i = GetEducationSecondParagraphIndex(doc);
+            doc.Sections[0].Paragraphs.RemoveAt(i);
+        }
+
+        private int GetEducationSecondParagraphIndex(Document doc)
+        {
+            var paragraph = GetEducationSecondParagraph(doc);
+            return doc.Sections[0].Paragraphs.IndexOf(paragraph);
+        }
+
+        private Paragraph GetEducationSecondParagraph(Document doc)
+        {
+            var text = GetTextSelection(doc, "{EDUCATIONS2}");
+            return text.GetAsOneRange().OwnerParagraph;
+        }
+
+        private int GetLaborParagraphIndex(Document doc)
+        {
+            var paragraph = GetLaborParagraph(doc);
+            return doc.Sections[0].Paragraphs.IndexOf(paragraph);
+        }
+
+        private Paragraph GetLaborParagraph(Document doc)
+        {
+            var text = GetTextSelection(doc, "{LABOR}");
+            return text.GetAsOneRange().OwnerParagraph;
+        }
+
+        private TextSelection GetTextSelection(Document doc, string query)
+        {
+            return doc.FindString(query, true, true);
         }
 
         #endregion
