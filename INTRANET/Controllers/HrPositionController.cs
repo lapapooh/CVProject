@@ -70,7 +70,7 @@ namespace INTRANET.Controllers
                 position.TitleUz = model.TitleUz;
 
                 position.ModifiedAt = DateTime.Now;
-                //TODO: add logic for WHO created
+                //TODO: add logic for WHO modified
 
                 _hrPositionService.Update(position);
                 return RedirectToAction("Index");
