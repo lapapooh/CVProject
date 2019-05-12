@@ -427,7 +427,7 @@ namespace INTRANET.Service
             {
                 Field = HrCvField.RelativesList,
                 Language = HrCvLanguage.Uz,
-                FieldName = "Сведения о близких родственниках",
+                FieldName = "QARINDOSHLARI HAQIDA",
                 Text = "",
             });
 
@@ -522,7 +522,7 @@ namespace INTRANET.Service
             this.Create(new HrCvHintText
             {
                 Field = HrCvField.RelativesList_BirthDateAndPlace,
-                Language = HrCvLanguage.Ru,
+                Language = HrCvLanguage.Uz,
                 FieldName = "Tug’ilgan yili va joyi",
                 Text = "tug’ilgan yili, tumani (shahri) aniq ko’rsatilishi zarur. Mas: 1935 yil, Toshkent viloyati, Qibray tumani",
             });

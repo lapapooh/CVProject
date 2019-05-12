@@ -325,6 +325,10 @@ namespace INTRANET.Controllers
                 employee.PhoneNo = model.Phone;
                 employee.ExternalPhoneNo = model.ExternalPhone;
 
+                if (model.Language == HrCvLanguage.Ru)
+                    employee.ComplietedRuCv = true;
+                else
+                    employee.ComplietedUzCv = true;
 
                 try
                 {

@@ -157,7 +157,7 @@
                             <div class="col-md-12">
                                 <div class="btn-group pull-right">
                                     <div class="pull-right">
-                                        <span class="btn btn-primary btn-next">Next</span>
+                                        <span class="btn btn-primary btn-next"><i class="glyphicon glyphicon-arrow-right"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -353,8 +353,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <a href="#" data-bind="click: $root.removeEducation" class="btn btn-warning">Remove</a>
-                                            <a href="#" data-bind="click: $root.addEducation" class="btn btn-success">Add</a>
+                                            <a href="#" data-bind="click: $root.removeEducation" class="btn btn-danger"><i class=" glyphicon glyphicon-minus"></i></a>
+                                            <a href="#" data-bind="click: $root.addEducation" class="btn btn-success"><i class=" glyphicon glyphicon-plus"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -363,11 +363,11 @@
 
                             <div class="col-md-12 btn-container">
                                 <div class="btn-group">
-                                    <span class="btn btn-warning btn-previous">Previous</span>
+                                    <span class="btn btn-warning btn-previous"><i class="glyphicon glyphicon-arrow-left"></i></span>
                                 </div>
                                 <div class="btn-group pull-right">
                                     <div class="pull-right">
-                                        <span class="btn btn-primary btn-next">Next</span>
+                                        <span class="btn btn-primary btn-next"><i class="glyphicon glyphicon-arrow-right"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -375,31 +375,40 @@
                         <div role="tabpanel" class="tab-pane" id="additional">
                             <br />
                             <div class="col-md-12">
-                                <div class="row">
-                                <div class="form-group">
-                                    <label for="Languages">@Model.GetFieldName(HrCvField.Languages):</label>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label for="Languages">@Model.GetFieldName(HrCvField.Languages):</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="form-group">
                                             <p class="hint-text">@Model.GetFieldHint(HrCvField.Languages)</p>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="row">
-                                    <div class="form-group">
-                                        <div class='input-group'>
-                                            @Html.TextBoxFor(m => m.Languages, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.Languages, "", new { @class = "error" })
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class='input-group'>
+                                                @Html.TextBoxFor(m => m.Languages, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.Languages, "", new { @class = "error" })
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <br/>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>@Model.GetFieldName(HrCvField.AwardsList): </label>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>@Model.GetFieldName(HrCvField.AwardsList)</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-12" data-bind='foreach: awards'>
@@ -418,12 +427,12 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <p> @Model.GetFieldHint(HrCvField.AwardsList_Award):</p>
+                                            <p> @Model.GetFieldHint(HrCvField.AwardsList_Award)</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <p> @Model.GetFieldHint(HrCvField.AwardsList_Year):</p>
+                                            <p> @Model.GetFieldHint(HrCvField.AwardsList_Year)</p>
                                         </div>
                                     </div>
                                 </div>
@@ -440,8 +449,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <a href="#" data-bind="click: $root.removeAward" class="btn btn-warning">Remove</a>
-                                            <a href="#" data-bind="click: $root.addAward" class="btn btn-success">Add</a>
+                                            <a href="#" data-bind="click: $root.removeAward" class="btn btn-danger"><i class=" glyphicon glyphicon-minus"></i></a>
+                                            <a href="#" data-bind="click: $root.addAward" class="btn btn-success"><i class=" glyphicon glyphicon-plus"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -468,19 +477,19 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <a href="#" data-bind="click: $root.removeMembership" class="btn btn-warning">Remove</a>
-                                            <a href="#" data-bind="click: $root.addMembership" class="btn btn-success">Add</a>
+                                            <a href="#" data-bind="click: $root.removeMembership" class="btn btn-danger"><i class=" glyphicon glyphicon-minus"></i></a>
+                                            <a href="#" data-bind="click: $root.addMembership" class="btn btn-success"><i class=" glyphicon glyphicon-plus"></i></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 btn-container">
                                 <div class="btn-group">
-                                    <span class="btn btn-warning btn-previous">Previous</span>
+                                    <span class="btn btn-warning btn-previous"><i class="glyphicon glyphicon-arrow-left"></i></span>
                                 </div>
                                 <div class="btn-group pull-right">
                                     <div class="pull-right">
-                                        <span class="btn btn-primary btn-next">Next</span>
+                                        <span class="btn btn-primary btn-next"><i class="glyphicon glyphicon-arrow-right"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -515,12 +524,12 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.LaborList_Years): </p>
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.LaborList_Years)</p>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.LaborList_Labor): </p>
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.LaborList_Labor)</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -542,19 +551,19 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <a href="#" data-bind="click: $root.removeLaborDetail" class="btn btn-warning">Remove</a>
-                                            <a href="#" data-bind="click: $root.addLaborDetail" class="btn btn-success">Add</a>
+                                            <a href="#" data-bind="click: $root.removeLaborDetail" class="btn btn-danger"><i class=" glyphicon glyphicon-minus"></i></a>
+                                            <a href="#" data-bind="click: $root.addLaborDetail" class="btn btn-success"><i class=" glyphicon glyphicon-plus"></i></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 btn-container">
                                 <div class="btn-group">
-                                    <span class="btn btn-warning btn-previous">Previous</span>
+                                    <span class="btn btn-warning btn-previous"><i class="glyphicon glyphicon-arrow-left"></i></span>
                                 </div>
                                 <div class="btn-group pull-right">
                                     <div class="pull-right">
-                                        <span class="btn btn-primary btn-next">Next</span>
+                                        <span class="btn btn-primary btn-next"><i class="glyphicon glyphicon-arrow-right"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -564,7 +573,7 @@
                             <br />
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>@Model.GetFieldName(HrCvField.RelativesList):</label>
+                                    <label>@Model.GetFieldName(HrCvField.RelativesList)</label>
                                 </div>
                             </div>
 
@@ -643,12 +652,12 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <p>@Model.GetFieldHint(HrCvField.RelativesList_Labor): </p>
+                                            <p>@Model.GetFieldHint(HrCvField.RelativesList_Labor)</p>
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <p>@Model.GetFieldHint(HrCvField.RelativesList_Address): </p>
+                                            <p>@Model.GetFieldHint(HrCvField.RelativesList_Address)</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -670,19 +679,19 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <a href="#" data-bind="click: $root.removeRelative" class="btn btn-warning">Remove</a>
-                                            <a href="#" data-bind="click: $root.addRelative" class="btn btn-success">Add</a>
+                                            <a href="#" data-bind="click: $root.removeRelative" class="btn btn-danger"><i class=" glyphicon glyphicon-minus"></i></a>
+                                            <a href="#" data-bind="click: $root.addRelative" class="btn btn-success"><i class=" glyphicon glyphicon-plus"></i></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 btn-container">
                                 <div class="btn-group">
-                                    <span class="btn btn-warning btn-previous">Previous</span>
+                                    <span class="btn btn-warning btn-previous"><i class="glyphicon glyphicon-arrow-left"></i></span>
                                 </div>
                                 <div class="btn-group pull-right">
                                     <div class="pull-right">
-                                        <button class="btn btn-success">Submit</button>
+                                        <button class="btn btn-success"><i class="glyphicon glyphicon-ok"></i></button>
                                     </div>
                                 </div>
                             </div>
