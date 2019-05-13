@@ -32,7 +32,7 @@ namespace INTRANET.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            //AddDefaultsToModel(model, employee);
+            //AddDefaultsToModel(model);
 
             ViewBag.departmentList = _hrDepartmentService
                                     .GetAll()
@@ -56,9 +56,8 @@ namespace INTRANET.Controllers
         [HttpPost]
         public ActionResult Create(HrEmployeeVM model)
         {
-            var employee = _hrEmployeeService.GetByID(model.Id);
 
-            AddDefaultsToModel(model, employee);
+            AddDefaultsToModel(model);
             if (ModelState.IsValid)
             {
                 _hrEmployeeService.Create(MapFrom(model));
@@ -71,37 +70,14 @@ namespace INTRANET.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var employee = _hrEmployeeService.GetByID(id);
-            var model = new HrEmployeeVM
-            {
-                Id = employee.Id,
-                FullName = employee.FullName,
-                Code_1C = employee.Code_1C,
-                ID_1C = employee.ID_1C,
-                DateOfBirth = employee.DateOfBirth,
-                PlaceOfBirth = employee.PlaceOfBirth,
-                Gender = employee.Gender,
-                Address = employee.Address,
-                EmailLogin = employee.EmailLogin,
-                EntryDate = employee.EntryDate,
-                LeaveDate = employee.LeaveDate,
-                PositionId = employee.PositionId,
-                DepartmentId = employee.DepartmentId,
-                PositionStartDate = employee.PositionStartDate,
-                IsActive = employee.IsActive,
-                PassportNo = employee.PassportNo,
-                PassportIssueDate = employee.PassportIssueDate,
-                PassportIssuePlace = employee.PassportIssuePlace
-            };
-            AddDefaultsToModel(model, employee);
+            //AddDefaultsToModel(model);
             return View(MapTo(_hrEmployeeService.GetByID(id)));
         }
 
         [HttpPost]
         public ActionResult Edit(HrEmployeeVM model)
         {
-            var employee = _hrEmployeeService.GetByID(model.Id);
-            AddDefaultsToModel(model, employee);
+            AddDefaultsToModel(model);
             _hrEmployeeService.Update(MapFrom(model));
             return RedirectToAction("Index");
         }   
@@ -173,26 +149,25 @@ namespace INTRANET.Controllers
             };
         }
 
-        private void AddDefaultsToModel(HrEmployeeVM model, HrEmployee employee)
+        private void AddDefaultsToModel(HrEmployeeVM model)
         {
-            model.FullName = employee.FullName;
-            model.Code_1C = employee.Code_1C;
-            model.ID_1C = employee.ID_1C;
-            model.DateOfBirth = employee.DateOfBirth;
-            model.PlaceOfBirth = employee.PlaceOfBirth;
-            model.Gender = employee.Gender;
-            model.Address = employee.Address;
-            model.EmailLogin = employee.EmailLogin;
-            model.EntryDate = employee.EntryDate;
-            model.LeaveDate = employee.LeaveDate;
-            model.PositionId = employee.PositionId;
-            model.DepartmentId = employee.DepartmentId;
-            model.PositionStartDate = employee.PositionStartDate;
-            model.IsActive = employee.IsActive;
-            model.PassportNo = employee.PassportNo;
-            model.PassportIssueDate = employee.PassportIssueDate;
-            model.PassportIssuePlace = employee.PassportIssuePlace;
+            var departmentsList = _hrDepartmentService
+                                    .GetAll()
+                                    .Select(a => new SelectListItem
+                                    {
+                                        Text = a.TitleEn,
+                                        Value = a.Id.ToString()
+                                    }).ToList();
 
+            var positionsList = _hrPositionService
+                                    .GetAll()
+                                    .Select(a => new SelectListItem
+                                    {
+                                        Text = a.TitleEn,
+                                        Value = a.Id.ToString()
+                                    }).ToList();
+            model.Departments = departmentsList;
+            model.Positions = positionsList;
         }
 
         }
