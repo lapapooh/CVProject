@@ -22,6 +22,7 @@ using Spire.Doc.Fields;
 using System.Drawing;
 using System.Net.Mail;
 using System.Text;
+using System.Globalization;
 
 namespace INTRANET.Controllers
 {
@@ -36,13 +37,13 @@ namespace INTRANET.Controllers
         public IHrCvRelativeService _hrCvRelativeService { get; set; }
         public IHrCvAwardService _hrCvAwardService { get; set; }
         public IHrCvMembershipService _hrCvMembershipService { get; set; }
-
+        public IHrCvHintTextService _hrCvHintService { get; set; }
 
 
         public HrCvController(IHrEmployeeService hrEmployeeService,
             IHrDepartmentService hrDepartmentService, IHrPositionService hrPositionService, IHrCvDetailService hrCvDetailService,
             IHrCvEductionService hrCvEducationService, IHrCvLaborService hrCvLaborService, IHrCvRelativeService hrCvRelativeService,
-            IHrCvAwardService hrCvAwardService, IHrCvMembershipService hrCvMembershipService)
+            IHrCvAwardService hrCvAwardService, IHrCvMembershipService hrCvMembershipService, IHrCvHintTextService hrCvHintService)
         {
             _hrEmployeeService = hrEmployeeService;
             _hrDepartmentService = hrDepartmentService;
@@ -53,6 +54,7 @@ namespace INTRANET.Controllers
             _hrCvRelativeService = hrCvRelativeService;
             _hrCvAwardService = hrCvAwardService;
             _hrCvMembershipService = hrCvMembershipService;
+            _hrCvHintService = hrCvHintService;
 
         }
 
@@ -83,19 +85,7 @@ namespace INTRANET.Controllers
             return View(model);
         }
 
-        private HrEmployeeListVM MapToModel(HrEmployee hrEmployee)
-        {
-            return new HrEmployeeListVM
-            {
-                Id = hrEmployee.Id,
-                FullName = hrEmployee.FullName,
-                DepartmentName = hrEmployee.Department?.TitleEn,
-                PositionName = hrEmployee.Position?.TitleEn,
-                HasFilledRuCV = hrEmployee.ComplietedRuCv,
-                HasFilledUzCV = hrEmployee.ComplietedUzCv
-            };
-        }
-
+        
 
         public ActionResult LoadData(int[] selectedDepartments, int[] selectedPositions)
         {
@@ -239,7 +229,7 @@ namespace INTRANET.Controllers
                 AcademicTitle = details.AcademicTitle,
                 Languages = details.Languages,
                 EducationList = _hrCvEducationService.GetForCvDetail(details.Id).Select(c => c.Education).ToList(),
-                AwardList = _hrCvAwardService.GetForCvDetail(details.Id).Select(c => c.Award).ToList(),
+                AwardList = _hrCvAwardService.GetForCvDetail(details.Id).Select(c => new HrCvAwardVM { Year=c.Year, Award=c.Award}).ToList(),
                 MembershipList = _hrCvMembershipService.GetForCvDetail(details.Id).Select(c => c.Membership).ToList(),
                 LaborDetailList = _hrCvLaborService.GetForCvDetail(details.Id).Select(m => new HrCvLaborVM { Years = m.Years, Description = m.Description }).ToList(),
                 RelativesDetailsList = _hrCvRelativeService.GetForCvDetail(details.Id).Select(c => new HrCvRelativesVM { Degree = c.Degree, FullName = c.FullName, BirthDateAndPlace = c.BirthDateAndPlace, LaborDetails = c.LaborDetails, Address = c.Address, }).ToList()
@@ -253,7 +243,7 @@ namespace INTRANET.Controllers
             if (!model.RelativesDetailsList.Any())
                 model.RelativesDetailsList.Add(new HrCvRelativesVM());
             if (!model.AwardList.Any())
-                model.AwardList.Add("");
+                model.AwardList.Add(new HrCvAwardVM());
             if (!model.MembershipList.Any())
                 model.MembershipList.Add("");
 
@@ -270,7 +260,7 @@ namespace INTRANET.Controllers
             if (employee == null)
                 return RedirectToAction("Index");
 
-            AddDefaultsToModel(model, employee);
+            
 
 
             //safety check to avoid null reference exceptions
@@ -324,6 +314,10 @@ namespace INTRANET.Controllers
                 employee.PhoneNo = model.Phone;
                 employee.ExternalPhoneNo = model.ExternalPhone;
 
+                if (model.Language == HrCvLanguage.Ru)
+                    employee.ComplietedRuCv = true;
+                else
+                    employee.ComplietedUzCv = true;
 
                 try
                 {
@@ -347,9 +341,10 @@ namespace INTRANET.Controllers
                     }).ToList(), details.Id);
 
 
-                    _hrCvAwardService.Save(model.AwardList.Where(e => !string.IsNullOrWhiteSpace(e)).Select(e => new HrCvAward
+                    _hrCvAwardService.Save(model.AwardList.Where(e => !string.IsNullOrWhiteSpace(e.Award) && e.Year>0).Select(e => new HrCvAward
                     {
-                        Award = e
+                        Award = e.Award,
+                        Year=e.Year
                     }).ToList(), details.Id);
 
 
@@ -388,11 +383,13 @@ namespace INTRANET.Controllers
                 }
                 catch (Exception)
                 {
+                    //TODO: log the exception
                     ModelState.AddModelError("", "Form filled incorrectly");
 
                 }
             }
 
+            AddDefaultsToModel(model, employee);
             return View(model);
         }
 
@@ -407,6 +404,8 @@ namespace INTRANET.Controllers
             var employeeCV = _hrCvDetailService.GetForCv(employeeId, language) ?? new HrCvDetail();
             var awards = (employeeCV.Awards != null) ? employeeCV.Awards : new List<HrCvAward>();
             var memberships = (employeeCV.Memberships != null) ? employeeCV.Memberships : new List<HrCvMembership>();
+            var educations = (employeeCV.Educations != null) ? employeeCV.Educations : new List<HrCvEduction>();
+            var labors = (employeeCV.Labors != null) ? employeeCV.Labors : new List<HrCvLabor>();
 
             Document doc = new Document();
             string path;
@@ -425,10 +424,12 @@ namespace INTRANET.Controllers
                 filename = employee.FullName + "(Ru).doc";
             }
 
+            var dateCulture = new CultureInfo(language == HrCvLanguage.Uz ? "uz-UZ" : "ru-RU");
+
             doc.LoadFromFile(path);
             doc.Replace("{FULLNAME}", employee.FullName, true, false);
             doc.Replace("{CURRENTPOSITION}", language == HrCvLanguage.Ru ? employee.Position.TitleRu : employee.Position.TitleUz, true, true);
-            doc.Replace("{CURRENTPOSITIONDATE}", employee.PositionStartDate?.ToString("dd MMMM yyyy"), true, true);
+            doc.Replace("{CURRENTPOSITIONDATE}", employee.PositionStartDate?.ToString("dd MMMM yyyy", dateCulture), true, true);
             doc.Replace("{DATEOFBIRTH}", employee.DateOfBirth.ToString("dd.MM.yyyy"), true, true);
             doc.Replace("{PLACEOFBIRTH}", employee.PlaceOfBirth, true, true);
             doc.Replace("{NATIONALITY}", employeeCV?.Nationality ?? "", true, true);
@@ -438,8 +439,57 @@ namespace INTRANET.Controllers
             doc.Replace("{ACADEMICDEGREE}", employeeCV?.AcademicDegree ?? "", true, true);
             doc.Replace("{ACADEMICTITLE}", employeeCV?.AcademicTitle ?? "", true, true);
             doc.Replace("{LANGUAGES}", employeeCV?.Languages ?? "", true, true);
-            doc.Replace("{AWARDS}", string.Join("; ", awards.Select(x => x.Award).ToList()), true, true);
+            doc.Replace("{AWARDS}", string.Join("; ", awards.Select(x => string.Format("{0} {1}", x.Award, x.Year)).ToList()), true, true);
             doc.Replace("{MEMBERSHIPS}", string.Join("; ", memberships.Select(x => x.Membership).ToList()), true, true);
+
+            //educations
+            if(!educations.Any())
+            {
+                //no education - remove placeholder
+                doc.Replace("{EDUCATIONS1}", "", true, true);
+                
+            }
+            else 
+            {
+                var isFirst = true;
+                foreach (var education in educations)
+                {
+                    if (isFirst)
+                    {
+                        doc.Replace("{EDUCATIONS1}", education.Education, true, true);
+                        isFirst = false;
+                        continue;
+                    }
+
+                    //duplicate the paragraph with placeholder, insert in old one
+                    var p = GetEducationSecondParagraph(doc);
+                    var i = GetEducationSecondParagraphIndex(doc);
+
+                    var newP = (Paragraph)p.Clone();
+                    p.Text = education.Education;
+                    doc.Sections[0].Paragraphs.Insert(i + 1, newP);
+                }
+
+            }
+
+            //finally remove previously duplicated paragraph or initial paragprah with placeholder
+            RemoveEducationSecondParagraph(doc);
+
+
+            //labor
+            foreach(var labor in labors)
+            {
+                var lp = GetLaborParagraph(doc);
+                var lpi = GetLaborParagraphIndex(doc);
+
+                var newP = (Paragraph)lp.Clone();
+                lp.Text = string.Format("{0}-\t{1}", labor.Years, labor.Description);
+                doc.Sections[0].Paragraphs.Insert(lpi + 1, newP);
+            }
+
+            //finally remove previously duplicated paragraph or initial paragprah with placeholder
+            var pi = GetLaborParagraphIndex(doc);
+            doc.Sections[0].Paragraphs.RemoveAt(pi);
 
             //replace image
             //Loop through the paragraphs of the section
@@ -531,6 +581,58 @@ namespace INTRANET.Controllers
 
         }
 
+
+        public ActionResult SendEmail(string text, int[] selectedEmployees)
+        {
+            if (!selectedEmployees.Any() || string.IsNullOrWhiteSpace(text))
+                return Json(new { IsSuccess = false });
+
+
+            List<string> emails = new List<string> { };
+
+            foreach (var employee in selectedEmployees)
+            {
+                var email = _hrEmployeeService.GetByID(employee).EmailLogin;
+                emails.Add(email);
+            }
+
+            if (!emails.Any())
+                return Json(new { IsSuccess = false });
+
+            try
+            {
+                foreach (var email in emails)
+                {
+                    MailMessage mail = new MailMessage();
+                    mail.To.Add(email + "@wiut.uz"); //from 1C we know only login of the email                
+                    mail.From = new MailAddress("hrcvwiut@yandex.com"); //TODO: Add real user email
+                    mail.Subject = "HR CV issue";
+
+                    mail.Body = text;
+
+                    mail.IsBodyHtml = true;
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Host = "smtp.yandex.com"; //TODO: use real credentials of sender account
+                    smtp.Credentials = new System.Net.NetworkCredential
+                         ("hrcvwiut@yandex.com", "wiut2019");
+                    smtp.Port = 587;
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+                return Json(new { IsSuccess = true });
+
+            }
+            catch (Exception e)
+            {
+                //TODO: logging of the exception
+                return Json(new { IsSuccess = false });
+            }
+
+        }
+
+
+        #region "Private Utility methods"
+
         private HrCvDetail GetCvDetail(int employeeId, HrCvLanguage language)
         {
             var details = _hrCvDetailService.GetForCv(employeeId, language);
@@ -559,57 +661,66 @@ namespace INTRANET.Controllers
             {
                 model.ImageContent = Convert.ToBase64String(employee.ImageNameContent);
             }
+
+            var hints = _hrCvHintService.GetByLanguage(model.Language);
+            //lets be proactive and add defaults
+            if(!hints.Any())
+            {
+                _hrCvHintService.CreateDefaults(model.Language);
+                hints = _hrCvHintService.GetByLanguage(model.Language);
+            }
+            model.HintTexts = hints.ToList();
         }
 
-
-        public ActionResult SendEmail(String text, int[] selectedEmployees)
+        private HrEmployeeListVM MapToModel(HrEmployee hrEmployee)
         {
-            if (!selectedEmployees.Any() || string.IsNullOrWhiteSpace(text))
-                return Json(new { IsSuccess = false });
-
-
-            List<string> emails = new List<string> { };
-
-            foreach (var employee in selectedEmployees)
+            return new HrEmployeeListVM
             {
-                var email = _hrEmployeeService.GetByID(employee).EmailLogin;
-                emails.Add(email);
-            }
-
-            if (!emails.Any())
-                return Json(new { IsSuccess = false });
-
-            try
-            {
-                foreach (var email in emails)
-                {
-                    MailMessage mail = new MailMessage();
-                    mail.To.Add("d.bakhronova@wiut.uz"); //TODO: Add real receiver email                  
-                    mail.From = new MailAddress("hrcvwiut@yandex.com"); //TODO: Add real user email
-                    mail.Subject = "Hr Cv issue";
-
-                    mail.Body = text;
-
-                    mail.IsBodyHtml = true;
-                    SmtpClient smtp = new SmtpClient();
-                    smtp.Host = "smtp.yandex.com"; //TODO: use real credentials of sender account
-                    smtp.Credentials = new System.Net.NetworkCredential
-                         ("hrcvwiut@yandex.com", "wiut2019");
-                    smtp.Port = 587;
-                    smtp.EnableSsl = true;
-                    smtp.Send(mail);
-                }
-                return Json(new { IsSuccess = true });
-
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e);
-                return Json(new { IsSuccess = false });
-            }
-
+                Id = hrEmployee.Id,
+                FullName = hrEmployee.FullName,
+                DepartmentName = hrEmployee.Department?.TitleEn,
+                PositionName = hrEmployee.Position?.TitleEn,
+                HasFilledRuCV = hrEmployee.ComplietedRuCv,
+                HasFilledUzCV = hrEmployee.ComplietedUzCv
+            };
         }
 
+        private void RemoveEducationSecondParagraph(Document doc)
+        {
+            var i = GetEducationSecondParagraphIndex(doc);
+            doc.Sections[0].Paragraphs.RemoveAt(i);
+        }
+
+        private int GetEducationSecondParagraphIndex(Document doc)
+        {
+            var paragraph = GetEducationSecondParagraph(doc);
+            return doc.Sections[0].Paragraphs.IndexOf(paragraph);
+        }
+
+        private Paragraph GetEducationSecondParagraph(Document doc)
+        {
+            var text = GetTextSelection(doc, "{EDUCATIONS2}");
+            return text.GetAsOneRange().OwnerParagraph;
+        }
+
+        private int GetLaborParagraphIndex(Document doc)
+        {
+            var paragraph = GetLaborParagraph(doc);
+            return doc.Sections[0].Paragraphs.IndexOf(paragraph);
+        }
+
+        private Paragraph GetLaborParagraph(Document doc)
+        {
+            var text = GetTextSelection(doc, "{LABOR}");
+            return text.GetAsOneRange().OwnerParagraph;
+        }
+
+        private TextSelection GetTextSelection(Document doc, string query)
+        {
+            return doc.FindString(query, true, true);
+        }
+
+        #endregion
 
     }
 }

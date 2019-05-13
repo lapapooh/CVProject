@@ -20,7 +20,18 @@ namespace INTRANET.Controllers
 
         public ActionResult Index()
         {
-            var model = _hrCvHintService.GetAll().Select(MapTo).ToList();
+            var hints = _hrCvHintService.GetAllQueryable();
+
+            //lets be proactive and add defaults
+            if(!hints.Any())
+            {
+                _hrCvHintService.CreateDefaults(HrCvLanguage.Ru);
+                _hrCvHintService.CreateDefaults(HrCvLanguage.Uz);
+
+                hints = _hrCvHintService.GetAllQueryable();
+            }
+
+            var model = hints.Select(MapTo).ToList();
             return View(model);
 
         }

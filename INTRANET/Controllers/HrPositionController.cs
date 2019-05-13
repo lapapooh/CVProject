@@ -34,25 +34,49 @@ namespace INTRANET.Controllers
         {
             if (ModelState.IsValid)
             {
-                _hrPositionService.Create(MapFrom(model));
+                var position = MapFrom(model);
+                position.CreatedAt = DateTime.Now;
+                //TODO: add logic for WHO created
+                _hrPositionService.Create(position);
                 return RedirectToAction("Index");
             }
-            else
-            {
 
-                return View(model);
-            }
+            return View(model);
+
 
         }
         [HttpGet]
         public ActionResult Edit(int id) {
-            return View(MapTo(_hrPositionService.GetByID(id)));
+
+            var position = _hrPositionService.GetByID(id);
+            if(position == null)
+                return RedirectToAction("Index");
+
+            return View(MapTo(position));
         }
 
         [HttpPost]
         public ActionResult Edit(HrPositionVM model) {
-            _hrPositionService.Update(MapFrom(model));
-            return RedirectToAction("Index");
+
+            if (ModelState.IsValid)
+            {
+                var position = _hrPositionService.GetByID(model.Id);
+                if (position == null)
+                    return RedirectToAction("Index");
+
+                position.Code_1C = model.Code_1C;
+                position.TitleEn = model.TitleEn;
+                position.TitleRu = model.TitleRu;
+                position.TitleUz = model.TitleUz;
+
+                position.ModifiedAt = DateTime.Now;
+                //TODO: add logic for WHO modified
+
+                _hrPositionService.Update(position);
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
         }       
 
         public HrPositionVM MapTo(HrPosition model)

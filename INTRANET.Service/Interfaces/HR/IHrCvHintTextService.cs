@@ -16,6 +16,6 @@ namespace INTRANET.Service.Interfaces
         IEnumerable<HrCvHintText> GetByLanguage(HrCvLanguage language);
         IQueryable<HrCvHintText> GetAllQueryable();
 
-        void CreateDefauls(HrCvLanguage language);
+        void CreateDefaults(HrCvLanguage language);
     }
 }

@@ -49,6 +49,7 @@ namespace INTRANET.Model
         RelativesList_BirthDateAndPlace = 27,
         RelativesList_Degree = 28,
         RelativesList_Labor = 29,
-        RelativesList_Address = 30
+        RelativesList_Address = 30,
+        Languages = 31
     }
 }

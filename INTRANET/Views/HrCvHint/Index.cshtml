@@ -4,17 +4,23 @@
     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Create", "HrCvHint")'">Create</button>
 </div>
 <br />
-<table id="hint-table" class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FieldName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Text)
-        </th>
-        <th></th>
-    </tr>
+<table id="hrHintGrid" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FieldName)
+            </th>
 
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Language)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
     @foreach (var item in Model)
     {
         <tr data-doc-id="@item.Id">
@@ -25,10 +31,34 @@
                 @Html.DisplayFor(modelItem => item.Text)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Language)
+            </td>
+            <td>
                 <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "HrCvHint", new { id = item.Id })'">Edit</button>
+            </td>
+            <td>
                 <button type="button" class="btn btn-danger" onclick="if (confirm('Are you sure you want to delete?')) { window.location.href='@Url.Action("Delete", "HrCvHint", new { id=item.Id})'; }">Delete</button>
             </td>
         </tr>
     }
 
 </table>
+
+
+@section Styles {
+    <link href="~/Content/hrCvDepartment.css" rel="stylesheet" runat="server" />
+    <link href="~/Scripts/DataTables/datatables.min.css" rel="stylesheet" />
+    <link href="~/Scripts/DataTables/DataTables-1.10.13/css/dataTables.checkboxes.css" rel="stylesheet" />
+}
+
+@section Scripts {
+
+    <script src="~/Scripts/DataTables/datatables.min.js"></script>
+    <script src="~/Scripts/DataTables/DataTables-1.10.13/js/dataTables.checkboxes.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#hrHintGrid").DataTable();
+        });
+    </script>
+}

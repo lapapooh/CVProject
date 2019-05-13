@@ -19,3 +19,6 @@
 .btn-container {
     padding-top:25px;
 }
+p.hint-text {
+    font-style:italic
+}

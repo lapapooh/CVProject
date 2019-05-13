@@ -34,24 +34,48 @@ namespace INTRANET.Controllers
         {
             if (ModelState.IsValid)
             {
-                _hrDepartmentService.Create(MapFrom(model));
+                var department = MapFrom(model);
+                department.CreatedAt = DateTime.Now;
+                //TODO: add logic for WHO modified
+                _hrDepartmentService.Create(department);
                 return RedirectToAction("Index");
             }
-            else
-                return View(model);
+
+            return View(model);
         }
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            return View(MapTo(_hrDepartmentService.GetByID(id)));
+            var department = _hrDepartmentService.GetByID(id);
+            if (department == null)
+                return RedirectToAction("Index");
+
+            return View(MapTo(department));
         }
 
         [HttpPost]
         public ActionResult Edit(HrDepartmentVM model)
         {
-            _hrDepartmentService.Update(MapFrom(model));
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                var department = _hrDepartmentService.GetByID(model.Id);
+                if (department == null)
+                    return RedirectToAction("Index");
+
+                department.Code_1C = model.Code_1C;
+                department.TitleEn = model.TitleEn;
+                department.TitleRu = model.TitleRu;
+                department.TitleUz = model.TitleUz;
+
+                department.ModifiedAt = DateTime.Now;
+                //TODO: add logic for WHO created
+
+                _hrDepartmentService.Update(department);
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
         }
 
         public HrDepartment MapFrom(HrDepartmentVM model)
