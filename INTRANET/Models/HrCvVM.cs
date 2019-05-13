@@ -209,8 +209,8 @@ namespace INTRANET.Models
         {
             new SelectListItem
             {
-                Value = "",
-                Text = ""
+                Value = "нет",
+                Text = "нет"
             },
             new SelectListItem
             {
@@ -233,8 +233,8 @@ namespace INTRANET.Models
         {
             new SelectListItem
             {
-                Value = "",
-                Text = ""
+                Value = "йўқ",
+                Text = "йўқ"
             },
             new SelectListItem
             {
