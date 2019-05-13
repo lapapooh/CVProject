@@ -22,34 +22,15 @@ namespace INTRANET.Controllers
             _hrPositionService = hrPositionService;
         }
 
-        // GET: HrEmployee
-        public ActionResult Index()
-        {
-            var model = _hrEmployeeService.GetAll().Select(MapTo).ToList();
-            return View(model);
-        }
 
         [HttpGet]
         public ActionResult Create()
         {
-            //AddDefaultsToModel(model);
+            var model = new HrEmployeeVM();
+            AddDefaultsToModel(model);
 
-            ViewBag.departmentList = _hrDepartmentService
-                                    .GetAll()
-                                    .Select(a => new SelectListItem
-                                    {
-                                        Text = a.TitleEn,
-                                        Value = a.Id.ToString()
-                                    }).ToList();
 
-            ViewBag.positionsList = _hrPositionService
-                                    .GetAll()
-                                    .Select(a => new SelectListItem
-                                    {
-                                        Text = a.TitleEn,
-                                        Value = a.Id.ToString()
-                                    }).ToList();
-            return View(new HrEmployeeVM());
+            return View(model);
         }
 
         
@@ -70,35 +51,59 @@ namespace INTRANET.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            //AddDefaultsToModel(model);
-            return View(MapTo(_hrEmployeeService.GetByID(id)));
+            var employee = _hrEmployeeService.GetByID(id);
+            //safety check
+            if (employee == null)
+                return RedirectToAction("Index");
+
+            var model = MapTo(employee);
+            AddDefaultsToModel(model);
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult Edit(HrEmployeeVM model)
         {
+            if(ModelState.IsValid)
+            {
+                var employee = _hrEmployeeService.GetByID(model.Id);
+
+                //safety check
+                if (employee == null)
+                    return RedirectToAction("Index");
+
+                //do not update all fields - will override image and other fields in database
+                employee.FullName = model.FullName;
+                employee.Code_1C = model.Code_1C;
+                employee.ID_1C = model.ID_1C;
+                employee.DateOfBirth = model.DateOfBirth;
+                employee.PlaceOfBirth = model.PlaceOfBirth;
+                employee.Gender = model.Gender;
+                employee.Address = model.Address;
+                employee.EmailLogin = model.EmailLogin;
+                employee.EntryDate = model.EntryDate;
+                employee.LeaveDate = model.LeaveDate;
+                employee.PositionId = model.PositionId;
+                employee.DepartmentId = model.DepartmentId;
+                employee.PositionStartDate = model.PositionStartDate;
+                employee.IsActive = model.IsActive;
+                employee.PassportNo = model.PassportNo;
+                employee.PassportIssueDate = model.PassportIssueDate;
+                employee.PassportIssuePlace = model.PassportIssuePlace;
+
+                _hrEmployeeService.Update(employee);
+                return RedirectToAction("Index");
+            }
+
+            //wrong user input - show page back
             AddDefaultsToModel(model);
-            _hrEmployeeService.Update(MapFrom(model));
-            return RedirectToAction("Index");
+            return View(model);
+            
         }   
 
         public HrEmployeeVM MapTo(HrEmployee model)
         {
-            var departmentsList = _hrDepartmentService
-                        .GetAll()
-                        .Select(a => new SelectListItem
-                        {
-                            Text = a.TitleEn,
-                            Value = a.Id.ToString()
-                        }).ToList();
 
-            var positionsList = _hrPositionService
-                                    .GetAll()
-                                    .Select(a => new SelectListItem
-                                    {
-                                        Text = a.TitleEn,
-                                        Value = a.Id.ToString()
-                                    }).ToList();
             return new HrEmployeeVM
             {
                 Id = model.Id,
@@ -118,9 +123,7 @@ namespace INTRANET.Controllers
                 IsActive = model.IsActive,
                 PassportNo = model.PassportNo,
                 PassportIssueDate = model.PassportIssueDate,
-                PassportIssuePlace = model.PassportIssuePlace,
-                Departments = departmentsList,
-                Positions = positionsList
+                PassportIssuePlace = model.PassportIssuePlace
             };
         }
 

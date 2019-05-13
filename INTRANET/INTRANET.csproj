@@ -444,7 +444,6 @@
     <Content Include="Views\HrDepartment\Index.cshtml" />
     <Content Include="Views\HrEmployee\Create.cshtml" />
     <Content Include="Views\HrEmployee\Edit.cshtml" />
-    <Content Include="Views\HrEmployee\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\AcademicYear\" />

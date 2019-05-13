@@ -21,6 +21,7 @@ namespace INTRANET.Models
         [DisplayName("Code from 1C")]
         public string Code_1C { get; set; }
         [Required]
+        [DisplayName("ID from 1C")]
         public string ID_1C { get; set; }
         [Required(ErrorMessage = "Date of birth cannot be empty")]
         [DisplayName("Date of birth")]
@@ -42,9 +43,9 @@ namespace INTRANET.Models
         public DateTime EntryDate { get; set; }
         [DisplayName("Leave date")]
         public DateTime? LeaveDate { get; set; }
-        [DisplayName("Position Id")]
+        [DisplayName("Position")]
         public int? PositionId { get; set; }
-        [DisplayName("Department Id")]
+        [DisplayName("Department")]
         public int? DepartmentId { get; set; }
         [DisplayName("Position start date")]
         public DateTime? PositionStartDate { get; set; }

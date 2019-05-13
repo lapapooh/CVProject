@@ -28,7 +28,7 @@
                     <th>CV Uz</th>
                     <th>CV Ru</th>
                     <th>Docs</th>
-                    <th>Update Employee</th>
+                    <th>Edit</th>
                 </tr>
             </thead>
         </table>
@@ -36,8 +36,9 @@
 </div>
 
 <div class="row">
+    <a href="@Url.Action("Create", "HrEmployee")" class="btn btn-success">Create Employee</a>
     <button type="button" id="CvStatusButton" class="btn btn-info" data-toggle="modal" data-target="#CvstatusChangeDialog">Change CV completion status</button>
-    <button type="button" id="SendEmailButton" class="btn btn-success" data-toggle="modal" data-target="#SendEmailDialog">Send Email</button>
+    <button type="button" id="SendEmailButton" class="btn btn-warning" data-toggle="modal" data-target="#SendEmailDialog">Send Email</button>
 </div>
 
 
@@ -286,6 +287,7 @@
                     { "data": "PositionName", "name": "PositionName", "autoWidth": true },
                     { "data": "HasFilledRuCV", "name": "HasFilledRuCV", "autoWidth": true },
                     { "data": "HasFilledUzCV", "name": "HasFilledUzCV", "autoWidth": true },
+                    { "data": {} },
                     { "data": {} },
                 ]
             });
