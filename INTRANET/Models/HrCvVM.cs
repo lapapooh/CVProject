@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace INTRANET.Models
 {
@@ -76,6 +77,250 @@ namespace INTRANET.Models
         {
             return HintTexts.FirstOrDefault(f => f.Field == field)?.Text ?? "";
         }
+
+        #region "Dropdowns"
+
+        #region "Relationship Degree"
+
+        private readonly List<SelectListItem> RelationshipDegreeRu = new List<SelectListItem>()
+        {
+            new SelectListItem
+            {
+                Value = "",
+                Text = "Выберите из списка"
+            },
+            new SelectListItem
+            {
+                Value = "Отец",
+                Text = "Отец"
+            },
+            new SelectListItem
+            {
+                Value = "Мать",
+                Text = "Мать"
+            },
+            new SelectListItem
+            {
+                Value = "Сестра",
+                Text = "Сестра"
+            },
+            new SelectListItem
+            {
+                Value = "Брат",
+                Text = "Брат"
+            },
+            new SelectListItem
+            {
+                Value = "Супруга",
+                Text = "Супруга"
+            },
+            new SelectListItem
+            {
+                Value = "Сын",
+                Text = "Сын"
+            },
+            new SelectListItem
+            {
+                Value = "Дочь",
+                Text = "Дочь"
+            },
+            new SelectListItem
+            {
+                Value = "Отец супруги",
+                Text = "Отец супруги"
+            },
+            new SelectListItem
+            {
+                Value = "Мать супруги",
+                Text = "Мать супруги"
+            },
+        };
+
+        private readonly List<SelectListItem> RelationshipDegreeUz = new List<SelectListItem>()
+        {
+            new SelectListItem
+            {
+                Value = "",
+                Text = ""
+            },
+            new SelectListItem
+            {
+                Value = "Отец",
+                Text = "Отец"
+            },
+            new SelectListItem
+            {
+                Value = "Мать",
+                Text = "Мать"
+            },
+            new SelectListItem
+            {
+                Value = "Сестра",
+                Text = "Сестра"
+            },
+            new SelectListItem
+            {
+                Value = "Брат",
+                Text = "Брат"
+            },
+            new SelectListItem
+            {
+                Value = "Супруга",
+                Text = "Супруга"
+            },
+            new SelectListItem
+            {
+                Value = "Сын",
+                Text = "Сын"
+            },
+            new SelectListItem
+            {
+                Value = "Дочь",
+                Text = "Дочь"
+            },
+            new SelectListItem
+            {
+                Value = "Отец супруги",
+                Text = "Отец супруги"
+            },
+            new SelectListItem
+            {
+                Value = "Мать супруги",
+                Text = "Мать супруги"
+            },
+        };
+
+        public List<SelectListItem> RelationshipDegrees
+        {
+            get
+            {
+                if (Language == HrCvLanguage.Ru)
+                    return RelationshipDegreeRu;
+
+                return RelationshipDegreeUz;
+            }
+        }
+
+        #endregion
+
+        #region "Education Degree"
+
+        private readonly List<SelectListItem> EducationDegreesRu = new List<SelectListItem>()
+        {
+            new SelectListItem
+            {
+                Value = "",
+                Text = ""
+            },
+            new SelectListItem
+            {
+                Value = "среднее",
+                Text = "среднее"
+            },
+            new SelectListItem
+            {
+                Value = "средное специальное",
+                Text = "средное специальное"
+            },
+            new SelectListItem
+            {
+                Value = "высшее",
+                Text = "высшее"
+            }
+        };
+
+        private readonly List<SelectListItem> EducationDegreesUz = new List<SelectListItem>()
+        {
+            new SelectListItem
+            {
+                Value = "",
+                Text = ""
+            },
+            new SelectListItem
+            {
+                Value = "ўрта",
+                Text = "ўрта"
+            },
+            new SelectListItem
+            {
+                Value = "ўрта-маҳсус",
+                Text = "ўрта-маҳсус"
+            },
+            new SelectListItem
+            {
+                Value = "олий",
+                Text = "олий"
+            }
+        };
+
+        public List<SelectListItem> EducationDegrees
+        {
+            get
+            {
+                if (Language == HrCvLanguage.Ru)
+                    return EducationDegreesRu;
+
+                return EducationDegreesUz;
+            }
+        }
+
+
+        #endregion
+
+        #region "Academic Title"
+
+        private readonly List<SelectListItem> AcademicTitlesRu = new List<SelectListItem>()
+        {
+            new SelectListItem
+            {
+                Value = "нет",
+                Text = "нет"
+            },
+            new SelectListItem
+            {
+                Value = "профессор",
+                Text = "профессор"
+            },
+            new SelectListItem
+            {
+                Value = "доцент",
+                Text = "доцент"
+            }
+        };
+
+        private readonly List<SelectListItem> AcademicTitlesUz = new List<SelectListItem>()
+        {
+            new SelectListItem
+            {
+                Value = "йўқ",
+                Text = "йўқ"
+            },
+            new SelectListItem
+            {
+                Value = "профессор",
+                Text = "профессор"
+            },
+            new SelectListItem
+            {
+                Value = "доцент",
+                Text = "доцент"
+            }
+        };
+
+        public List<SelectListItem> AcademicTitles
+        {
+            get
+            {
+                if (Language == HrCvLanguage.Ru)
+                    return AcademicTitlesRu;
+
+                return AcademicTitlesUz;
+            }
+        }
+
+        #endregion
+
+        #endregion
 
     }
 }

@@ -10,7 +10,6 @@
 <div class="container">
 
     <h2>@ViewBag.Title</h2>
-
     <div class="row">
         <div class="col-lg-12">
             <div>
@@ -597,23 +596,33 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_Degree)</p>
+                                        </div>
+                                    </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                                <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_FullName)</p>
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_FullName)</p>
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                                <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_BirthDateAndPlace)</p>
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_BirthDateAndPlace)</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                                <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_Degree)</p>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select class="form-control" data-bind="value: Degree,
+                                                    options: $root.relationshipDegrees,
+                                                    optionsText: 'Text',
+                                                    optionsValue: 'Value',
+                                                    attr: {name: 'RelativesDetailsList[' + $index() + '].Degree'}"></select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <input class="form-control" data-bind="value: FullName, attr: {name: 'RelativesDetailsList[' + $index() + '].FullName'}" />
@@ -625,11 +634,7 @@
                                             <input class="form-control" data-bind="value: BirthDateAndPlace, attr: {name: 'RelativesDetailsList[' + $index() + '].BirthDateAndPlace'}" />
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <input class="form-control" data-bind="value: Degree, attr: {name: 'RelativesDetailsList[' + $index() + '].Degree'}" />
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <br />
                                 <div class="row">
@@ -757,7 +762,9 @@
             self.laborDetails = ko.observableArray(laborDetails);
             self.relatives = ko.observableArray(relatives);
             self.awards=ko.observableArray(awards);
-            self.memberships=ko.observableArray(memberships);
+            self.memberships = ko.observableArray(memberships);
+
+            self.relationshipDegrees = ko.observableArray(@Html.Raw(Json.Encode(Model.RelationshipDegrees)));
 
             self.addEducation = function () {
                 self.educations.push(new item(""));
@@ -821,6 +828,8 @@
                 if(self.memberships().length==0)
                     self.addMembership();
             }
+
+
         };
 
         var viewModel = new CvModel(@Html.Raw(Json.Encode(Model.EducationList.Select(e=> new {Name = e }))),
