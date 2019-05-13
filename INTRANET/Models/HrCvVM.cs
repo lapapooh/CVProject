@@ -339,11 +339,11 @@ namespace INTRANET.Models
                 Value = "нет",
                 Text = "нет"
             },
-            //new SelectListItem
-            //{
-            //    Value = "Звание «Ўзбекистон Қаҳрамони»",
-            //    Text = "Звание «Ўзбекистон Қаҳрамони»"
-            //},
+            new SelectListItem
+            {
+                Value = "Звание «Ўзбекистон Қаҳрамони»",
+                Text = "Звание «Ўзбекистон Қаҳрамони»"
+            },
             //new SelectListItem
             //{
             //    Value = "Почетные звания Республики Узбекистан",
@@ -618,11 +618,11 @@ namespace INTRANET.Models
                 Value = "йўқ",
                 Text = "йўқ"
             },
-            //new SelectListItem
-            //{
-            //    Value = "«Ўзбекистон Қаҳрамони» унвонлари",
-            //    Text = "«Ўзбекистон Қаҳрамони» унвонлари"
-            //},
+            new SelectListItem
+            {
+                Value = "«Ўзбекистон Қаҳрамони» унвонлари",
+                Text = "«Ўзбекистон Қаҳрамони» унвонлари"
+            },
             //new SelectListItem
             //{
             //    Value = "Ўзбекистон Республикаси фахрий унвонлари",
