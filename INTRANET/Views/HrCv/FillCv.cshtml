@@ -306,7 +306,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.AcademicTitle, new { @class = "form-control" })
+                                        @Html.DropDownListFor(m => m.AcademicTitles, Model.AcademicTitles, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.AcademicTitle, "", new { @class = "error" })
                                     </div>
                                 </div>
@@ -436,11 +436,15 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input class="form-control" data-bind="value: Award, attr: {name: 'AwardList[' + $index() + '].Award'}" />
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <select class="form-control" data-bind="value: Award,
+                                                    options: $root.awards,
+                                                    optionsText: 'Text',
+                                                    optionsValue: 'Value',
+                                                    attr: {name: 'AwardList[' + $index() + '].Award'}"></select>
+                                            </div>
                                         </div>
-                                    </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <input class="form-control" data-bind="value: Year, attr: {name: 'AwardList[' + $index() + '].Year'}" />
@@ -595,12 +599,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_Degree)</p>
-                                        </div>
-                                    </div>
+                                <div class="row">                                    
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_FullName)</p>
@@ -611,18 +610,14 @@
                                             <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_BirthDateAndPlace)</p>
                                         </div>
                                     </div>
-
-                                </div>
-                                <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <select class="form-control" data-bind="value: Degree,
-                                                    options: $root.relationshipDegrees,
-                                                    optionsText: 'Text',
-                                                    optionsValue: 'Value',
-                                                    attr: {name: 'RelativesDetailsList[' + $index() + '].Degree'}"></select>
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_Degree)</p>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
+                                    
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <input class="form-control" data-bind="value: FullName, attr: {name: 'RelativesDetailsList[' + $index() + '].FullName'}" />
@@ -632,6 +627,15 @@
                                     <div class="col-md-5">
                                         <div class="form-group">
                                             <input class="form-control" data-bind="value: BirthDateAndPlace, attr: {name: 'RelativesDetailsList[' + $index() + '].BirthDateAndPlace'}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select class="form-control" data-bind="value: Degree,
+                                                    options: $root.relationshipDegrees,
+                                                    optionsText: 'Text',
+                                                    optionsValue: 'Value',
+                                                    attr: {name: 'RelativesDetailsList[' + $index() + '].Degree'}"></select>
                                         </div>
                                     </div>
 
@@ -765,6 +769,8 @@
             self.memberships = ko.observableArray(memberships);
 
             self.relationshipDegrees = ko.observableArray(@Html.Raw(Json.Encode(Model.RelationshipDegrees)));
+            self.awards = ko.observableArray(@Html.Raw(Json.Encode(Model.AwardsList)));
+
 
             self.addEducation = function () {
                 self.educations.push(new item(""));

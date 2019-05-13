@@ -330,7 +330,7 @@ namespace INTRANET.Models
 
         #endregion
 
-        #region Awards
+        #region "Awards"
 
         private readonly List<SelectListItem> AwardsRu = new List<SelectListItem>()
         {
