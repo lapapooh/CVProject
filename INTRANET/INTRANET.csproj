@@ -277,6 +277,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HrCvHintController.cs" />
     <Compile Include="Controllers\HrDepartmentController.cs" />
+    <Compile Include="Controllers\HrEmployeeController.cs" />
     <Compile Include="Controllers\HrEmployeeDocumentController.cs" />
     <Compile Include="Controllers\HrCvController.cs" />
     <Compile Include="Controllers\HrPositionController.cs" />
@@ -292,6 +293,7 @@
     <Compile Include="Models\HrDepartmentVM.cs" />
     <Compile Include="Models\HrEmployeeListVM.cs" />
     <Compile Include="Models\HrCvLaborVM.cs" />
+    <Compile Include="Models\HrEmployeeVM.cs" />
     <Compile Include="Models\HrPositionVM.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -439,6 +441,9 @@
     <Content Include="Views\HrDepartment\Create.cshtml" />
     <Content Include="Views\HrDepartment\Edit.cshtml" />
     <Content Include="Views\HrDepartment\Index.cshtml" />
+    <Content Include="Views\HrEmployee\Create.cshtml" />
+    <Content Include="Views\HrEmployee\Edit.cshtml" />
+    <Content Include="Views\HrEmployee\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\AcademicYear\" />

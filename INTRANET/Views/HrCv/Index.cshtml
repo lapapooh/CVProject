@@ -28,6 +28,7 @@
                     <th>CV Uz</th>
                     <th>CV Ru</th>
                     <th>Docs</th>
+                    <th>Update Employee</th>
                 </tr>
             </thead>
         </table>
@@ -252,6 +253,14 @@
                             "orderable": false,
                             "render": function (data, type, full, meta) {
                                 return '<a href="/HrEmployeeDocument/Index/' + data.Id + '" ><span class="glyphicon glyphicon-file"></span></a>';
+                            }
+                        },
+                        {
+                            "targets": [7],
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                return '<a href="/HrEmployee/Edit/' + row.Id + '" ><span class="glyphicon glyphicon-pencil"></span></a>';
                             }
                         },
 

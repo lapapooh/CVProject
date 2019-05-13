@@ -1,0 +1,122 @@
+﻿@model IEnumerable<INTRANET.Models.HrEmployeeVM>
+
+<div>
+    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Create", "HrEmployee")'">Create</button>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Code_1C)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ID_1C)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PlaceOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmailLogin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EntryDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LeaveDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PositionId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DepartmentId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PositionStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PassportNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PassportIssueDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PassportIssuePlace)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Code_1C)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID_1C)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfBirth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PlaceOfBirth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmailLogin)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EntryDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LeaveDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PositionId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartmentId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PositionStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PassportNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PassportIssueDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PassportIssuePlace)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
