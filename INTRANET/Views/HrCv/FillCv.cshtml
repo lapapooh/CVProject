@@ -312,7 +312,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.EducationDegree, new { @class = "form-control" })
+                                        @Html.DropDownListFor(m => m.EducationDegree, Model.EducationDegrees, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.EducationDegree, "", new { @class = "error" })
                                     </div>
                                 </div>
