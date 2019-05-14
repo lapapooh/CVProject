@@ -15,7 +15,7 @@ namespace INTRANET.Model
         [ForeignKey("CvDetail")]
         public int HrCvDetailId { get; set; }
         public string Award { get; set; }
-        public int Year { get; set; }
+        public int? Year { get; set; }
 
         public virtual HrCvDetail CvDetail { get; set; }
     }

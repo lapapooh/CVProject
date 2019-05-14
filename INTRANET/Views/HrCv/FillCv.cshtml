@@ -583,6 +583,11 @@
                             <div class="col-md-12" data-bind='foreach: relatives'>
                                 <!--for labels and hint messages, need this row for alignemnt of controls-->
                                 <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>@Model.GetFieldName(HrCvField.RelativesList_Degree): </label>
+                                        </div>
+                                    </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>@Model.GetFieldName(HrCvField.RelativesList_FullName): </label>
@@ -593,13 +598,14 @@
                                             <label>@Model.GetFieldName(HrCvField.RelativesList_BirthDateAndPlace): </label>
                                         </div>
                                     </div>
+
+                                </div>
+                                <div class="row">  
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>@Model.GetFieldName(HrCvField.RelativesList_Degree): </label>
+                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_Degree)</p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">                                    
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_FullName)</p>
@@ -610,14 +616,18 @@
                                             <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_BirthDateAndPlace)</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_Degree)</p>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                                 <div class="row">
-                                    
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select class="form-control" data-bind="value: Degree,
+                                                    options: $root.relationshipDegrees,
+                                                    optionsText: 'Text',
+                                                    optionsValue: 'Value',
+                                                    attr: {name: 'RelativesDetailsList[' + $index() + '].Degree'}"></select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <input class="form-control" data-bind="value: FullName, attr: {name: 'RelativesDetailsList[' + $index() + '].FullName'}" />
@@ -629,16 +639,6 @@
                                             <input class="form-control" data-bind="value: BirthDateAndPlace, attr: {name: 'RelativesDetailsList[' + $index() + '].BirthDateAndPlace'}" />
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <select class="form-control" data-bind="value: Degree,
-                                                    options: $root.relationshipDegrees,
-                                                    optionsText: 'Text',
-                                                    optionsValue: 'Value',
-                                                    attr: {name: 'RelativesDetailsList[' + $index() + '].Degree'}"></select>
-                                        </div>
-                                    </div>
-
                                 </div>
                                 <br />
                                 <div class="row">

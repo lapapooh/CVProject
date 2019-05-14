@@ -7,7 +7,7 @@ namespace INTRANET.Models
 {
     public class HrCvAwardVM
     {
-        public int Year { get; set; }
+        public int? Year { get; set; }
         public string Award { get; set; }
     }
 }
