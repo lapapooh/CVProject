@@ -26,7 +26,14 @@ namespace INTRANET.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            var model = new HrEmployeeVM();
+            var dob = new DateTime(1990, 1, 1);
+            var model = new HrEmployeeVM
+            {
+                DateOfBirth = dob,
+                EntryDate = DateTime.Now,
+                PositionStartDate = DateTime.Now,
+                PassportIssueDate = DateTime.Now
+            };
             AddDefaultsToModel(model);
 
 
