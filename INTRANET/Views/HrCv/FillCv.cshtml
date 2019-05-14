@@ -306,7 +306,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        @Html.DropDownListFor(m => m.AcademicTitles, Model.AcademicTitles, new { @class = "form-control" })
+                                        @Html.DropDownListFor(m => m.AcademicTitle, Model.AcademicTitles, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.AcademicTitle, "", new { @class = "error" })
                                     </div>
                                 </div>
@@ -439,7 +439,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <select class="form-control" data-bind="value: Award,
-                                                    options: $root.awards,
+                                                    options: $root.awardList,
                                                     optionsText: 'Text',
                                                     optionsValue: 'Value',
                                                     attr: {name: 'AwardList[' + $index() + '].Award'}"></select>
@@ -769,7 +769,7 @@
             self.memberships = ko.observableArray(memberships);
 
             self.relationshipDegrees = ko.observableArray(@Html.Raw(Json.Encode(Model.RelationshipDegrees)));
-            self.awards = ko.observableArray(@Html.Raw(Json.Encode(Model.AwardsList)));
+            self.awardList = ko.observableArray(@Html.Raw(Json.Encode(Model.AwardsList)));
 
 
             self.addEducation = function () {
