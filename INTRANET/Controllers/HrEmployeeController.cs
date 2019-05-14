@@ -31,7 +31,8 @@ namespace INTRANET.Controllers
             {
                 DateOfBirth = dob,
                 EntryDate = DateTime.Now,
-                PositionStartDate = DateTime.Now
+                PositionStartDate = DateTime.Now,
+                IsActive = true
             };
             AddDefaultsToModel(model);
 
@@ -48,7 +49,7 @@ namespace INTRANET.Controllers
             if (ModelState.IsValid)
             {
                 _hrEmployeeService.Create(MapFrom(model));
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "HrCv");
             }
             else
                 return View(model);
@@ -60,7 +61,7 @@ namespace INTRANET.Controllers
             var employee = _hrEmployeeService.GetByID(id);
             //safety check
             if (employee == null)
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "HrCv");
 
             var model = MapTo(employee);
             AddDefaultsToModel(model);
@@ -76,7 +77,7 @@ namespace INTRANET.Controllers
 
                 //safety check
                 if (employee == null)
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "HrCv");
 
                 //do not update all fields - will override image and other fields in database
                 employee.FullName = model.FullName;
@@ -98,7 +99,7 @@ namespace INTRANET.Controllers
                 employee.PassportIssuePlace = model.PassportIssuePlace;
 
                 _hrEmployeeService.Update(employee);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "HrCv");
             }
 
             //wrong user input - show page back
@@ -179,5 +180,5 @@ namespace INTRANET.Controllers
             model.Positions = positionsList;
         }
 
-        }
+    }
 }

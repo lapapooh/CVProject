@@ -35,7 +35,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBox("DateOfBirth", Model.DateOfBirth.ToString("MM/dd/yyyy"), new { @class = "form-control datepicker" })
+                @Html.TextBox("DateOfBirth", Model.DateOfBirth.ToString("MM/dd/yyyy"), new { @class = "form-control datepicker", @readonly = "readonly" })
                 @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -75,7 +75,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBox("EntryDate", Model.EntryDate.ToShortDateString(), new { @class = "form-control datepicker" })
+                @Html.TextBox("EntryDate", Model.EntryDate.ToShortDateString(), new { @class = "form-control datepicker", @readonly = "readonly" })
                 @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -106,7 +106,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PositionStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBox("PositionStartDate", Model.PositionStartDate.GetValueOrDefault().ToString("MM/dd/yyyy"), new { @class = "form-control datepicker" })
+                @Html.TextBox("PositionStartDate", Model.PositionStartDate.GetValueOrDefault().ToString("MM/dd/yyyy"), new { @class = "form-control datepicker", @readonly = "readonly" })
                 @Html.ValidationMessageFor(model => model.PositionStartDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -132,7 +132,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PassportIssueDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBox("PassportIssueDate", Model.PassportIssueDate, new { @class = "form-control datepicker" })
+                @Html.TextBox("PassportIssueDate", Model.PassportIssueDate, new { @class = "form-control datepicker", @readonly = "readonly" })
                 @Html.ValidationMessageFor(model => model.PassportIssueDate, "", new { @class = "text-danger" })
             </div>
         </div>
