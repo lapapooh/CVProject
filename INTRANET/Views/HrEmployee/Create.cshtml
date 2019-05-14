@@ -132,7 +132,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PassportIssueDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBox("PassportIssueDate", Model.PassportIssueDate.GetValueOrDefault().ToString("MM/dd/yyyy"), new { @class = "form-control datepicker" })
+                @Html.TextBox("PassportIssueDate", Model.PassportIssueDate, new { @class = "form-control datepicker" })
                 @Html.ValidationMessageFor(model => model.PassportIssueDate, "", new { @class = "text-danger" })
             </div>
         </div>

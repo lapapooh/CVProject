@@ -31,8 +31,7 @@ namespace INTRANET.Controllers
             {
                 DateOfBirth = dob,
                 EntryDate = DateTime.Now,
-                PositionStartDate = DateTime.Now,
-                PassportIssueDate = DateTime.Now
+                PositionStartDate = DateTime.Now
             };
             AddDefaultsToModel(model);
 
