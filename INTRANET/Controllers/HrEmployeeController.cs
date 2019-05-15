@@ -79,7 +79,7 @@ namespace INTRANET.Controllers
                 if (employee == null)
                     return RedirectToAction("Index", "HrCv");
 
-                //do not update all fields - will override image and other fields in database
+                //do not update all fields with MapFrom method - will override image and other fields in database
                 employee.FullName = model.FullName;
                 employee.Code_1C = model.Code_1C;
                 employee.ID_1C = model.ID_1C;

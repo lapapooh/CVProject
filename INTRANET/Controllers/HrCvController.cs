@@ -91,6 +91,9 @@ namespace INTRANET.Controllers
         {
             try
             {
+                //tried to use nuget library for DataTables, but it conflicts with Autofac and dependency injection
+                //so this solution is done
+
                 var draw = Request.Form.GetValues("draw").FirstOrDefault();
                 // Skiping number of Rows count  
                 var start = Request.Form.GetValues("start").FirstOrDefault();
@@ -152,6 +155,7 @@ namespace INTRANET.Controllers
                     }
                 }
 
+                //fileting by departments and positions
                 if (selectedDepartments != null && selectedDepartments.Any())
                     employeeData = employeeData.Where(
                         e => e.DepartmentId.HasValue &&
@@ -314,6 +318,7 @@ namespace INTRANET.Controllers
                 employee.PhoneNo = model.Phone;
                 employee.ExternalPhoneNo = model.ExternalPhone;
 
+                //set check for completion of CV
                 if (model.Language == HrCvLanguage.Ru)
                     employee.ComplietedRuCv = true;
                 else
@@ -335,6 +340,7 @@ namespace INTRANET.Controllers
 
                     _hrCvDetailService.Update(details);
 
+                    //custom saving logic for all lists is in services
                     _hrCvEducationService.Save(model.EducationList.Where(e => !string.IsNullOrWhiteSpace(e)).Select(e => new HrCvEduction
                     {
                         Education = e
@@ -401,11 +407,14 @@ namespace INTRANET.Controllers
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
 
-            var employeeCV = _hrCvDetailService.GetForCv(employeeId, language) ?? new HrCvDetail();
+            var employeeCV = GetCvDetail(employeeId, language);
+
+            //preload ones and avoid nulls
             var awards = (employeeCV.Awards != null) ? employeeCV.Awards : new List<HrCvAward>();
             var memberships = (employeeCV.Memberships != null) ? employeeCV.Memberships : new List<HrCvMembership>();
             var educations = (employeeCV.Educations != null) ? employeeCV.Educations : new List<HrCvEduction>();
             var labors = (employeeCV.Labors != null) ? employeeCV.Labors : new List<HrCvLabor>();
+            var relatives = (employeeCV.Relatives != null) ? employeeCV.Relatives : new List<HrCvRelative>();
 
             Document doc = new Document();
             string path;
@@ -424,6 +433,7 @@ namespace INTRANET.Controllers
                 filename = employee.FullName + "(Ru).doc";
             }
 
+            //for date formatting
             var dateCulture = new CultureInfo(language == HrCvLanguage.Uz ? "uz-UZ" : "ru-RU");
 
             doc.LoadFromFile(path);
@@ -454,6 +464,8 @@ namespace INTRANET.Controllers
                 var isFirst = true;
                 foreach (var education in educations)
                 {
+                    //first one is on the same line as education degree
+                    //but the rest goes to separate lines
                     if (isFirst)
                     {
                         doc.Replace("{EDUCATIONS1}", education.Education, true, true);
@@ -472,11 +484,13 @@ namespace INTRANET.Controllers
 
             }
 
-            //finally remove previously duplicated paragraph or initial paragprah with placeholder
+            //finally remove previously duplicated paragraph 
+            //or initial paragprah with placeholder if no or 1 education
             RemoveEducationSecondParagraph(doc);
 
 
             //labor
+            //copy initial pargraph, insert data in old paragraph
             foreach(var labor in labors)
             {
                 var lp = GetLaborParagraph(doc);
@@ -492,6 +506,7 @@ namespace INTRANET.Controllers
             doc.Sections[0].Paragraphs.RemoveAt(pi);
 
             //replace image
+            //the only way to find image is
             //Loop through the paragraphs of the section
             foreach (Paragraph paragraph in doc.Sections[0].Paragraphs)
             {
@@ -506,8 +521,8 @@ namespace INTRANET.Controllers
                         if (employee.ImageNameContent != null && employee.ImageNameContent.Length > 0)
                         {
                             picture.LoadImage(Image.FromStream(new MemoryStream(employee.ImageNameContent)));
-                        } //no image loaded
-                        else
+                        }
+                        else //no image loaded
                         {
                             picture.LoadImage(Image.FromFile(HostingEnvironment.MapPath("~/Content/HrCvImages/no-image.PNG")));
                         }
@@ -517,12 +532,7 @@ namespace INTRANET.Controllers
                     }
                 }
             }
-
-
-
-            var details = GetCvDetail(employeeId, language);
-
-            var relativesList = _hrCvRelativeService.GetForCvDetail(details.Id);
+         
 
             //for savety
             if (doc.Sections.Count > 0 && doc.Sections[0].Tables.Count > 0)
@@ -531,7 +541,7 @@ namespace INTRANET.Controllers
 
                 //by default there is row with template for data which is initially last row
                 //duplicate it, change text in cell, insert it before template
-                foreach (var r in relativesList)
+                foreach (var r in relatives)
                 {
                     var lastRowIndex = table.Rows.Count - 1;
                     if (lastRowIndex < 0) continue; //for savety
@@ -555,7 +565,7 @@ namespace INTRANET.Controllers
             }
 
 
-
+            //for savety, replate chars that are invalid
             filename = filename.Replace(@"\", " ")
                             .Replace(@"/", " ")
                             .Replace(@":", " ")
@@ -567,13 +577,11 @@ namespace INTRANET.Controllers
                             .Replace(@"|", " ")
                             .Replace(@"  ", " ");
 
-            doc.SaveToFile(filename, FileFormat.Doc);
-
             byte[] data = null;
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 doc.SaveToStream(memoryStream, FileFormat.Doc);
-                //save to byte array
+                //save to byte array to return it
                 data = memoryStream.ToArray();
             }
 
@@ -584,6 +592,7 @@ namespace INTRANET.Controllers
 
         public ActionResult SendEmail(string text, int[] selectedEmployees)
         {
+            //validation
             if (!selectedEmployees.Any() || string.IsNullOrWhiteSpace(text))
                 return Json(new { IsSuccess = false });
 
@@ -632,7 +641,8 @@ namespace INTRANET.Controllers
 
 
         #region "Private Utility methods"
-
+        //newly added employees do not have HrCvDetail record
+        //method handles it
         private HrCvDetail GetCvDetail(int employeeId, HrCvLanguage language)
         {
             var details = _hrCvDetailService.GetForCv(employeeId, language);
@@ -650,7 +660,7 @@ namespace INTRANET.Controllers
             }
             return details;
         }
-        //add readonly fields
+        //add readonly fields, hints and image for preview
         private void AddDefaultsToModel(HrCvVM model, HrEmployee employee)
         {
             model.EmployeeName = employee.FullName;
@@ -664,6 +674,7 @@ namespace INTRANET.Controllers
 
             var hints = _hrCvHintService.GetByLanguage(model.Language);
             //lets be proactive and add defaults
+            //so that employee does not empty field names and hints
             if(!hints.Any())
             {
                 _hrCvHintService.CreateDefaults(model.Language);
@@ -685,6 +696,7 @@ namespace INTRANET.Controllers
             };
         }
 
+        //to follow DRY - these are separated into submethods
         private void RemoveEducationSecondParagraph(Document doc)
         {
             var i = GetEducationSecondParagraphIndex(doc);

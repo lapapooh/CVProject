@@ -6,6 +6,9 @@ using System.Web.Mvc;
 
 namespace INTRANET.Models
 {
+
+    //holder for index page departments and positins
+    //in order not to use view data
     public class HrCvListVM
     {
         public HrCvListVM()

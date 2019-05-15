@@ -23,6 +23,7 @@ namespace INTRANET.Controllers
             var hints = _hrCvHintService.GetAllQueryable();
 
             //lets be proactive and add defaults
+            //so that CV will not be initially empty
             if(!hints.Any())
             {
                 _hrCvHintService.CreateDefaults(HrCvLanguage.Ru);
@@ -38,7 +39,6 @@ namespace INTRANET.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-
             return View(new HrCvHintVM());
         }
 
@@ -65,14 +65,24 @@ namespace INTRANET.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            return View(MapTo(_hrCvHintService.GetByID(id)));
+            var hint = _hrCvHintService.GetByID(id);
+
+            if (hint == null)//safety check
+                return RedirectToAction("Index");
+
+            return View(MapTo(hint));
         }
 
         [HttpPost]
         public ActionResult Edit(HrCvHintVM model)
         {
-            _hrCvHintService.Update(MapFrom(model));
-            return RedirectToAction("Index");
+            if(ModelState.IsValid)
+            {
+                _hrCvHintService.Update(MapFrom(model));
+                return RedirectToAction("Index");
+            }
+            return View(model);
+
         }
 
         public HrCvHintText MapFrom(HrCvHintVM model)

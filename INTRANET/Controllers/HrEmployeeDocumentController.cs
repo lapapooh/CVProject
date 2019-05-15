@@ -45,11 +45,12 @@ namespace INTRANET.Controllers
         {
             //for now hardcoded. 
             //on integration - should get email of logged in user
+            //in 1C - they enter only login (before the @ sign)
             var email = "mshpirko";
 
             var employee = _hrEmployeeService.GetByEmail(email);
 
-            if (employee == null)
+            if (employee == null || !employee.IsActive)//safety and access check
                 return RedirectToAction("Index", "HrCv");
 
             var model = PrepareVM(employee, false);
@@ -62,8 +63,9 @@ namespace INTRANET.Controllers
         public ActionResult DownloadDocument(int documentId)
         {
             var document=_hrEmployeeDocumentService.GetByID(documentId);
-            if (document == null)
+            if (document == null)//safety check
                 return RedirectToAction("Index", "HrCv");
+
             return File(document.FileContent.ToArray(), document.FileContentType, document.FileName);
 
         }
@@ -115,7 +117,7 @@ namespace INTRANET.Controllers
             return RedirectToAction("Index", new {Id = employeeId });
         }
 
-
+        //to follow DRY - sapated into submethod
         private HrEmployeeDocumentListVM PrepareVM(HrEmployee employee, bool isHr)
         {
             return new HrEmployeeDocumentListVM()

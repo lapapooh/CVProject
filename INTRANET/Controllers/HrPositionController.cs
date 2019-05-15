@@ -64,7 +64,7 @@ namespace INTRANET.Controllers
                 if (position == null)
                     return RedirectToAction("Index");
 
-                //do not update all fields - will override created fields in database
+                //do not update all fields with MapFrom method - will override created fields in database
                 position.Code_1C = model.Code_1C;
                 position.TitleEn = model.TitleEn;
                 position.TitleRu = model.TitleRu;

@@ -17,8 +17,11 @@ namespace INTRANET.Models
         [Required]
         public HrCvLanguage Language { get; set; }
 
+        //just to display
         public string DepartmentName { get; set; }
         public string PositionName { get; set; }
+
+        //base64encoded image conted to display on page
         public string ImageContent { get; set; }
 
         //for easy access
@@ -65,20 +68,23 @@ namespace INTRANET.Models
 
 
         //to display translation of field labels and hint texts
-
         public List<HrCvHintText> HintTexts { get; set; }
 
+        //called multiple times in the view, so separated into the function
         public string GetFieldName(HrCvField field)
         {
             return HintTexts.FirstOrDefault(f => f.Field == field)?.FieldName ?? "";
         }
 
+        //called multiple times in the view, so separated into the function
         public string GetFieldHint(HrCvField field)
         {
             return HintTexts.FirstOrDefault(f => f.Field == field)?.Text ?? "";
         }
 
         #region "Dropdowns"
+        //the values are constant and not subject to change
+        //so they are located here, no CRUD required from HR
 
         #region "Relationship Degree"
 
@@ -219,8 +225,8 @@ namespace INTRANET.Models
         {
             new SelectListItem
             {
-                Value = "нет",
-                Text = "нет"
+                Value = "не имеет",
+                Text = "не имеет"
             },
             new SelectListItem
             {
@@ -283,8 +289,8 @@ namespace INTRANET.Models
         {
             new SelectListItem
             {
-                Value = "нет",
-                Text = "нет"
+                Value = "не имеет",
+                Text = "не имеет"
             },
             new SelectListItem
             {
@@ -336,8 +342,8 @@ namespace INTRANET.Models
         {
             new SelectListItem
             {
-                Value = "нет",
-                Text = "нет"
+                Value = "не имеет",
+                Text = "не имеет"
             },
             new SelectListItem
             {

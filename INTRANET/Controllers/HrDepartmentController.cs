@@ -63,7 +63,7 @@ namespace INTRANET.Controllers
                 if (department == null)
                     return RedirectToAction("Index");
 
-                //do not update all fields - will override created fields in database
+                //do not update all fields with MapFrom method - will override created fields in database
                 department.Code_1C = model.Code_1C;
                 department.TitleEn = model.TitleEn;
                 department.TitleRu = model.TitleRu;
