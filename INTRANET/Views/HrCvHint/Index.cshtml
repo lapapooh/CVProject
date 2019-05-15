@@ -1,9 +1,11 @@
 ﻿@model IEnumerable<INTRANET.Models.HrCvHintVM>
+
+@{
+    ViewBag.Title = "HR CV Hint Messages";
+}
+<h2>@ViewBag.Title <a class="btn btn-success" href="@Url.Action("Create", "HrCvHint")">Create</a></h2>
 <br />
-<div>
-    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Create", "HrCvHint")'">Create</button>
-</div>
-<br />
+
 <table id="hrHintGrid" class="table">
     <thead>
         <tr>

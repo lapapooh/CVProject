@@ -1,11 +1,16 @@
 ﻿@model INTRANET.Models.HrDepartmentVM
 
+@{
+    ViewBag.Title = "Edit department - " + Model.TitleEn;
+}
+
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>HrDepartmentVM</h4>
+        <h4>@ViewBag.Title</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)

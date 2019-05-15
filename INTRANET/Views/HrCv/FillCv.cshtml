@@ -4,7 +4,7 @@
 @model  HrCvVM
 
 @{
-    ViewBag.Title = Model.EmployeeName + " - Fill CV";
+    ViewBag.Title = Model.EmployeeName + " (" + Model.Language.ToString() + ")";
 }
 
 <div class="container">
@@ -452,8 +452,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <a href="#" data-bind="click: $root.removeAward" class="btn btn-danger"><i class=" glyphicon glyphicon-minus"></i></a>
-                                            <a href="#" data-bind="click: $root.addAward" class="btn btn-success"><i class=" glyphicon glyphicon-plus"></i></a>
+                                            <a href="#" data-bind="click: $root.removeAward" class="btn btn-danger"><i class="glyphicon glyphicon-minus"></i></a>
+                                            <a href="#" data-bind="click: $root.addAward" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -480,8 +480,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <a href="#" data-bind="click: $root.removeMembership" class="btn btn-danger"><i class=" glyphicon glyphicon-minus"></i></a>
-                                            <a href="#" data-bind="click: $root.addMembership" class="btn btn-success"><i class=" glyphicon glyphicon-plus"></i></a>
+                                            <a href="#" data-bind="click: $root.removeMembership" class="btn btn-danger"><i class="glyphicon glyphicon-minus"></i></a>
+                                            <a href="#" data-bind="click: $root.addMembership" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -554,8 +554,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <a href="#" data-bind="click: $root.removeLaborDetail" class="btn btn-danger"><i class=" glyphicon glyphicon-minus"></i></a>
-                                            <a href="#" data-bind="click: $root.addLaborDetail" class="btn btn-success"><i class=" glyphicon glyphicon-plus"></i></a>
+                                            <a href="#" data-bind="click: $root.removeLaborDetail" class="btn btn-danger"><i class="glyphicon glyphicon-minus"></i></a>
+                                            <a href="#" data-bind="click: $root.addLaborDetail" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -688,8 +688,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <a href="#" data-bind="click: $root.removeRelative" class="btn btn-danger"><i class=" glyphicon glyphicon-minus"></i></a>
-                                            <a href="#" data-bind="click: $root.addRelative" class="btn btn-success"><i class=" glyphicon glyphicon-plus"></i></a>
+                                            <a href="#" data-bind="click: $root.removeRelative" class="btn btn-danger"><i class="glyphicon glyphicon-minus"></i></a>
+                                            <a href="#" data-bind="click: $root.addRelative" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></a>
                                         </div>
                                     </div>
                                 </div>

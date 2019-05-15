@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<INTRANET.Models.HrDepartmentVM>
+@{
+    ViewBag.Title = "HR Departments";
+}
 
-<div>
-    <button type="button" class="btn btn-success btn-department" onclick="location.href='@Url.Action("Create", "HrDepartment")'">Create</button>
-</div>
+<h2>@ViewBag.Title <a  class="btn btn-success btn-department" href="@Url.Action("Create", "HrDepartment")">Create</a></h2>
+<br />
 <table class="table" id="hrDepartmentGrid">
     <thead>
         <tr>

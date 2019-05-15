@@ -6,7 +6,11 @@
 @{
     ViewBag.Title = "Employee List";
 }
-
+<br />
+<a class="btn btn-default" href="@Url.Action("Index", "HrDepartment")">Departments</a>
+<a class="btn btn-default" href="@Url.Action("Index", "HrPosition")">Positions</a>
+<a class="btn btn-default" href="@Url.Action("Index", "HrCvHint")">CV Hint Mesages</a>
+<br />
 <h2>@ViewBag.Title</h2>
 
 <div class="container">
@@ -232,7 +236,7 @@
                             "orderable": false,
                             "render": function (data, type, row) {
                                 var checked = '';
-                                if (data)
+                                if (row.HasFilledUzCV)
                                     checked = 'checked="checked"';
 
                                 return '<input type="checkbox" disabled="disabled" '
@@ -247,8 +251,9 @@
                             "searchable": false,
                             "orderable": false,
                             "render": function (data, type, row) {
+
                                 var checked = '';
-                                if (data)
+                                if (row.HasFilledRuCV)
                                     checked = 'checked="checked"';
 
                                 return '<input type="checkbox" disabled="disabled" '
