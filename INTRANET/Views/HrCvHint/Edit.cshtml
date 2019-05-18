@@ -20,8 +20,8 @@
             @Html.LabelFor(model => model.Field, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(m => m.Field,
-                    new SelectList(Enum.GetValues(typeof(HrCvField)))
-                    )
+                    new SelectList(Enum.GetValues(typeof(HrCvField))),
+                    new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Field, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -29,8 +29,8 @@
             @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(m => m.Language,
-                    new SelectList(Enum.GetValues(typeof(HrCvLanguage)))
-                    )
+                    new SelectList(Enum.GetValues(typeof(HrCvLanguage))), 
+                    new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
             </div>
         </div>

@@ -10,6 +10,7 @@
 <a class="btn btn-default" href="@Url.Action("Index", "HrDepartment")">Departments</a>
 <a class="btn btn-default" href="@Url.Action("Index", "HrPosition")">Positions</a>
 <a class="btn btn-default" href="@Url.Action("Index", "HrCvHint")">CV Hint Mesages</a>
+<a class="btn btn-default" href="@Url.Action("ImportCV")">Import CV</a>
 <br />
 <h2>@ViewBag.Title</h2>
 
@@ -241,8 +242,9 @@
 
                                 return '<input type="checkbox" disabled="disabled" '
                                     + checked + '>' +
-                                    '<a href="/HrCv/FillCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Uz).ToString()) + '"><span class="glyphicon glyphicon-edit"></span></a>' +
-                                    '<a href="/HrCv/DownloadCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Uz).ToString()) + '"><span class="glyphicon glyphicon-download-alt"></span></a>';
+                                    '<a title="edit" href="/HrCv/FillCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Uz).ToString()) + '"><span class="glyphicon glyphicon-edit"></span></a>' +
+                                    '<a title="download" href="/HrCv/DownloadCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Uz).ToString()) + '"><span class="glyphicon glyphicon-download-alt"></span></a>' +
+                                    '<a title="import" href="/HrCv/ImportCV/' + '?employeeId=' + row.Id + '&language=@(HrCvLanguage.Uz.ToString())"><span class="glyphicon glyphicon-import"></span></a>';
 
                             }
                         },
@@ -258,8 +260,9 @@
 
                                 return '<input type="checkbox" disabled="disabled" '
                                     + checked + '>' +
-                                    '<a href="/HrCv/FillCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Ru).ToString()) + '"><span class="glyphicon glyphicon-edit"></span></a>' +
-                                    '<a href="/HrCv/DownloadCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Ru).ToString()) + '"><span class="glyphicon glyphicon-download-alt"></span></a>';
+                                    '<a title="edit" href="/HrCv/FillCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Ru).ToString()) + '"><span class="glyphicon glyphicon-edit"></span></a>' +
+                                    '<a title="download" href="/HrCv/DownloadCv/' + '?employeeId=' + row.Id + '&Language=' + @(((int)HrCvLanguage.Ru).ToString()) + '"><span class="glyphicon glyphicon-download-alt"></span></a>' +
+                                    '<a title="import" href="/HrCv/ImportCV/' + '?employeeId=' + row.Id + '&language=@(HrCvLanguage.Ru.ToString())"><span class="glyphicon glyphicon-import"></span></a>';
                             }
                         },
                         {

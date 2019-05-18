@@ -10,11 +10,13 @@
 <div class="container">
 
     <h2>@ViewBag.Title</h2>
+    <h3 class="text-success">@ViewBag.ImportResult</h3>
     <div class="row">
         <div class="col-lg-12">
             <div>
                 @using (Html.BeginForm("FillCV", "HrCv", new { employeeId = Model.EmployeeId, language = Model.Language }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
+                    @Html.AntiForgeryToken()
                     @Html.HiddenFor(m => m.EmployeeId)
                     @Html.HiddenFor(m => m.Language)
                     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -399,7 +401,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <br/>
+                            <br />
 
                             <div class="col-md-12">
                                 <div class="row">
@@ -436,15 +438,15 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <select class="form-control" data-bind="value: Award,
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select class="form-control" data-bind="value: Award,
                                                     options: $root.awardList,
                                                     optionsText: 'Text',
                                                     optionsValue: 'Value',
                                                     attr: {name: 'AwardList[' + $index() + '].Award'}"></select>
-                                            </div>
                                         </div>
+                                    </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <input class="form-control" data-bind="value: Year, attr: {name: 'AwardList[' + $index() + '].Year'}" />
@@ -458,7 +460,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <br/>
+                            <br />
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>@Model.GetFieldName(HrCvField.MembershipList): </label>
@@ -600,7 +602,7 @@
                                     </div>
 
                                 </div>
-                                <div class="row">  
+                                <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_Degree)</p>
@@ -616,7 +618,7 @@
                                             <p class="hint-text">@Model.GetFieldHint(HrCvField.RelativesList_BirthDateAndPlace)</p>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3">

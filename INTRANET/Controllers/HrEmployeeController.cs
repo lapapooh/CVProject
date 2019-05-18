@@ -42,6 +42,7 @@ namespace INTRANET.Controllers
 
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(HrEmployeeVM model)
         {
 
@@ -69,6 +70,7 @@ namespace INTRANET.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(HrEmployeeVM model)
         {
             if(ModelState.IsValid)

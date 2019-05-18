@@ -30,6 +30,7 @@ namespace INTRANET.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(HrPositionVM model)
         {
             if (ModelState.IsValid)
@@ -56,6 +57,7 @@ namespace INTRANET.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(HrPositionVM model) {
 
             if (ModelState.IsValid)

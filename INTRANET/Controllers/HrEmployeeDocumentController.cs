@@ -88,6 +88,7 @@ namespace INTRANET.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult UploadDocument(int employeeId, string documentTitle, HttpPostedFileBase fileItem)
         {
             var model = new HrEmployeeDocument();

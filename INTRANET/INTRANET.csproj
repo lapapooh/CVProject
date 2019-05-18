@@ -295,6 +295,7 @@
     <Compile Include="Models\HrEmployeeListVM.cs" />
     <Compile Include="Models\HrCvLaborVM.cs" />
     <Compile Include="Models\HrEmployeeVM.cs" />
+    <Compile Include="Models\HrImportCvVM.cs" />
     <Compile Include="Models\HrPositionVM.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -444,6 +445,7 @@
     <Content Include="Views\HrDepartment\Index.cshtml" />
     <Content Include="Views\HrEmployee\Create.cshtml" />
     <Content Include="Views\HrEmployee\Edit.cshtml" />
+    <Content Include="Views\HrCv\ImportCV.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\AcademicYear\" />

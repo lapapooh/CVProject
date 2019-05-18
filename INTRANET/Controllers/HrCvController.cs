@@ -58,6 +58,8 @@ namespace INTRANET.Controllers
 
         }
 
+
+        #region "Index methods"
         // GET: HrCv
         public ActionResult Index()
         {
@@ -207,6 +209,60 @@ namespace INTRANET.Controllers
             }
         }
 
+
+        public ActionResult SendEmail(string text, int[] selectedEmployees)
+        {
+            //validation
+            if (!selectedEmployees.Any() || string.IsNullOrWhiteSpace(text))
+                return Json(new { IsSuccess = false });
+
+
+            List<string> emails = new List<string> { };
+
+            foreach (var employee in selectedEmployees)
+            {
+                var email = _hrEmployeeService.GetByID(employee).EmailLogin;
+                emails.Add(email);
+            }
+
+            if (!emails.Any())
+                return Json(new { IsSuccess = false });
+
+            try
+            {
+                foreach (var email in emails)
+                {
+                    MailMessage mail = new MailMessage();
+                    mail.To.Add(email + "@wiut.uz"); //from 1C we know only login of the email                
+                    mail.From = new MailAddress("hrcvwiut@yandex.com"); //TODO: Add real user email
+                    mail.Subject = "HR CV issue";
+
+                    mail.Body = text;
+
+                    mail.IsBodyHtml = true;
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Host = "smtp.yandex.com"; //TODO: use real credentials of sender account
+                    smtp.Credentials = new System.Net.NetworkCredential
+                         ("hrcvwiut@yandex.com", "wiut2019");
+                    smtp.Port = 587;
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+                return Json(new { IsSuccess = true });
+
+            }
+            catch (Exception e)
+            {
+                //TODO: logging of the exception
+                return Json(new { IsSuccess = false });
+            }
+
+        }
+
+        #endregion
+
+        #region "FillCV"
+
         [HttpGet]
         public ActionResult FillCv(int employeeId, HrCvLanguage language)
         {
@@ -257,6 +313,7 @@ namespace INTRANET.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult FillCv(HrCvVM model, HttpPostedFileBase fileItem)
         {
 
@@ -287,8 +344,8 @@ namespace INTRANET.Controllers
             }
             else
             {
-                string ex = Path.GetExtension(fileItem.FileName);
-                List<string> acceptedExtensions = new List<string> { ".png", ".jpg" };
+                var ex = Path.GetExtension(fileItem.FileName);
+                var acceptedExtensions = new List<string> { ".png", ".jpg" };
 
                 if (!acceptedExtensions.Contains(ex))
                 {
@@ -385,7 +442,7 @@ namespace INTRANET.Controllers
                         Membership = e
                     }).ToList(), details.Id);
 
-
+                    ViewBag.ImportResult = "Thank you for CV completion!!!";
                 }
                 catch (Exception)
                 {
@@ -398,6 +455,8 @@ namespace INTRANET.Controllers
             AddDefaultsToModel(model, employee);
             return View(model);
         }
+
+        #endregion
 
         [HttpGet]
         public ActionResult DownloadCv(int employeeId, HrCvLanguage language)
@@ -416,7 +475,7 @@ namespace INTRANET.Controllers
             var labors = (employeeCV.Labors != null) ? employeeCV.Labors : new List<HrCvLabor>();
             var relatives = (employeeCV.Relatives != null) ? employeeCV.Relatives : new List<HrCvRelative>();
 
-            Document doc = new Document();
+            var doc = new Document();
             string path;
             string filename;
 
@@ -449,11 +508,43 @@ namespace INTRANET.Controllers
             doc.Replace("{ACADEMICDEGREE}", employeeCV?.AcademicDegree ?? "", true, true);
             doc.Replace("{ACADEMICTITLE}", employeeCV?.AcademicTitle ?? "", true, true);
             doc.Replace("{LANGUAGES}", employeeCV?.Languages ?? "", true, true);
-            doc.Replace("{AWARDS}", string.Join("; ", awards.Select(x => string.Format("{0} {1}", x.Award, x.Year)).ToList()), true, true);
-            doc.Replace("{MEMBERSHIPS}", string.Join("; ", memberships.Select(x => x.Membership).ToList()), true, true);
+
+            //awards
+            //copy initial pargraph, insert data in old paragraph
+            foreach (var award in awards)
+            {
+                var ap = GetAwardsParagraph(doc);
+                var api = GetAwardsParagraphIndex(doc);
+
+                var newP = (Paragraph)ap.Clone();
+                ap.Text = string.Format("{0}, {1} {2}", award.Award, award.Year, language == HrCvLanguage.Ru ? "год" : "йил");
+                doc.Sections[0].Paragraphs.Insert(api + 1, newP);
+            }
+
+            //finally remove previously duplicated paragraph or initial paragprah with placeholder
+            var dapi = GetAwardsParagraphIndex(doc);
+            doc.Sections[0].Paragraphs.RemoveAt(dapi);
+
+
+            //memberships
+            //copy initial pargraph, insert data in old paragraph
+            foreach (var membership in memberships)
+            {
+                var mp = GetMembershipsParagraph(doc);
+                var mpi = GetMembershipsParagraphIndex(doc);
+
+                var newP = (Paragraph)mp.Clone();
+                mp.Text = membership.Membership;
+                doc.Sections[0].Paragraphs.Insert(mpi + 1, newP);
+            }
+
+            //finally remove previously duplicated paragraph or initial paragprah with placeholder
+            var dmpi = GetMembershipsParagraphIndex(doc);
+            doc.Sections[0].Paragraphs.RemoveAt(dmpi);
 
             //educations
-            if(!educations.Any())
+            //tricky as fisrt line is same as nationality and the rest goes on separate lines
+            if (!educations.Any())
             {
                 //no education - remove placeholder
                 doc.Replace("{EDUCATIONS1}", "", true, true);
@@ -502,8 +593,8 @@ namespace INTRANET.Controllers
             }
 
             //finally remove previously duplicated paragraph or initial paragprah with placeholder
-            var pi = GetLaborParagraphIndex(doc);
-            doc.Sections[0].Paragraphs.RemoveAt(pi);
+            var dlpi = GetLaborParagraphIndex(doc);
+            doc.Sections[0].Paragraphs.RemoveAt(dlpi);
 
             //replace image
             //the only way to find image is
@@ -515,7 +606,7 @@ namespace INTRANET.Controllers
                 {
                     if (docObj.DocumentObjectType == DocumentObjectType.Picture)
                     {
-                        DocPicture picture = docObj as DocPicture;
+                        var picture = docObj as DocPicture;
                         var w = picture.Width;
                         var h = picture.Height;
                         if (employee.ImageNameContent != null && employee.ImageNameContent.Length > 0)
@@ -589,55 +680,299 @@ namespace INTRANET.Controllers
 
         }
 
+        #region "ImportFromDocument"
 
-        public ActionResult SendEmail(string text, int[] selectedEmployees)
+        [HttpGet]
+        public ActionResult ImportCV(int? employeeId, HrCvLanguage? language)
         {
-            //validation
-            if (!selectedEmployees.Any() || string.IsNullOrWhiteSpace(text))
-                return Json(new { IsSuccess = false });
-
-
-            List<string> emails = new List<string> { };
-
-            foreach (var employee in selectedEmployees)
+            var model = new HrImportCvVM
             {
-                var email = _hrEmployeeService.GetByID(employee).EmailLogin;
-                emails.Add(email);
-            }
+                EmployeeId = employeeId ?? 0,
+                Language = language ?? HrCvLanguage.Ru
+            };
 
-            if (!emails.Any())
-                return Json(new { IsSuccess = false });
+            AddEmployeeList(model);
 
-            try
-            {
-                foreach (var email in emails)
-                {
-                    MailMessage mail = new MailMessage();
-                    mail.To.Add(email + "@wiut.uz"); //from 1C we know only login of the email                
-                    mail.From = new MailAddress("hrcvwiut@yandex.com"); //TODO: Add real user email
-                    mail.Subject = "HR CV issue";
-
-                    mail.Body = text;
-
-                    mail.IsBodyHtml = true;
-                    SmtpClient smtp = new SmtpClient();
-                    smtp.Host = "smtp.yandex.com"; //TODO: use real credentials of sender account
-                    smtp.Credentials = new System.Net.NetworkCredential
-                         ("hrcvwiut@yandex.com", "wiut2019");
-                    smtp.Port = 587;
-                    smtp.EnableSsl = true;
-                    smtp.Send(mail);
-                }
-                return Json(new { IsSuccess = true });
-
-            }
-            catch (Exception e)
-            {
-                //TODO: logging of the exception
-                return Json(new { IsSuccess = false });
-            }
-
+            return View(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ImportCV(HrImportCvVM model, HttpPostedFileBase fileItem)
+        {
+            var hasFile = fileItem != null && fileItem.ContentLength > 0;
+            if (!hasFile)
+                ModelState.AddModelError("", "File Required");
+            else
+            {
+                var ex = Path.GetExtension(fileItem.FileName);
+                var acceptedExtensions = new List<string> { ".doc" };
+
+                if (!acceptedExtensions.Contains(ex))
+                {
+                    ModelState.AddModelError(string.Empty, "CV must be in .doc format");
+                }
+            }
+            HrEmployee employee = null;
+            if(hasFile)
+            {
+
+                employee = _hrEmployeeService.GetByID(model.EmployeeId);
+
+                if(employee == null)
+                    ModelState.AddModelError("", "Employee does not exist");
+            }
+
+            if(ModelState.IsValid)
+            {
+                
+
+                var doc = new Document();
+                doc.LoadFromStream(fileItem.InputStream, FileFormat.Auto);
+
+                if (doc.Sections.Count > 0)//safety check
+                {
+                    var details = GetCvDetail(model.EmployeeId, model.Language);
+                    //overwrite old values
+                    var awards = new List<HrCvAward>();
+                    var memberships = new List<HrCvMembership>();
+                    var educations = new List<HrCvEduction>();
+                    var labors = new List<HrCvLabor>();
+                    var relatives = new List<HrCvRelative>();
+
+                    string previousPlaceholder = string.Empty;
+                    //set placeholders list
+                    var placeholders = model.Language == HrCvLanguage.Ru ? _importLinePlaceholdersRu : _importLinePlaceholdersUz;
+                    foreach (Paragraph paragraph in doc.Sections[0].Paragraphs)
+                    {
+                        var hasPlaceholder = HasPlaceholder(paragraph.Text, placeholders, ref previousPlaceholder);
+
+                        var cleanText = paragraph.Text.Trim(' ', '\t');
+                        //here goes tones of IFs and ELSEs for parsing....
+                        if (hasPlaceholder && !string.IsNullOrEmpty(cleanText) && !string.IsNullOrWhiteSpace(cleanText)) //check cases where values are on the same line
+                        {
+                            //apperatnly only 1 case
+                            if(previousPlaceholder == placeholders[4])
+                            {
+                                var values = cleanText.Split(new[] { ":"}, StringSplitOptions.RemoveEmptyEntries);
+                                if (values.Length > 1)
+                                    details.EducationSpeciality = values[1].Trim(' ', '\t');
+                            }
+
+                        }
+                        else if(!string.IsNullOrEmpty(cleanText) && !string.IsNullOrWhiteSpace(cleanText)) //check cases when values are on next line
+                        {
+                            if (previousPlaceholder == placeholders[0])//full name
+                            {
+                                employee.FullName = cleanText;
+                                previousPlaceholder = ""; //prevent for further setting of next lines as names
+                            }
+                            else if (previousPlaceholder == placeholders[1])
+                            {
+                                //tricky one
+                                //single line contains values for both date of birth and place of birth
+                                //separated by multiple spaces and tabs
+                                //date in format dd.MM.yyyy
+                                var values = cleanText.Split(new[] { "\t", " \t", "\t ", " \t " }, StringSplitOptions.RemoveEmptyEntries);
+                                if (values.Length > 1) //safety check
+                                {
+
+                                    DateTime d;
+                                    if (DateTime.TryParseExact(values[0].Trim(' ', '\t'), "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out d))
+                                        employee.DateOfBirth = d;
+
+                                    details.PlaceOfBirth = values[1].Trim(' ', '\t');
+
+                                    previousPlaceholder = ""; //prevent for further parsing of line as next date of birth and place of birth
+                                }
+                            }
+                            else if (previousPlaceholder == placeholders[2])
+                            {
+                                //same pattern as above
+                                //nationality and party membership are in the same parahraph
+                                //separated by multiple spaces and tabs
+                                var values = cleanText.Split(new[] { "\t", " \t", "\t ", " \t " }, StringSplitOptions.RemoveEmptyEntries);
+                                if (values.Length > 1) //safety check
+                                {
+                                    details.Nationality = values[0].Trim(' ', '\t');
+                                    details.PartyMembership = values[1].Trim(' ', '\t');
+                                }
+
+                                previousPlaceholder = ""; //prevent for further parsing of line as next nationality and party membership
+                            }
+                            else if(previousPlaceholder == placeholders[5])
+                            {
+                                //same pattern as above
+                                //academic degree and academic title are in the same parahraph
+                                //separated by multiple spaces and tabs
+
+                                var values = cleanText.Split(new[] { "\t", " \t", "\t ", " \t " }, StringSplitOptions.RemoveEmptyEntries);
+                                if (values.Length > 1) //safety check
+                                {
+                                    details.AcademicDegree = values[0].Trim(' ', '\t');
+                                    details.AcademicTitle = values[1].Trim(' ', '\t');
+                                }
+
+                                previousPlaceholder = ""; //prevent for further parsing of line as next academic degree and academic title
+                            }
+                            else if (previousPlaceholder == placeholders[6])
+                            {
+                                //almost same pattern as above
+                                //languages are on next line
+                                //single paragraph for all languages
+                                details.Languages = cleanText;
+
+                                previousPlaceholder = ""; //prevent for further parsing of line as next language
+                            }
+                            else if(previousPlaceholder == placeholders[3])
+                            {
+                                //perhaps the trickiest one
+                                //first line after contains both education degree and education line
+                                //separate by multiple spaces and tabs
+                                //whereas all below contains only education
+                                //so try to split, see how many values and assign accordingly
+                                var values = cleanText.Split(new[] { "\t", " \t", "\t ", " \t " }, StringSplitOptions.RemoveEmptyEntries);
+                                if (values.Length > 1) //safety check
+                                {
+                                    details.EducationDegree = values[0].Trim(' ', '\t');
+                                    educations.Add(new HrCvEduction
+                                    {
+                                        Education = values[1].Trim(' ', '\t')
+                                    });
+                                }
+                                else if(values.Length == 1)//again safety
+                                {
+                                    var value = values[0].Trim(' ', '\t');
+
+                                    if(!string.IsNullOrEmpty(value))
+                                        educations.Add(new HrCvEduction
+                                        {
+                                            Education = value
+                                        });
+                                }
+
+                                //do not recet previous placeholder - can be many lines for education
+                                //will continue parsing until next placeholder if lines are not empty
+                            }
+                            else if(previousPlaceholder == placeholders[7])
+                            {
+                                //almost same as above
+                                //can be multiple awards, each starts with new line
+                                //awards are in format: award, year
+                                var values = cleanText.Split(new[] { ", ", " , ", " ," }, StringSplitOptions.RemoveEmptyEntries);
+                                var award = new HrCvAward();
+                                if (values.Length > 0)
+                                {
+                                    award.Award = values[0].Trim(' ', '\t');
+
+                                    if(values.Length > 1)
+                                    {
+                                        int year;
+                                        if (int.TryParse(values[1].Substring(0, 4), out year))
+                                            award.Year = year;
+                                    }
+
+                                    awards.Add(award);
+                                }
+
+                                //do not recet previous placeholder - can be many lines for awards
+                                //will continue parsing until next placeholder if lines are not empty
+                            }
+                            else if (previousPlaceholder == placeholders[8])
+                            {
+                                //same as above
+                                //can be multiple memberships, each starts with new line
+                                memberships.Add(new HrCvMembership
+                                {
+                                    Membership = cleanText
+                                });
+
+
+                                //do not recet previous placeholder - can be many lines for memberships
+                                //will continue parsing until next placeholder if lines are not empty
+                            }
+                            else if (previousPlaceholder == placeholders[9])
+                            {
+                                //same as above
+                                //can be multiple labor details, each starts with new line
+                                //format years, dash, description
+                                //dash can have tab or multiple spaces or both
+                                var values = cleanText.Split(new[] { "-\t", "-  ", "- \t" }, StringSplitOptions.RemoveEmptyEntries);
+                                if(values.Length > 1)
+                                {
+                                    labors.Add(new HrCvLabor
+                                    {
+                                        Years = values[0].Trim(' ', '\t'),
+                                        Description = values[1].Trim(' ', '\t')
+                                    });
+                                }
+
+                                //do not recet previous placeholder - can be many lines for memberships
+                                //will continue parsing until next placeholder if lines are not empty
+
+                            }
+                        }
+
+
+
+                        //Loop through the child elements of paragraph to find image
+                        foreach (DocumentObject docObj in paragraph.ChildObjects)
+                        {
+                            if (docObj.DocumentObjectType == DocumentObjectType.Picture)
+                            {
+                                //replace image
+                                var picture = docObj as DocPicture;
+                                employee.ImageNameContent = picture.ImageBytes;
+                                employee.ImageName = "imageFromCv.png";
+                                employee.ImageNameContentType = "image/png";
+                            }
+                        }
+                    }
+
+                    //relatives are in separate table
+                    if (doc.Sections[0].Tables.Count > 0)
+                    {
+                        Table table = doc.Sections[0].Tables[0] as Spire.Doc.Table;
+
+                        if(table.Rows.Count > 1)//not only header
+                        {
+                            for(var i = 1; i < table.Rows.Count; i++)
+                            {
+                                var row = table.Rows[i];
+                                if (row.Cells.Count < 5) continue;//for savety
+
+                                relatives.Add(new HrCvRelative
+                                {
+                                    Degree = row.Cells[0].Paragraphs[0].Text.Trim(' ', '\t'),
+                                    FullName = row.Cells[1].Paragraphs[0].Text.Trim(' ', '\t'),
+                                    BirthDateAndPlace = row.Cells[2].Paragraphs[0].Text.Trim(' ', '\t'),
+                                    LaborDetails = row.Cells[3].Paragraphs[0].Text.Trim(' ', '\t'),
+                                    Address = row.Cells[4].Paragraphs[0].Text.Trim(' ', '\t'),
+                                });
+                            }
+                        }
+
+                    }
+
+                    _hrEmployeeService.Update(employee);
+                    _hrCvAwardService.Save(awards, details.Id);
+                    _hrCvMembershipService.Save(memberships, details.Id);
+                    _hrCvEducationService.Save(educations, details.Id);
+                    _hrCvLaborService.Save(labors, details.Id);
+                    _hrCvRelativeService.Save(relatives, details.Id);
+
+                    ViewBag.ImportResult = "Imported successfully!!!";
+                }
+                else
+                    ModelState.AddModelError("", "Wrong document format");
+            }
+
+            AddEmployeeList(model);
+
+            return View(model);
+        }
+
+        #endregion
 
 
         #region "Private Utility methods"
@@ -727,10 +1062,85 @@ namespace INTRANET.Controllers
             return text.GetAsOneRange().OwnerParagraph;
         }
 
+        private int GetAwardsParagraphIndex(Document doc)
+        {
+            var paragraph = GetAwardsParagraph(doc);
+            return doc.Sections[0].Paragraphs.IndexOf(paragraph);
+        }
+
+        private Paragraph GetAwardsParagraph(Document doc)
+        {
+            var text = GetTextSelection(doc, "{AWARDS}");
+            return text.GetAsOneRange().OwnerParagraph;
+        }
+
+        private int GetMembershipsParagraphIndex(Document doc)
+        {
+            var paragraph = GetMembershipsParagraph(doc);
+            return doc.Sections[0].Paragraphs.IndexOf(paragraph);
+        }
+
+        private Paragraph GetMembershipsParagraph(Document doc)
+        {
+            var text = GetTextSelection(doc, "{MEMBERSHIPS}");
+            return text.GetAsOneRange().OwnerParagraph;
+        }
+
         private TextSelection GetTextSelection(Document doc, string query)
         {
             return doc.FindString(query, true, true);
         }
+
+        private void AddEmployeeList(HrImportCvVM model)
+        {
+            model.Employees = _hrEmployeeService.GetAll().Select(e => new SelectListItem { Value = e.Id.ToString(),Text = e.FullName }).ToList();
+        }
+
+        private readonly List<string> _importLinePlaceholdersRu = new List<string>
+        {
+            "СПРАВКА".ToLower(),
+            "Год рождения:".ToLower(),
+            "Национальность:".ToLower(),
+            "Образование:".ToLower(),
+            "Специальность по образованию:".ToLower(),
+            "Ученая степень:".ToLower(),
+            "Какими иностранными языками владеет".ToLower(),
+            "Имеет ли правительственные награды:".ToLower(),
+            "Является ли народным депутатом,".ToLower(),
+            "ТРУДОВАЯ ДЕЯТЕЛЬНОСТЬ".ToLower(),
+            "СВЕДЕНИЯ".ToLower()
+        };
+
+        private readonly List<string> _importLinePlaceholdersUz = new List<string>
+        {
+            "МАЪЛУМОТНОМА".ToLower(),
+            "Туғилган йили:".ToLower(),
+            "Миллати:".ToLower(),
+            "Маълумоти:".ToLower(),
+            "Маълумоти бўйича мутахассислиги:".ToLower(),
+            "Илмий даражаси:".ToLower(),
+            "Қайси чет тилларини билади".ToLower(),
+            "Давлат мукофотлари билан тақдирланганми:".ToLower(),
+            "Халқ депутатлари, республика, вилоят,".ToLower(),
+            "МЕҲНАТ ФАОЛИЯТИ".ToLower(),
+            "қариндошлари ҳақида".ToLower()
+        };
+
+        //check if line has placeholder for further parsing
+        private bool HasPlaceholder(string text, List<string> placeholders, ref string placeholder)
+        {
+            foreach (var p in placeholders)
+            {
+                if (text.ToLower().Contains(p))
+                {
+                    placeholder = p;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
 
         #endregion
 

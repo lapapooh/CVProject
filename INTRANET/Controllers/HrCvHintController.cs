@@ -43,6 +43,7 @@ namespace INTRANET.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(HrCvHintVM model)
         {
             if (ModelState.IsValid)
@@ -74,6 +75,7 @@ namespace INTRANET.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(HrCvHintVM model)
         {
             if(ModelState.IsValid)
