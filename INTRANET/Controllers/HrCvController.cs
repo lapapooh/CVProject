@@ -271,6 +271,12 @@ namespace INTRANET.Controllers
             if (employee == null)
                 return RedirectToAction("Index", "HrCv");
 
+            //todo on integration - add check for a regular employee
+            //if regular employee is logged in, he should be able to see only his own CV
+            //use case - ID in browser link is manually changed
+            //check can be done by email login field of employee
+            //due to lack of details about the template - were not able to implement it
+
             var details = GetCvDetail(employeeId, language);
 
             var model = new HrCvVM

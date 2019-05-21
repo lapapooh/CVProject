@@ -44,8 +44,9 @@ namespace INTRANET.Controllers
         public ActionResult View()
         {
             //for now hardcoded. 
-            //on integration - should get email of logged in user
+            //todo on integration - should get email of logged in user
             //in 1C - they enter only login (before the @ sign)
+
             var email = "mshpirko";
 
             var employee = _hrEmployeeService.GetByEmail(email);
