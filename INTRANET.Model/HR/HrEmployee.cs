@@ -78,6 +78,8 @@ namespace INTRANET.Model
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedAt { get; set; }
 
+        public string FullNameGenitive { get; set; }
+
 
         public virtual HrDepartment Department { get; set; }
         public virtual HrPosition Position { get; set; }

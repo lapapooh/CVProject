@@ -477,19 +477,15 @@ namespace INTRANET.Controllers
 
             var doc = new Document();
             string path;
-            string filename;
+            var filename = employee.FullName + ".doc"; //always like this for both ru and uz
 
             if (language == HrCvLanguage.Uz)
             {
                 path = HostingEnvironment.MapPath("~/Content/HrCvTemplates/cv_template_uz.doc");
-                filename = employee.FullName + "(Uz).doc";
-
-
             }
             else //only 2 possible cases
             {
                 path = HostingEnvironment.MapPath("~/Content/HrCvTemplates/cv_template_ru.doc");
-                filename = employee.FullName + "(Ru).doc";
             }
 
             //for date formatting
@@ -508,6 +504,7 @@ namespace INTRANET.Controllers
             doc.Replace("{ACADEMICDEGREE}", employeeCV?.AcademicDegree ?? "", true, true);
             doc.Replace("{ACADEMICTITLE}", employeeCV?.AcademicTitle ?? "", true, true);
             doc.Replace("{LANGUAGES}", employeeCV?.Languages ?? "", true, true);
+            doc.Replace("{FULLNAMEGENITIVE}", employee.FullNameGenitive ?? employee.FullName, true, false);
 
             //awards
             //copy initial pargraph, insert data in old paragraph
@@ -571,6 +568,11 @@ namespace INTRANET.Controllers
                     var newP = (Paragraph)p.Clone();
                     p.Text = education.Education;
                     doc.Sections[0].Paragraphs.Insert(i + 1, newP);
+                    //again tricky part
+                    //between each paragraph with education - after spacing is 0
+                    //but for the last one - after spacing is 8 (already set in template)
+                    //so change spacing of previous paragraph
+                    doc.Sections[0].Paragraphs[i - 1].Format.AfterSpacing = 0;
                 }
 
             }
@@ -911,6 +913,15 @@ namespace INTRANET.Controllers
                                 //will continue parsing until next placeholder if lines are not empty
 
                             }
+                            else if(previousPlaceholder == placeholders[10] 
+                                && model.Language == HrCvLanguage.Ru
+                                && cleanText.Contains("о близких родственниках"))
+                            {
+                                //take full name in genitive
+                                //applicable only for russian CV
+                                employee.FullNameGenitive = cleanText.Replace("о близких родственниках", "").Trim(' ', '\t');
+
+                            }
                         }
 
 
@@ -943,11 +954,11 @@ namespace INTRANET.Controllers
 
                                 relatives.Add(new HrCvRelative
                                 {
-                                    Degree = row.Cells[0].Paragraphs[0].Text.Trim(' ', '\t'),
-                                    FullName = row.Cells[1].Paragraphs[0].Text.Trim(' ', '\t'),
-                                    BirthDateAndPlace = row.Cells[2].Paragraphs[0].Text.Trim(' ', '\t'),
-                                    LaborDetails = row.Cells[3].Paragraphs[0].Text.Trim(' ', '\t'),
-                                    Address = row.Cells[4].Paragraphs[0].Text.Trim(' ', '\t'),
+                                    Degree = GetMultipleParagraphsText(row.Cells[0].Paragraphs),
+                                    FullName = GetMultipleParagraphsText(row.Cells[1].Paragraphs),
+                                    BirthDateAndPlace = GetMultipleParagraphsText(row.Cells[2].Paragraphs),
+                                    LaborDetails = GetMultipleParagraphsText(row.Cells[3].Paragraphs),
+                                    Address = GetMultipleParagraphsText(row.Cells[4].Paragraphs),
                                 });
                             }
                         }
@@ -1141,6 +1152,17 @@ namespace INTRANET.Controllers
             return false;
         }
 
+        //mainly for tables as there coult be multiple paragraphs in a single cell
+        private string GetMultipleParagraphsText(Spire.Doc.Collections.ParagraphCollection paragraphs)
+        {
+            var result = string.Empty;
+            foreach(Paragraph p in paragraphs)
+            {
+                result += p.Text.Trim(' ', '\t') + " ";
+            }
+
+            return result.Trim(' ', '\t');
+        }
 
         #endregion
 

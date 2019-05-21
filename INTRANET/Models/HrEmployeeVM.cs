@@ -58,6 +58,9 @@ namespace INTRANET.Models
         [DisplayName("Passport Issue Place")]
         public string PassportIssuePlace { get; set; }
 
+        [DisplayName("Full Name Genitive (Родительный падеж)")]
+        public string FullNameGenitive { get; set; }
+
         public List<SelectListItem> Departments { get; set; }
         public List<SelectListItem> Positions { get; set; }
 

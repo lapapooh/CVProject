@@ -99,6 +99,7 @@ namespace INTRANET.Controllers
                 employee.PassportNo = model.PassportNo;
                 employee.PassportIssueDate = model.PassportIssueDate;
                 employee.PassportIssuePlace = model.PassportIssuePlace;
+                employee.FullNameGenitive = model.FullNameGenitive;
 
                 _hrEmployeeService.Update(employee);
                 return RedirectToAction("Index", "HrCv");
@@ -132,7 +133,8 @@ namespace INTRANET.Controllers
                 IsActive = model.IsActive,
                 PassportNo = model.PassportNo,
                 PassportIssueDate = model.PassportIssueDate,
-                PassportIssuePlace = model.PassportIssuePlace
+                PassportIssuePlace = model.PassportIssuePlace,
+                FullNameGenitive = model.FullNameGenitive
             };
         }
 
@@ -157,7 +159,8 @@ namespace INTRANET.Controllers
                 IsActive = model.IsActive,
                 PassportNo = model.PassportNo,
                 PassportIssueDate = model.PassportIssueDate,
-                PassportIssuePlace = model.PassportIssuePlace
+                PassportIssuePlace = model.PassportIssuePlace,
+                FullNameGenitive = model.FullNameGenitive
             };
         }
 

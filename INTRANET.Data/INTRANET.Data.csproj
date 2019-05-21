@@ -97,6 +97,10 @@
     <Compile Include="Migrations\201905140449018_AwardYearNullable.Designer.cs">
       <DependentUpon>201905140449018_AwardYearNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905210907566_AddedEmployeeFullNameGenitive.cs" />
+    <Compile Include="Migrations\201905210907566_AddedEmployeeFullNameGenitive.Designer.cs">
+      <DependentUpon>201905210907566_AddedEmployeeFullNameGenitive.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AcademicYearRepository.cs" />
@@ -159,6 +163,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905140449018_AwardYearNullable.resx">
       <DependentUpon>201905140449018_AwardYearNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905210907566_AddedEmployeeFullNameGenitive.resx">
+      <DependentUpon>201905210907566_AddedEmployeeFullNameGenitive.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
