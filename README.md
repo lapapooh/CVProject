@@ -1,5 +1,5 @@
 ## CV Database
-# This project was created to maintain a database for CVs of employees for one of the Educational organisations of Tashkent.
+This project was created to maintain a database for CVs of employees for one of the Educational organisations of Tashkent.
 
 ## Employees 
 - can create their CV in the given format
